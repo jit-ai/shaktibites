@@ -2,6 +2,8 @@
 session_start();
 include 'includes/config.php';
 
+$page_title = 'Login';
+
 // Initialize database connection
 $host = 'localhost';
 $db   = 'shakti_bites';
@@ -19,12 +21,10 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    // If database doesn't exist, redirect to setup
     if (strpos($e->getMessage(), "Unknown database") !== false) {
         header('Location: setup.php');
         exit;
     } else {
-        // For other PDO errors, show a generic error (don't expose details in production)
         die("Database connection error. Please contact administrator.");
     }
 }
@@ -39,25 +39,29 @@ if (isset($_SESSION['user_id'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    
+    $remember = isset($_POST['remember']) ? true : false;
+
     if (!empty($email) && !empty($password)) {
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
-        
+
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['is_admin'] = $user['is_admin'];
-            
-            // Redirect admin users to admin panel
+
             if ($user['is_admin']) {
                 header('Location: admin/dashboard.php');
                 exit;
             }
-            
-            // Redirect to intended page or home
+
+            if ($remember) {
+                $token = bin2hex(random_bytes(32));
+                setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/');
+            }
+
             $redirect = $_SESSION['redirect_url'] ?? 'index.php';
             unset($_SESSION['redirect_url']);
             header('Location: ' . $redirect);
@@ -86,38 +90,90 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 <body>
 <?php include 'includes/navbar.php'; ?>
 
+<!-- Auth Hero Header -->
+<section class="auth-hero">
+    <div class="container">
+        <h1 class="auth-hero-title">Welcome Back</h1>
+        <p class="auth-hero-sub">Sign in to continue your protein journey</p>
+    </div>
+</section>
+
 <!-- Login Section -->
-<section class="min-vh-100 d-flex align-items-center">
+<section class="auth-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5">
-                <div class="card shadow-sm">
-                    <div class="card-body p-4">
-                        <h2 class="text-center mb-4">Welcome Back</h2>
-                        <p class="text-center text-muted mb-4">Sign in to your account</p>
-                        
-                        <?php if (isset($error)): ?>
-                            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-                        <?php endif; ?>
-                        
-                        <form method="POST" action="">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-                            <div class="d-grid mb-3">
-                                <button type="submit" name="login" class="btn btn-primary">Sign In</button>
-                            </div>
-                        </form>
-                        
-                        <div class="text-center mt-3">
-                            <p>Don't have an account? <a href="register.php">Create Account</a></p>
-                            <p><a href="forgot-password.php">Forgot Password?</a></p>
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+                <div class="auth-card">
+                    <div class="card-body">
+                        <!-- Brand -->
+                        <div class="auth-brand">
+                            <img src="assets/images/logo.PNG" alt="Shakti Bites" class="img-fluid">
+                            <div class="auth-brand-text">Shakti Bites</div>
+                            <p class="auth-brand-tagline">Fuel Your Day, Naturally</p>
                         </div>
+
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                <div><?php echo htmlspecialchars($error); ?></div>
+                            </div>
+                        <?php endif; ?>
+
+                        <form method="POST" action="">
+                            <!-- Email -->
+                            <div class="auth-icon-input">
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="Email address" required autofocus
+                                       value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                                <i class="bi bi-envelope input-icon"></i>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="auth-icon-input auth-password-wrapper">
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="Password" required>
+                                <i class="bi bi-lock input-icon"></i>
+                                <button type="button" class="auth-toggle-password" data-target="password" aria-label="Toggle password visibility">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+
+                            <!-- Options -->
+                            <div class="auth-options">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                                    <label class="form-check-label" for="remember" style="font-size:13px; color:var(--text-muted); cursor:pointer;">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <a href="forgot-password.php">Forgot Password?</a>
+                            </div>
+
+                            <!-- Submit -->
+                            <button type="submit" name="login" class="auth-btn auth-btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign In
+                            </button>
+                        </form>
+
+                        <!-- Divider -->
+                        <div class="auth-divider">
+                            <span>or continue with</span>
+                        </div>
+
+                        <!-- Social Login -->
+                        <div class="auth-social">
+                            <a href="#" class="auth-social-btn google">
+                                <i class="bi bi-google"></i> Google
+                            </a>
+                            <a href="#" class="auth-social-btn facebook">
+                                <i class="bi bi-facebook"></i> Facebook
+                            </a>
+                        </div>
+
+                        <!-- Footer -->
+                        <p class="auth-footer-text">
+                            Don't have an account? <a href="register.php">Create Account</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -129,5 +185,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
 <!-- Bootstrap 5.3.3 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password visibility toggle
+    document.querySelectorAll('.auth-toggle-password').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var targetId = this.getAttribute('data-target');
+            var input = document.getElementById(targetId);
+            var icon = this.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

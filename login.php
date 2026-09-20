@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
             $_SESSION['is_admin'] = $user['is_admin'];
 
             if ($user['is_admin']) {
-                header('Location: admin/dashboard.php');
+                header('Location: admin/dashboard');
                 exit;
             }
 

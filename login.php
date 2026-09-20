@@ -22,7 +22,7 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
     if (strpos($e->getMessage(), "Unknown database") !== false) {
-        header('Location: setup.php');
+        header('Location: setup');
         exit;
     } else {
         die("Database connection error. Please contact administrator.");
@@ -31,7 +31,7 @@ try {
 
 // Redirect if already logged in
 if (isset($_SESSION['user_id'])) {
-    header('Location: index.php');
+    header('Location: ./');
     exit;
 }
 
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                 setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/');
             }
 
-            $redirect = $_SESSION['redirect_url'] ?? 'index.php';
+            $redirect = $_SESSION['redirect_url'] ?? './';
             unset($_SESSION['redirect_url']);
             header('Location: ' . $redirect);
             exit;
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
 </head>
 <body>
 <?php include 'includes/navbar.php'; ?>
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                                         Remember me
                                     </label>
                                 </div>
-                                <a href="forgot-password.php">Forgot Password?</a>
+                                <a href="forgot-password">Forgot Password?</a>
                             </div>
 
                             <!-- Submit -->
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
                         <!-- Footer -->
                         <p class="auth-footer-text">
-                            Don't have an account? <a href="register.php">Create Account</a>
+                            Don't have an account? <a href="register">Create Account</a>
                         </p>
                     </div>
                 </div>

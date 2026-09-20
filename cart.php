@@ -6,6 +6,9 @@ include 'includes/header.php';
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
+if (empty($_SESSION['cart_token'])) {
+    $_SESSION['cart_token'] = bin2hex(random_bytes(32));
+}
 
 // Product data (same as in product.php)
 $products = [
@@ -56,7 +59,7 @@ $products = [
                         break;
                 }
             ?>
-            <div class="cart-item">
+            <div class="cart-item" data-product-id="<?php echo (int) $productId; ?>" data-price="<?php echo (int) $productPrice; ?>">
                 <img src="assets/images/<?php echo $productImg; ?>" alt="<?php echo htmlspecialchars($productName); ?>" class="cart-item-image">
                 <div class="cart-item-details">
                     <h5><?php echo htmlspecialchars($productName); ?></h5>
@@ -108,8 +111,8 @@ $products = [
         <strong>Total</strong>
         <strong>₹<?php echo number_format($total, 0); ?></strong>
     </div>
-    <a href="checkout.php" class="btn btn-checkout">Proceed to Checkout</a>
-    <a href="shop.php" class="btn btn-continue">Continue Shopping</a>
+    <a href="checkout" class="btn btn-checkout">Proceed to Checkout</a>
+    <a href="shop" class="btn btn-continue">Continue Shopping</a>
 </div>
 
     </div>
@@ -117,47 +120,62 @@ $products = [
 </section>
 
 <script>
+const cartToken = '<?php echo $_SESSION['cart_token']; ?>';
+const formatMoney = amount => `₹${Number(amount).toLocaleString('en-IN')}`;
+
+async function persistCartChange(item, quantity) {
+  const body = new URLSearchParams({ product_id: item.dataset.productId, quantity, token: cartToken });
+  const response = await fetch('update_cart', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  });
+  const result = await response.json();
+  if (!response.ok || !result.ok) throw new Error(result.message || 'Unable to update your cart.');
+  return result;
+}
+
+function updateCartSummary(result) {
+  const rows = document.querySelectorAll('.cart-summary-row');
+  rows[0].lastElementChild.textContent = formatMoney(result.subtotal);
+  rows[2].lastElementChild.textContent = formatMoney(result.tax);
+  document.querySelector('.cart-total-row strong:last-child').textContent = formatMoney(result.total);
+  const badge = document.getElementById('cart-badge');
+  if (badge) {
+    badge.textContent = result.cart_count;
+    badge.classList.toggle('d-none', result.cart_count === 0);
+  }
+}
+
+async function changeQuantity(id, quantity) {
+  const item = document.querySelector(`#qty-${id}`).closest('.cart-item');
+  const controls = item.querySelectorAll('button');
+  controls.forEach(button => button.disabled = true);
+  try {
+    const result = await persistCartChange(item, quantity);
+    if (quantity === 0) {
+      item.remove();
+      if (!document.querySelector('.cart-item')) window.location.reload();
+    } else {
+      document.querySelector(`#qty-${id}`).textContent = quantity;
+    }
+    updateCartSummary(result);
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    controls.forEach(button => button.disabled = false);
+  }
+}
+
 function incrementCart(id) {
-   const qty = document.getElementById('qty-' + id);
-   qty.innerText = parseInt(qty.innerText) + 1;
-   updateCartCount();
- }
-
- function decrementCart(id) {
-   const qty = document.getElementById('qty-' + id);
-   if (parseInt(qty.innerText) > 1) {
-       qty.innerText = parseInt(qty.innerText) - 1;
-       updateCartCount();
-   }
- }
-
- function removeItem(id) {
-   document.querySelector('.cart-item:nth-child(' + id + ')').remove();
-   updateCartCount();
- }
-
- function updateCartCount() {
-   let total = 0;
-   document.querySelectorAll('.cart-item').forEach(item => {
-       const qtyElement = item.querySelector('[id^="qty-"]');
-       if (qtyElement) {
-           total += parseInt(qtyElement.innerText);
-       }
-   });
-   
-   // Update cart badge in navbar
-   const cartBadge = document.getElementById('cart-badge');
-   if (cartBadge) {
-       cartBadge.innerText = total;
-       
-       // Show/hide badge based on count
-       if (total > 0) {
-           cartBadge.style.display = 'block';
-       } else {
-           cartBadge.style.display = 'none';
-       }
-   }
- }
+  const quantity = Number(document.querySelector(`#qty-${id}`).textContent);
+  changeQuantity(id, quantity + 1);
+}
+function decrementCart(id) {
+  const quantity = Number(document.querySelector(`#qty-${id}`).textContent);
+  if (quantity > 1) changeQuantity(id, quantity - 1);
+}
+function removeItem(id) { changeQuantity(id, 0); }
 </script>
 
 <?php include 'includes/footer.php'; ?>

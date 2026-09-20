@@ -18,7 +18,9 @@ $products = [
 <!-- ===== CHECKOUT HERO ===== -->
 <section class="checkout-hero">
   <div class="container">
-    <h1 class="checkout-hero-title">Checkout</h1>
+    <p class="checkout-kicker">Secure checkout</p>
+    <h1 class="checkout-hero-title">Almost there</h1>
+    <p class="checkout-hero-sub">Complete your details and we’ll bring your protein snacks to your door.</p>
   </div>
 </section>
 
@@ -31,7 +33,7 @@ $products = [
       <div class="checkout-form-col">
         <div class="billing-details-card">
           <h3 class="checkout-section-title"><i class="bi bi-geo-alt-fill"></i> Billing Details</h3>
-          <form action="order-complete.php" method="post" class="checkout-form">
+          <form action="order-complete" method="post" class="checkout-form">
             <div class="form-row">
               <div class="form-group">
                 <label for="first-name">First Name *</label>
@@ -96,7 +98,10 @@ $products = [
 
 <!-- Order Summary -->
 <div class="checkout-summary-col">
-    <h3>Your Order Summary</h3>
+    <div class="checkout-summary-heading">
+      <h3>Your Order Summary</h3>
+      <i class="bi bi-bag-check"></i>
+    </div>
     <div class="checkout-items">
         <?php
         $subtotal = 0;

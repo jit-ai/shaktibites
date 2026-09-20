@@ -141,7 +141,7 @@ include 'includes/header.php';
   <div class="container text-center">
     <h2 class="about-cta-title">Ready to Join the Healthy Snacking Revolution?</h2>
     <p class="about-cta-text">Experience the power of clean protein in every bite.</p>
-    <a href="shop.php" class="btn btn-cta">Shop Our Products</a>
+    <a href="shop" class="btn btn-cta">Shop Our Products</a>
   </div>
 </section>
 

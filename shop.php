@@ -30,7 +30,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Peanuts • Jaggery • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Refined Sugar</div>
-          <a href="product.php?id=1" class="btn btn-try">View Details</a>
+          <a href="product?id=1" class="btn btn-try">View Details</a>
         </div>
       </div>
 
@@ -46,7 +46,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Almonds • Cacao • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>100% Natural Ingredients</div>
-          <a href="product.php?id=2" class="btn btn-try btn-try-filled">View Details</a>
+          <a href="product?id=2" class="btn btn-try btn-try-filled">View Details</a>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Cashews • Almonds • Cardamom</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Preservatives</div>
-          <a href="product.php?id=3" class="btn btn-try">View Details</a>
+          <a href="product?id=3" class="btn btn-try">View Details</a>
         </div>
       </div>
 
@@ -105,7 +105,7 @@ include 'includes/header.php';
   <div class="container text-center">
     <h2 class="shop-cta-title">Can't Decide? Try Our Combos!</h2>
     <p class="shop-cta-text">Save up to 25% with our curated combo packs.</p>
-    <a href="combo.php" class="btn btn-cta">View Combos</a>
+    <a href="combo" class="btn btn-cta">View Combos</a>
   </div>
 </section>
 

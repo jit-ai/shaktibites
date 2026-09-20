@@ -16,7 +16,7 @@
                         <div class="mt-3">
                             <span class="badge bg-primary">Save 20%</span>
                         </div>
-                        <a href="combo.php" class="btn btn-primary mt-auto">View Combo</a>
+                        <a href="combo" class="btn btn-primary mt-auto">View Combo</a>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <div class="mt-3">
                             <span class="badge bg-primary">Save 15%</span>
                         </div>
-                        <a href="combo.php" class="btn btn-primary mt-auto">View Combo</a>
+                        <a href="combo" class="btn btn-primary mt-auto">View Combo</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                         <div class="mt-3">
                             <span class="badge bg-primary">Save 25%</span>
                         </div>
-                        <a href="combo.php" class="btn btn-primary mt-auto">View Combo</a>
+                        <a href="combo" class="btn btn-primary mt-auto">View Combo</a>
                     </div>
                 </div>
             </div>

@@ -2,10 +2,20 @@
 session_start();
 include 'includes/config.php';
 
+try {
+    $pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4', DB_USER, DB_PASS, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+} catch (PDOException $exception) {
+    http_response_code(503);
+    exit('Unable to load your profile right now. Please try again shortly.');
+}
+
 // Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['redirect_url'] = 'profile.php';
-    header('Location: login.php');
+    $_SESSION['redirect_url'] = 'profile';
+    header('Location: login');
     exit;
 }
 
@@ -90,31 +100,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
         $user = $stmt->fetch();
     }
 }
+$page_title = 'My Profile';
+include 'includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Shakti Bites</title>
-    <!-- Bootstrap 5.3.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-<?php include 'includes/navbar.php'; ?>
 
-<!-- Profile Section -->
-<section class="py-5">
+<section class="profile-hero">
+    <div class="container">
+        <p>Account settings</p>
+        <h1>Hello, <?php echo htmlspecialchars(explode(' ', trim($user['name']))[0]); ?></h1>
+        <span>Manage your personal details and delivery information.</span>
+    </div>
+</section>
+
+<section class="profile-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h2 class="h4 mb-0">My Profile</h2>
+            <div class="col-lg-9">
+                <div class="card profile-card">
+                    <div class="card-header profile-card-header">
+                        <div>
+                            <p class="profile-card-kicker">Personal information</p>
+                            <h2>My Profile</h2>
+                        </div>
+                        <a href="orders" class="profile-orders-link"><i class="bi bi-box-seam"></i> My Orders</a>
                     </div>
                     <div class="card-body">
                         
@@ -158,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
                             
                             <hr class="my-4">
                             
-                            <h5 class="mb-3">Change Password (Optional)</h5>
+                            <h5 class="profile-password-title">Change Password <span>Optional</span></h5>
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="current_password" class="form-label">Current Password</label>
@@ -175,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
                             </div>
                             
                             <div class="d-grid">
-                                <button type="submit" name="update_profile" class="btn btn-primary">Update Profile</button>
+                                <button type="submit" name="update_profile" class="btn profile-save-btn"><i class="bi bi-check2-circle"></i> Save Changes</button>
                             </div>
                         </form>
                     </div>
@@ -186,8 +194,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
 </section>
 
 <?php include 'includes/footer.php'; ?>
-
-<!-- Bootstrap 5.3.3 JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

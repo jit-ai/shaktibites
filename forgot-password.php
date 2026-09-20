@@ -9,7 +9,7 @@ $page_title = 'Forgot Password';
     <title><?php echo isset($page_title) ? 'Shakti Bites - ' . $page_title : 'Forgot Password - Shakti Bites'; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
 </head>
 <body>
 <?php include 'includes/navbar.php'; ?>
@@ -49,7 +49,7 @@ $page_title = 'Forgot Password';
                         </form>
 
                         <p class="auth-footer-text" style="margin-top: 20px;">
-                            <a href="login.php"><i class="bi bi-arrow-left"></i> Back to Login</a>
+                            <a href="login"><i class="bi bi-arrow-left"></i> Back to Login</a>
                         </p>
                     </div>
                 </div>

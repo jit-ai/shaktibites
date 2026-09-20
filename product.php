@@ -59,12 +59,12 @@ $product = $products[$id] ?? $products[1];
         </div>
 
         <div class="product-actions">
-          <form method="POST" action="add_to_cart.php" class="cart-form">
+          <form method="POST" action="add_to_cart" class="cart-form">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
             <input type="hidden" name="quantity" id="quantity-input" value="1">
             <button type="submit" class="btn btn-add-cart">Add to Cart</button>
           </form>
-          <a href="checkout.php" class="btn btn-buy-now">Buy Now</a>
+          <a href="checkout" class="btn btn-buy-now">Buy Now</a>
         </div>
 
         <div class="product-meta">

@@ -129,7 +129,7 @@ include 'includes/header.php';
   <div class="container text-center">
     <h2 class="combo-cta-title">Ready to Stock Up?</h2>
     <p class="combo-cta-text">Get your favorite protein laddoos delivered to your doorstep.</p>
-    <a href="shop.php" class="btn btn-cta">View Individual Products</a>
+    <a href="shop" class="btn btn-cta">View Individual Products</a>
   </div>
 </section>
 

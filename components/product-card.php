@@ -6,6 +6,6 @@
         <h3><?php echo $product['name']; ?></h3>
         <p><?php echo $product['description']; ?></p>
         <div class="price">$<?php echo $product['price']; ?></div>
-        <a href="shop.php" class="btn">Add to Cart</a>
+        <a href="shop" class="btn">Add to Cart</a>
     </div>
 </div>

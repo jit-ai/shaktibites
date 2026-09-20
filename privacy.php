@@ -9,7 +9,7 @@ $page_title = 'Privacy Policy';
     <title><?php echo isset($page_title) ? 'Shakti Bites - ' . $page_title : 'Privacy Policy - Shakti Bites'; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
 </head>
 <body>
 <?php include 'includes/navbar.php'; ?>
@@ -43,7 +43,7 @@ $page_title = 'Privacy Policy';
                         <p class="text-muted small mb-4">We do not sell or share your personal information with third parties except as necessary to fulfill your order.</p>
 
                         <div class="text-center mt-4">
-                            <a href="register.php" class="auth-btn auth-btn-primary" style="max-width: 250px; margin: 0 auto;">
+                            <a href="register" class="auth-btn auth-btn-primary" style="max-width: 250px; margin: 0 auto;">
                                 <i class="bi bi-arrow-left"></i> Back to Register
                             </a>
                         </div>

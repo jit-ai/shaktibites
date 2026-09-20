@@ -11,8 +11,8 @@ include 'includes/header.php';
         <h1 class="hero-heading">10g Protein Laddoo –<br>Taste bhi, Health bhi</h1>
         <p class="hero-sub">No refined sugar. No junk. No Maida. Real Energy</p>
         <div class="hero-btns">
-          <a href="shop.php" class="btn btn-hero-white">Shop Now</a>
-          <a href="combo.php" class="btn btn-hero-outline">Get Best Value Combo</a>
+          <a href="shop" class="btn btn-hero-white">Shop Now</a>
+          <a href="combo" class="btn btn-hero-outline">Get Best Value Combo</a>
         </div>
         <div class="launch-badge">⚡ Limited Launch Offer – Prices increasing soon</div>
       </div>
@@ -79,7 +79,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Peanuts • Jaggery • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Refined Sugar</div>
-          <a href="shop.php" class="btn btn-try">Try Now</a>
+          <a href="shop" class="btn btn-try">Try Now</a>
         </div>
       </div>
 
@@ -94,7 +94,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Almonds • Cacao • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>100% Natural Ingredients</div>
-          <a href="shop.php" class="btn btn-try btn-try-filled">Try Now</a>
+          <a href="shop" class="btn btn-try btn-try-filled">Try Now</a>
         </div>
       </div>
 
@@ -109,7 +109,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Cashews • Almonds • Cardamom</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Preservatives</div>
-          <a href="shop.php" class="btn btn-try">Try Now</a>
+          <a href="shop" class="btn btn-try">Try Now</a>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ include 'includes/header.php';
           <span class="price-old">699</span>
           <span class="price-new">₹549</span>
         </div>
-        <a href="combo.php" class="btn btn-buy">Buy Now</a>
+        <a href="combo" class="btn btn-buy">Buy Now</a>
       </div>
 
       <div class="combo-card best-value-card">
@@ -152,7 +152,7 @@ include 'includes/header.php';
           <span class="price-old">1494</span>
           <span class="price-new">₹1199</span>
         </div>
-        <a href="combo.php" class="btn btn-buy">Buy Now</a>
+        <a href="combo" class="btn btn-buy">Buy Now</a>
       </div>
 
       <div class="combo-card">
@@ -167,7 +167,7 @@ include 'includes/header.php';
           <span class="price-old">747</span>
           <span class="price-new">₹699</span>
         </div>
-        <a href="combo.php" class="btn btn-buy">Buy Now</a>
+        <a href="combo" class="btn btn-buy">Buy Now</a>
       </div>
 
     </div>
@@ -192,19 +192,19 @@ include 'includes/header.php';
     </div>
     <div class="reviews-grid">
       <div class="review-card">
-        <div class="reviewer-avatar"><img src="assets/images/logo.PNG" alt="Manish A." onerror="this.outerHTML='<div class=fallback-avatar>👨</div>'"></div>
+        <div class="reviewer-avatar"><img src="assets/images/1.png" alt="Manish A."></div>
         <div class="review-stars">★★★★★</div>
         <p class="review-text">Tasty, healthy laddoos that keep me full for hours. Perfect for my gym snacks!</p>
         <div class="reviewer-name">Manish A.</div>
       </div>
       <div class="review-card">
-        <div class="reviewer-avatar"><img src="assets/images/logo.PNG" alt="Priya R." onerror="this.outerHTML='<div class=fallback-avatar>👩</div>'"></div>
+        <div class="reviewer-avatar"><img src="assets/images/2.png" alt="Priya R."></div>
         <div class="review-stars">★★★★★</div>
         <p class="review-text">I've tried all flavours; the Almond Cacao is my absolute favourite! A guilt-free treat.</p>
         <div class="reviewer-name">Priya R.</div>
       </div>
       <div class="review-card">
-        <div class="reviewer-avatar"><img src="assets/images/logo.PNG" alt="Rahul G." onerror="this.outerHTML='<div class=fallback-avatar>👨‍💼</div>'"></div>
+        <div class="reviewer-avatar"><img src="assets/images/3 (1).png" alt="Rahul G."></div>
         <div class="review-stars">★★★★★</div>
         <p class="review-text">No refined sugar, 10g protein, and delicious! Finally found my go-to snack.</p>
         <div class="reviewer-name">Rahul G.</div>
@@ -222,7 +222,7 @@ include 'includes/header.php';
       <span class="cta-dot dim"></span>
       <span class="cta-dot dim"></span>
     </div>
-    <a href="shop.php" class="btn btn-cta">Order Now</a>
+    <a href="shop" class="btn btn-cta">Order Now</a>
   </div>
 </section>
 

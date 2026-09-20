@@ -18,7 +18,7 @@ if (isset($_SESSION['cart'][$id])) {
 }
 
 // Redirect back to referring page or cart
-$referer = $_SERVER['HTTP_REFERER'] ?? 'cart.php';
+$referer = $_SERVER['HTTP_REFERER'] ?? 'cart';
 header('Location: ' . $referer);
 exit;
 ?>

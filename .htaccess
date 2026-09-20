@@ -1,4 +1,15 @@
+Options -MultiViews
 RewriteEngine On
+
+# Canonical public URLs never expose the PHP implementation.
+RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.php[?\s] [NC]
+RewriteRule ^index\.php$ ./ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[?\s] [NC]
+RewriteRule ^(.+)\.php$ $1 [R=301,L,NE]
+
+# Serve an extensionless request from its matching PHP file. Existing files,
+# directories and assets remain untouched.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [END,QSA]

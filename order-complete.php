@@ -38,7 +38,7 @@ include 'includes/header.php';
     </div>
 
     <div class="order-actions">
-      <a href="index.php" class="btn btn-home">Continue Shopping</a>
+      <a href="./" class="btn btn-home">Continue Shopping</a>
       <a href="#" class="btn btn-track">Track Order</a>
     </div>
   </div>

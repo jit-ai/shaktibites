@@ -22,7 +22,7 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
     if (strpos($e->getMessage(), "Unknown database") !== false) {
-        header('Location: setup.php');
+        header('Location: setup');
         exit;
     } else {
         die("Database connection error. Please contact administrator.");
@@ -31,7 +31,7 @@ try {
 
 // Redirect if already logged in
 if (isset($_SESSION['user_id'])) {
-    header('Location: index.php');
+    header('Location: ./');
     exit;
 }
 
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             $_SESSION['user_email'] = $email;
             $_SESSION['is_admin'] = 0;
 
-            header('Location: index.php');
+            header('Location: ./');
             exit;
         } else {
             $errors[] = 'Registration failed. Please try again.';
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
 </head>
 <body>
 <?php include 'includes/navbar.php'; ?>
@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                             <div class="auth-terms form-check">
                                 <input class="form-check-input" type="checkbox" id="agree_terms" name="agree_terms" required>
                                 <label class="form-check-label" for="agree_terms" style="cursor: pointer;">
-                                    I agree to the <a href="terms.php">Terms & Conditions</a> and <a href="privacy.php">Privacy Policy</a>
+                                    I agree to the <a href="terms">Terms & Conditions</a> and <a href="privacy">Privacy Policy</a>
                                 </label>
                             </div>
 
@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
                         <!-- Footer -->
                         <p class="auth-footer-text">
-                            Already have an account? <a href="login.php">Sign In</a>
+                            Already have an account? <a href="login">Sign In</a>
                         </p>
                     </div>
                 </div>

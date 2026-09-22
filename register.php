@@ -93,7 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             $_SESSION['user_email'] = $email;
             $_SESSION['is_admin'] = 0;
 
-            header('Location: ./');
+            $redirect = $_SESSION['redirect_url'] ?? './';
+            unset($_SESSION['redirect_url']);
+            header('Location: ' . $redirect);
             exit;
         } else {
             $errors[] = 'Registration failed. Please try again.';

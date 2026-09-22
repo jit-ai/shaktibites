@@ -1,6 +1,13 @@
 <?php
 $page_title = 'Order Complete';
 include 'includes/header.php';
+
+$order = $_SESSION['last_order'] ?? null;
+if (!$order) {
+    header('Location: shop');
+    exit;
+}
+$paymentMethod = $order['payment_method'] === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)';
 ?>
 
 <!-- ===== ORDER COMPLETE SECTION ===== -->
@@ -11,35 +18,34 @@ include 'includes/header.php';
     </div>
     <h1 class="order-complete-title">Thank You for Your Order!</h1>
     <p class="order-complete-order">Your order has been placed successfully.</p>
-    <p class="order-number">Order #SHK20260512001</p>
+    <p class="order-number">Order #<?php echo htmlspecialchars($order['order_number']); ?></p>
 
     <div class="order-details">
       <h4>Order Details</h4>
       <div class="order-items">
-        <div class="order-item">
-          <span>Peanut Jaggery Power Bites × 1</span>
-          <span>₹249</span>
-        </div>
-        <div class="order-item">
-          <span>Almond Cacao Power Bites × 2</span>
-          <span>₹558</span>
-        </div>
+        <?php foreach ($order['items'] as $item): ?>
+          <div class="order-item">
+            <span><?php echo htmlspecialchars($item['name']); ?> × <?php echo (int) $item['quantity']; ?></span>
+            <span>₹<?php echo number_format($item['price'] * $item['quantity'], 0); ?></span>
+          </div>
+        <?php endforeach; ?>
         <hr>
         <div class="order-total-row">
           <strong>Total Paid</strong>
-          <strong>₹847</strong>
+          <strong>₹<?php echo number_format($order['total_amount'], 0); ?></strong>
         </div>
       </div>
 
       <div class="order-info">
         <p><strong>Estimated Delivery:</strong> 3-5 Business Days</p>
-        <p><strong>Payment Method:</strong> Cash on Delivery</p>
+        <p><strong>Payment Method:</strong> <?php echo $paymentMethod; ?></p>
+        <p><strong>Payment Status:</strong> <?php echo htmlspecialchars(ucfirst($order['payment_status'])); ?></p>
       </div>
     </div>
 
     <div class="order-actions">
       <a href="./" class="btn btn-home">Continue Shopping</a>
-      <a href="#" class="btn btn-track">Track Order</a>
+      <a href="orders" class="btn btn-track">Track Order</a>
     </div>
   </div>
 </section>

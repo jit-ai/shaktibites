@@ -33,7 +33,7 @@ $products = [
       <div class="checkout-form-col">
         <div class="billing-details-card">
           <h3 class="checkout-section-title"><i class="bi bi-geo-alt-fill"></i> Billing Details</h3>
-          <form action="order-complete" method="post" class="checkout-form">
+          <form action="place-order" method="post" class="checkout-form" id="checkout-form">
             <div class="form-row">
               <div class="form-group">
                 <label for="first-name">First Name *</label>
@@ -77,20 +77,67 @@ $products = [
               <input type="email" id="email" name="email" placeholder="your@email.com" required>
             </div>
 
-            <h3 class="checkout-section-title"><i class="bi bi-credit-card-2-front"></i> Payment Method</h3>
-            <div class="payment-options">
-              <label class="payment-option">
-                <input type="radio" name="payment" value="cod" checked>
-                <span><i class="bi bi-cash-stack"></i> Cash on Delivery</span>
+          <h3 class="checkout-section-title"><i class="bi bi-person-circle"></i> Account Options</h3>
+            <div class="payment-options" id="account-options">
+              <label class="payment-option" data-account="guest">
+                <input type="radio" name="account_type" value="guest" checked>
+                <span class="payment-option-details">
+                  <i class="bi bi-person-badge"></i> <strong>Continue as Guest</strong>
+                  <small>Place your order without creating an account</small>
+                </span>
               </label>
-              <label class="payment-option">
-                <input type="radio" name="payment" value="online">
-                <span><i class="bi bi-credit-card"></i> Online Payment (UPI/Card/Netbanking)</span>
+              <label class="payment-option" data-account="create">
+                <input type="radio" name="account_type" value="create">
+                <span class="payment-option-details">
+                  <i class="bi bi-person-plus"></i> <strong>Create an Account</strong>
+                  <small>Faster checkout on your next order</small>
+                </span>
               </label>
             </div>
 
-            <button type="submit" class="btn btn-place-order">
-              <i class="bi bi-lock-fill"></i> Place Order
+            <div class="account-passwords" id="account-passwords" style="display:none;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="account_password">Password *</label>
+                  <input type="password" id="account_password" name="password" placeholder="Minimum 6 characters" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                  <label for="account_password_confirm">Confirm Password *</label>
+                  <input type="password" id="account_password_confirm" name="confirm_password" placeholder="Re-type password" autocomplete="new-password">
+                </div>
+              </div>
+            </div>
+
+          <h3 class="checkout-section-title"><i class="bi bi-credit-card-2-front"></i> Payment Method</h3>
+            <div class="payment-options">
+              <label class="payment-option" data-method="cod">
+                <input type="radio" name="payment" value="cod" checked>
+                <span class="payment-option-details">
+                  <i class="bi bi-cash-stack"></i> <strong>Cash on Delivery</strong>
+                  <small>Pay when you receive your order</small>
+                </span>
+              </label>
+              <label class="payment-option" data-method="online">
+                <input type="radio" name="payment" value="online">
+                <span class="payment-option-details">
+                  <i class="bi bi-credit-card"></i> <strong>Online Payment</strong>
+                  <small>UPI / Card / Netbanking</small>
+                </span>
+              </label>
+            </div>
+
+            <div class="payment-note" id="payment-note">
+              <i class="bi bi-shield-lock"></i> Your payment is processed securely by Razorpay.
+            </div>
+
+            <?php if (!empty($_SESSION['checkout_error'])): ?>
+              <div class="alert alert-danger mt-3" role="alert">
+                <?php echo htmlspecialchars($_SESSION['checkout_error']); unset($_SESSION['checkout_error']); ?>
+              </div>
+            <?php endif; ?>
+
+            <button type="submit" class="btn btn-place-order" id="place-order-btn">
+              <i class="bi bi-lock-fill"></i> <span>Place Order</span>
             </button>
           </form>
         </div>
@@ -163,5 +210,138 @@ $products = [
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+    "use strict";
+    var form = document.getElementById('checkout-form');
+    var btn = document.getElementById('place-order-btn');
+    var note = document.getElementById('payment-note');
+
+    if (!form || !btn) { return; }
+
+    function getTotalText() {
+        var el = document.querySelector('.checkout-total-row strong:last-child');
+        return el ? el.textContent.trim() : '';
+    }
+
+    function getPaymentMethod() {
+        var checked = form.querySelector('input[name="payment"]:checked');
+        return checked ? checked.value : 'cod';
+    }
+
+    function refreshButton() {
+        var online = getPaymentMethod() === 'online';
+        btn.querySelector('i').className = online ? 'bi bi-credit-card' : 'bi bi-lock-fill';
+        btn.querySelector('span').textContent = online ? ('Pay ' + getTotalText() + ' Online') : 'Place Order';
+        if (note) { note.style.display = online ? 'flex' : 'none'; }
+    }
+
+    function setButtonBusy(b) {
+        btn.disabled = b;
+        btn.querySelector('i').className = b ? 'bi bi-hourglass-split' : (getPaymentMethod() === 'online' ? 'bi bi-credit-card' : 'bi bi-lock-fill');
+    }
+
+    function loadRazorpayScript(callback) {
+        if (typeof Razorpay !== 'undefined') { callback(); return; }
+        var script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.async = true;
+        script.onload = callback;
+        script.onerror = function () { alert('Failed to load the payment gateway. Please try again.'); setButtonBusy(false); };
+        document.head.appendChild(script);
+    }
+
+    function startOnlinePayment() {
+        setButtonBusy(true);
+            var formData = new FormData(form);
+            formData.set('payment', 'online');
+            fetch('create-order', { method: 'POST', body: formData })
+                .then(function (r) {
+                    if (r.status === 401) { window.location.href = 'login'; return null; }
+                    return r.json().then(function (d) { return { ok: r.ok, payload: d }; });
+                })
+                .then(function (res) {
+                    if (res === null) { return; }
+                    var data = res.payload;
+                    if (!res.ok || !data.success) {
+                        alert(data.message || 'Unable to start payment.');
+                        setButtonBusy(false);
+                        return;
+                    }
+                    loadRazorpayScript(function () { openRazorpay(data); });
+                })
+                .catch(function () { alert('Unable to start payment. Please try again.'); setButtonBusy(false); });
+    }
+
+    function openRazorpay(data) {
+        if (typeof Razorpay === 'undefined') {
+            alert('The payment gateway failed to load. Please try again.');
+            setButtonBusy(false);
+            return;
+        }
+        var options = {
+            key: data.key_id,
+            amount: data.amount,
+            currency: data.currency,
+            order_id: data.order_id,
+            name: data.name || 'Shakti Bites',
+            description: 'Shakti Bites order payment',
+            handler: function (response) {
+                var fd = new FormData();
+                fd.append('razorpay_payment_id', response.razorpay_payment_id);
+                fd.append('razorpay_order_id', response.razorpay_order_id);
+                fd.append('razorpay_signature', response.razorpay_signature);
+                fetch('verify-payment', { method: 'POST', body: fd })
+                    .then(function (r) { return r.json(); })
+                    .then(function (v) {
+                        if (v.status === 'success') {
+                            window.location.href = 'order-complete';
+                        } else {
+                            alert(v.message || 'Payment verification failed.');
+                            setButtonBusy(false);
+                        }
+                    })
+                    .catch(function () { alert('Something went wrong during verification.'); setButtonBusy(false); });
+            },
+            theme: { color: '#ff6b35' }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+    }
+
+    // Always intercept the submit. For online orders we run the AJAX flow;
+    // for COD we fall through to the native, JavaScript-free form submission.
+    form.addEventListener('submit', function (e) {
+        if (getPaymentMethod() === 'online') {
+            e.preventDefault();
+            startOnlinePayment();
+        }
+    });
+
+    form.addEventListener('change', function (e) {
+        if (e.target && e.target.name === 'payment') { refreshButton(); }
+        if (e.target && e.target.name === 'account_type') { refreshAccountFields(); }
+    });
+
+    var pwdBox = document.getElementById('account-passwords');
+    var pwdFields = pwdBox ? pwdBox.querySelectorAll('input') : [];
+
+    function getAccountType() {
+        var checked = form.querySelector('input[name="account_type"]:checked');
+        return checked ? checked.value : 'guest';
+    }
+
+    function refreshAccountFields() {
+        var creating = getAccountType() === 'create';
+        if (pwdBox) { pwdBox.style.display = creating ? 'block' : 'none'; }
+        pwdFields.forEach(function (f) { f.required = creating; });
+    }
+
+    refreshAccountFields();
+    refreshButton();
+})();
+</script>
+
 
 <?php include 'includes/footer.php'; ?>

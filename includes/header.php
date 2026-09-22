@@ -19,7 +19,7 @@ if (!isset($_SESSION['cart'])) {
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260921-slim-v3">
 </head>
 <body>
 <?php include 'navbar.php'; ?>

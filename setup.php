@@ -186,6 +186,7 @@ header('Content-Type: text/html; charset=utf-8');
                                     city VARCHAR(100) NOT NULL,
                                     state VARCHAR(100) NOT NULL,
                                     pincode VARCHAR(10) NOT NULL,
+                                    razorpay_payment_id VARCHAR(255) DEFAULT NULL,
                                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL

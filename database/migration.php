@@ -35,6 +35,15 @@ try {
         echo "<p>updated_at column already exists in users table.</p>";
     }
     
+    // Add razorpay_payment_id column if missing (needed for online payments)
+    $stmt = $pdo->query("SHOW COLUMNS FROM orders LIKE 'razorpay_payment_id'");
+    if ($stmt->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE orders ADD COLUMN razorpay_payment_id VARCHAR(255) DEFAULT NULL");
+        echo "<p style='color:green'>Added razorpay_payment_id column to orders table.</p>";
+    } else {
+        echo "<p>razorpay_payment_id column already exists in orders table.</p>";
+    }
+
     echo "<p style='color:green;font-weight:bold'>Migration completed successfully!</p>";
     echo "<a href='../admin/users.php'>Go to Users Page</a>";
     

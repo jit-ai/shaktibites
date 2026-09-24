@@ -1,145 +1,125 @@
 <?php
-$page_title = 'Product Details';
-include 'includes/header.php';
-
-$products = [
-    1 => ['name' => 'Peanut Jaggery Power Bites', 'price' => 249, 'desc' => 'Experience the perfect blend of roasted peanuts and jaggery in every bite. Our Peanut Jaggery Power Bites are crafted to give you instant energy without any sugar crash. Made with premium peanuts, organic jaggery, and dates, these laddoos pack a powerful punch of protein and natural goodness.', 'img' => 'product1.PNG', 'label' => 'Everyday Energy', 'label_class' => 'label-everyday'],
-    2 => ['name' => 'Almond Cacao Power Bites', 'price' => 279, 'desc' => 'Indulge in the rich, chocolatey goodness of our Almond Cacao Power Bites. Made with premium almonds, raw cacao powder, and dates, these laddoos satisfy your chocolate cravings while providing the energy you need. The perfect guilt-free treat for chocolate lovers.', 'img' => 'product2.PNG', 'label' => '⭐ Best Seller ⭐', 'label_class' => 'label-bestseller'],
-    3 => ['name' => 'Dry Fruit Cardamom Bites', 'price' => 299, 'desc' => 'Savor the royal taste of our Dry Fruit Cardamom Bites. Packed with premium cashews, almonds, and aromatic cardamom, these laddoos offer a luxurious snacking experience. The perfect blend of tradition and nutrition in every bite.', 'img' => 'product3.PNG', 'label' => 'Premium Pick', 'label_class' => 'label-premium']
+require_once __DIR__ . '/includes/catalog.php';
+$catalog = shakti_catalog();
+$slugToId = [];
+foreach ($catalog as $catalogId => $catalogProduct) {
+  if (is_array($catalogProduct) && isset($catalogProduct['slug']) && is_string($catalogProduct['slug'])) {
+    $slugToId[$catalogProduct['slug']] = $catalogId;
+  }
+}
+$requestedSlug = filter_input(INPUT_GET, 'product', FILTER_UNSAFE_RAW);
+$id = is_string($requestedSlug) && isset($slugToId[$requestedSlug])
+  ? $slugToId[$requestedSlug]
+  : null;
+$legacyId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if ($id === null && $legacyId && isset($catalog[$legacyId])) {
+  header('Location: product/' . rawurlencode($catalog[$legacyId]['slug']), true, 302);
+  exit;
+}
+if ($id === null) { $id = 1; }
+$productDefaults = [
+  'name' => 'Shakti Bites',
+  'price' => 249,
+  'image' => 'product1.PNG',
+  'label' => 'Everyday Energy',
+  'accent' => 'peanut',
+  'short' => 'Clean, steady energy in every bite.',
+  'slug' => 'peanut-jaggery-power-bites',
+  'ingredients' => ['Real ingredients', 'Natural sweetness', 'Plant protein', 'No chemicals', 'Made in India'],
+  'benefits' => ['10g protein per laddoo', 'No refined sugar', 'Naturally energising', 'Made in India'],
+  'occasion' => ['Pre & post workout', '4 PM energy boost', 'Travel-friendly snack'],
 ];
-
-$id = $_GET['id'] ?? 1;
-$product = $products[$id] ?? $products[1];
+// Keeps the layout intact even if an older catalogue entry is missing a field
+// or has an invalid value. This also prevents malformed data from printing a
+// PHP warning inside the page markup.
+$catalogEntry = is_array($catalog[$id]) ? $catalog[$id] : [];
+$product = array_replace($productDefaults, $catalogEntry);
+foreach (['name', 'image', 'label', 'accent', 'short'] as $field) {
+  $value = $product[$field] ?? null;
+  if (!is_string($value) || trim($value) === '') {
+    $product[$field] = $productDefaults[$field];
+  }
+}
+if (!is_numeric($product['price'] ?? null)) {
+  $product['price'] = $productDefaults['price'];
+}
+foreach (['ingredients', 'benefits', 'occasion'] as $field) {
+  if (!is_array($product[$field] ?? null)) {
+    $product[$field] = $productDefaults[$field];
+  }
+}
+$displayName = $product['name'] ?? $productDefaults['name'];
+$displayImage = $product['image'] ?? $productDefaults['image'];
+$displayLabel = $product['label'] ?? $productDefaults['label'];
+$displayAccent = $product['accent'] ?? $productDefaults['accent'];
+$displayShort = $product['short'] ?? $productDefaults['short'];
+$displayBenefits = is_array($product['benefits'] ?? null) ? $product['benefits'] : $productDefaults['benefits'];
+$displayIngredients = is_array($product['ingredients'] ?? null) ? $product['ingredients'] : $productDefaults['ingredients'];
+$displayPrice = is_numeric($product['price'] ?? null) ? (float) $product['price'] : $productDefaults['price'];
+$page_title = 'Shop';
+$comboImage = $id === 1 ? 'Peanut.png' : $displayImage;
+$heroHeadline = [
+  1 => '10g Protein Bites That Give You Real Energy. No Sugar Crash.',
+  2 => '10g Protein Chocolate Bites That Actually Taste Amazing.',
+  3 => '10g Protein Bites Made with Rich Dry Fruits & Clean Energy. Royal Taste.',
+][$id];
+$socialHeading = $id === 3 ? 'Don&apos;t Take Our Words for it..' : 'Real People. Real Results';
+$momentsHeading = [
+  1 => 'Perfect For When You Need Real Energy',
+  2 => 'Perfect For',
+  3 => 'Perfect For Your Daily Energy Moments',
+][$id];
+$comparison = $id === 1 ? ['Sugar spike & crash', 'Empty calories', 'Artificial sweetness', 'Makes you feel heavy'] : ($id === 2 ? ['Sugar-loaded sweets', 'Artificial chocolate', 'Refined sugar', 'Energy crash'] : ['Processed mithai', 'Added preservatives', 'Empty calories', 'Makes you feel sluggish']);
+$momentIcons = $id === 3
+  ? ['bi-flower1', 'bi-gift-fill', 'bi-car-front-fill']
+  : ($id === 2 ? ['bi-activity', 'bi-cup-hot-fill', 'bi-car-front-fill'] : ['bi-activity', 'bi-briefcase-fill', 'bi-car-front-fill']);
+$momentTitles = $id === 2
+  ? ['Pre Post Workout', 'Office Snacks', 'Travel Energy']
+  : ($id === 3 ? ['Pre Post Workout', 'Office Energy Boost', 'Travel / On the Go'] : ['Pre Post Workout', 'Office Energy Boost', 'Travel / On the Go']);
+$momentCopy = $id === 2
+  ? ['Fuel your fitness routine', 'Beat the work slump', 'Healthy on-the-go energy']
+  : ['Fuel your workouts without a sugar crash', 'Beat 4PM fatigue with a better snack', 'Clean energy for long days & travel'];
+$ingredientNote = $id === 3
+  ? ['No preservatives', 'No artificial sweeteners', 'No refined sugar']
+  : [];
+include 'includes/header.php';
 ?>
 
-<!-- ===== PRODUCT HERO ===== -->
-<section class="product-hero">
-  <div class="container">
-    <h1 class="product-hero-title"><?php echo $product['name']; ?></h1>
-  </div>
-</section>
-
-<!-- ===== PRODUCT DETAIL SECTION ===== -->
-<section class="product-detail-section">
-  <div class="container">
-    <div class="product-detail-grid">
-
-      <!-- Product Image -->
-      <div class="product-image-col">
-        <div class="product-image-wrapper">
-          <img src="assets/images/<?php echo $product['img']; ?>" alt="<?php echo $product['name']; ?>" class="product-main-image" id="mainImage">
-        </div>
-        <div class="product-thumbnails">
-          <img src="assets/images/<?php echo $product['img']; ?>" alt="Thumbnail 1" class="product-thumbnail active" onclick="changeImage(this)">
-          <img src="assets/images/<?php echo $product['img']; ?>" alt="Thumbnail 2" class="product-thumbnail" onclick="changeImage(this)">
-          <img src="assets/images/<?php echo $product['img']; ?>" alt="Thumbnail 3" class="product-thumbnail" onclick="changeImage(this)">
-        </div>
-      </div>
-
-      <!-- Product Info -->
-      <div class="product-info-col">
-        <span class="prod-label <?php echo $product['label_class']; ?>"><?php echo $product['label']; ?></span>
-        <h2 class="product-title"><?php echo $product['name']; ?></h2>
-        <div class="product-price">₹<?php echo $product['price']; ?> <span class="price-unit">/ box</span></div>
-        <p class="product-description"><?php echo $product['desc']; ?></p>
-
-        <div class="product-features">
-          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
-          <div class="prod-feature"><span class="dot-orange"></span>No Refined Sugar</div>
-          <div class="prod-feature"><span class="dot-orange"></span>100% Natural Ingredients</div>
-        </div>
-
-        <div class="quantity-selector">
-          <label for="quantity">Quantity</label>
-          <div class="quantity-input-wrapper">
-            <button type="button" class="qty-btn" onclick="decrementQty()">-</button>
-            <input type="number" id="quantity" name="quantity" value="1" min="1" max="10">
-            <button type="button" class="qty-btn" onclick="incrementQty()">+</button>
-          </div>
-        </div>
-
-        <div class="product-actions">
-          <form method="POST" action="add_to_cart" class="cart-form">
-            <input type="hidden" name="id" value="<?php echo $id; ?>">
-            <input type="hidden" name="quantity" id="quantity-input" value="1">
-            <button type="submit" class="btn btn-add-cart">Add to Cart</button>
-          </form>
-          <a href="checkout" class="btn btn-buy-now">Buy Now</a>
-        </div>
-
-        <div class="product-meta">
-          <p><strong>SKU:</strong> SB-PROD-<?php echo $id; ?></p>
-          <p><strong>Category:</strong> Protein Laddoos</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== PRODUCT TABS ===== -->
-<section class="product-tabs-section">
-  <div class="container">
-    <div class="product-tabs">
-      <div class="tab-buttons">
-        <button class="tab-btn active" onclick="openTab('description')">Description</button>
-        <button class="tab-btn" onclick="openTab('ingredients')">Ingredients</button>
-        <button class="tab-btn" onclick="openTab('reviews')">Reviews (5)</button>
-      </div>
-      <div class="tab-content">
-        <div id="description" class="tab-pane active">
-          <p><?php echo $product['desc']; ?></p>
-          <p>Store in a cool, dry place. Best consumed within 30 days of opening.</p>
-        </div>
-        <div id="ingredients" class="tab-pane">
-          <ul>
-            <li>Peanuts</li>
-            <li>Jaggery</li>
-            <li>Dates</li>
-            <li>Cardamom</li>
-          </ul>
-        </div>
-        <div id="reviews" class="tab-pane">
-          <div class="review-summary">
-            <div class="stars">★★★★★</div>
-            <span>5.0 out of 5 stars</span>
-          </div>
-          <p>Be the first to review this product!</p>
-        </div>
+<main class="flavour-page flavour-page--<?php echo htmlspecialchars($displayAccent, ENT_QUOTES, 'UTF-8'); ?>">
+  <section class="flavour-hero">
+    <div class="container flavour-hero-grid">
+      <div class="flavour-pack"><img src="assets/images/<?php echo htmlspecialchars($displayImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?>"></div>
+      <div class="flavour-copy">
+        <span class="flavour-kicker"><?php echo htmlspecialchars($displayLabel, ENT_QUOTES, 'UTF-8'); ?></span>
+        <h1><?php echo $heroHeadline; ?></h1>
+        <p><?php echo htmlspecialchars($displayShort, ENT_QUOTES, 'UTF-8'); ?> Made with ingredients you can recognise.</p>
+        <div class="flavour-price"><del>&#8377;349</del> <strong>&#8377;<?php echo number_format($displayPrice); ?></strong> <em>Save &#8377;50 today</em></div>
+        <div class="flavour-rating"><span>&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 | 500+ Reviews</div>
+        <form method="post" action="add_to_cart" class="flavour-actions"><input type="hidden" name="id" value="<?php echo $id; ?>"><input type="hidden" name="quantity" value="1"><button class="flavour-btn flavour-btn--outline" type="submit">Try First Box</button><a class="flavour-btn" href="combo">View Combo</a></form>
+        <div class="flavour-bullets"><?php foreach (array_slice($displayBenefits, 0, 4) as $benefit): ?><span><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<script>
-function changeImage(element) {
-   document.getElementById('mainImage').src = element.src;
-   document.querySelectorAll('.product-thumbnail').forEach(thumb => thumb.classList.remove('active'));
-   element.classList.add('active');
- }
+  <div class="flavour-trust"><div class="container"><span><i class="bi bi-truck"></i> Free Shipping</span><span><i class="bi bi-cash-stack"></i> COD Available</span><span><i class="bi bi-lock-fill"></i> Secure Checkout</span></div></div>
 
- function incrementQty() {
-   const qty = document.getElementById('quantity');
-   if (qty.value < 10) qty.value++;
-   updateQuantityInput();
- }
+  <section class="flavour-ingredients"><div class="container">
+    <h2>Ingredients:</h2><p>Real ingredients = real energy. No chemicals. No shortcuts.</p>
+    <div class="ingredient-art"><img src="assets/images/Ingridents.png" alt="Natural ingredients"><div class="ingredient-names"><?php foreach ($displayIngredients as $ingredient): ?><span><?php echo htmlspecialchars((string) $ingredient, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div></div>
+    <?php if ($ingredientNote): ?><div class="ingredient-promises"><?php foreach ($ingredientNote as $note): ?><span><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($note); ?></span><?php endforeach; ?></div><?php else: ?><strong>What you see is what you eat - no hidden chemicals.</strong><?php endif; ?>
+  </div></section>
 
- function decrementQty() {
-   const qty = document.getElementById('quantity');
-   if (qty.value > 1) qty.value--;
-   updateQuantityInput();
- }
+  <section class="flavour-compare"><div class="container"><h2>Why Shakti Bites &gt; Regular Mithai</h2><div class="flavour-compare-grid"><div><h3>Other Snacks</h3><ul><?php foreach ($comparison as $item): ?><li><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div><div class="flavour-compare-good"><h3><i class="bi bi-patch-check-fill"></i> Shakti Bites</h3><ul><?php foreach ($displayBenefits as $benefit): ?><li><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div></div></div></section>
 
- function updateQuantityInput() {
-   document.getElementById('quantity-input').value = document.getElementById('quantity').value;
- }
+  <section class="flavour-proof"><div class="container"><h2><?php echo $socialHeading; ?></h2><p><?php echo $id === 3 ? 'Real People. Real Results.' : 'Don&apos;t take our word for it.'; ?></p><div class="flavour-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <b>4.8 | 500+ Reviews</b></div><div class="proof-grid"><figure><img src="assets/images/Testinomial.png" alt="Happy customer"><figcaption><?php echo $id === 2 ? 'Gym people love it' : 'Perfect for my workouts - no energy crash at all'; ?></figcaption></figure><figure><img src="assets/images/Testinomial.png" alt="Happy customer"><figcaption><?php echo $id === 2 ? 'Perfect family snacks' : 'Much better than tea &amp; biscuits during office hunger'; ?></figcaption></figure><figure><img src="assets/images/Testinomial.png" alt="Happy customer"><figcaption><?php echo $id === 2 ? 'Perfect office snacks' : 'Keeps me active even during long travel days'; ?></figcaption></figure></div></div></section>
 
- function openTab(tabName) {
-   document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-   document.getElementById(tabName).classList.add('active');
-   event.target.classList.add('active');
- }
-</script>
+  <div class="fresh-strip"><i class="bi bi-lightning-charge-fill"></i> Selling Fast - Limited Fresh Batch Available Today</div>
+
+  <section class="flavour-moments"><div class="container"><h2><?php echo $momentsHeading; ?></h2><div class="moment-grid"><?php foreach ($momentTitles as $index => $occasion): ?><article><img class="moment-icon-art" src="assets/images/<?php echo $index + 1; ?><?php echo $index === 2 ? ' (1)' : ''; ?>.png" alt="" aria-hidden="true"><h3><?php echo htmlspecialchars($occasion); ?></h3><p><?php echo $momentCopy[$index]; ?></p></article><?php endforeach; ?></div></div></section>
+
+  <section class="flavour-combo"><div class="container"><h2>Want Better Value?</h2><p>Best Value. More Protein. More Savings.</p><div class="combo-banner"><div><strong>SAVE MORE WITH COMBO</strong><p>Best Value. More Protein. More Savings.</p><b>Save &#8377;300</b><small>Only &#8377;20 Per Laddoo</small><a href="combo">Get This Combo</a></div><img src="assets/images/<?php echo htmlspecialchars($comboImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?> combo"></div></div></section>
+
+  <section class="flavour-final"><div class="container"><h2>Ready to Switch to<br>Clean Protein Snacks?</h2><p>&#10022; &#10022; &#10022;</p><span>Start your clean snacking today</span><form method="post" action="add_to_cart"><input type="hidden" name="id" value="<?php echo $id; ?>"><input type="hidden" name="quantity" value="1"><button name="buy_now" value="1">Order Your First Box</button></form></div></section>
+</main>
 
 <?php include 'includes/footer.php'; ?>

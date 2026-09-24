@@ -1505,6 +1505,74 @@ a  { text-decoration: none; }
 /* ============================================
    PRODUCT DETAIL PAGE
    ============================================ */
+/* Dedicated flavour pages */
+.product-hero { padding: 22px 0; text-align: left; background: #f7e4ca; }
+.product-hero--cacao { background: #eee2d4; }
+.product-hero--dryfruit { background: #e9eedb; }
+.product-breadcrumb { display: flex; flex-wrap: wrap; gap: 8px; color: #805d46; font-size: 13px; }
+.product-breadcrumb a { color: #805d46; font-weight: 700; }
+.product-breadcrumb span[aria-current] { color: #4d301f; }
+.product-detail-section { padding: 54px 0 64px; }
+.product-detail-grid { align-items: center; gap: clamp(30px, 5vw, 72px); }
+.product-image-wrapper { position: relative; display: grid; place-items: center; min-height: 470px; overflow: hidden; border: 1px solid #ead4b8; border-radius: 24px; background: radial-gradient(circle at 50% 30%, #fff9ec 0, #f4dec1 70%); padding: 38px; }
+.product-image-wrapper--cacao { background: radial-gradient(circle at 50% 30%, #f7eee5 0, #d9c0aa 100%); }
+.product-image-wrapper--dryfruit { background: radial-gradient(circle at 50% 30%, #fafbed 0, #dbe3bf 100%); }
+.product-image-wrapper .product-main-image { position: relative; z-index: 1; max-height: 410px; filter: drop-shadow(0 19px 15px rgba(75, 39, 18, .18)); }
+.product-image-badge { position: absolute; z-index: 2; top: 18px; left: 18px; border-radius: 99px; background: #fffaf1; color: #7a421f; box-shadow: 0 4px 14px rgba(79, 43, 22, .12); padding: 7px 11px; font-size: 12px; font-weight: 800; }
+.product-image-badge i { color: #e37a1c; }
+.product-delivery-note { display: flex; align-items: center; gap: 11px; margin-top: 15px; padding: 13px 17px; border-radius: 12px; background: #fff9f0; color: #5d3b26; }
+.product-delivery-note > i { color: var(--orange); font-size: 25px; }
+.product-delivery-note span { display: grid; font-size: 13px; }
+.product-delivery-note small { color: #846956; font-size: 11px; }
+.product-info-col { padding: 0; box-shadow: none; background: transparent; }
+.product-info-col .prod-label { display: inline-block; margin-bottom: 13px; }
+.product-title { margin: 0; color: #4a2c1b; font-family: 'Playfair Display', serif; font-size: clamp(31px, 4vw, 47px); line-height: 1.08; font-weight: 800; }
+.product-lead { margin: 12px 0; color: #755b48; font-size: 17px; line-height: 1.6; }
+.product-rating { display: flex; align-items: center; gap: 8px; margin: 16px 0; color: #755b48; font-size: 13px; }
+.product-rating > span, .product-review-section blockquote footer span { color: #ee9b22; letter-spacing: 1px; }
+.product-rating a { color: #755b48; text-decoration: underline; }
+.product-price { margin: 0; color: #4a2c1b; }
+.current-price { font-size: 31px; font-weight: 800; }
+.product-tax-note { margin: 1px 0 19px; color: #927760; font-size: 11px; }
+.product-benefits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; margin: 20px 0; padding: 17px 0; border-top: 1px solid #ead8c5; border-bottom: 1px solid #ead8c5; }
+.product-benefits span { color: #593b29; font-size: 13px; font-weight: 600; }
+.product-benefits i { margin-right: 7px; color: #4f9a55; }
+.product-purchase-row { display: flex; align-items: end; gap: 10px; }
+.quantity-selector { margin: 0; }
+.quantity-selector label { display: block; margin-bottom: 6px; color: #6e4a35; font-size: 12px; font-weight: 800; }
+.quantity-input-wrapper { height: 46px; border-color: #d8b997; border-radius: 9px; background: #fffdf8; }
+.quantity-input-wrapper input { width: 32px; font-weight: 800; }
+.quantity-input-wrapper .qty-btn { width: 33px; color: #603c26; }
+.btn-add-cart, .btn-buy-now { height: 46px; border: 0; border-radius: 99px; padding: 0 18px; font-size: 13px; font-weight: 800; white-space: nowrap; }
+.btn-add-cart { background: #fffaf2; border: 1.5px solid #a66a3d; color: #653a21; }
+.btn-add-cart:hover { background: #f4e1c8; color: #653a21; }
+.btn-buy-now { background: var(--orange); color: #fff; }
+.btn-buy-now:hover { background: var(--orange-dark); color: #fff; }
+.product-assurance { display: flex; flex-wrap: wrap; gap: 12px 19px; margin-top: 18px; color: #816550; font-size: 11px; }
+.product-assurance i { margin-right: 4px; color: var(--orange); }
+.product-story-section { padding: 76px 0; background: #fff8ed; }
+.product-story-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(25px, 7vw, 100px); align-items: center; }
+.section-eyebrow { margin: 0 0 7px; color: #a45a26; font-size: 11px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
+.product-story-section h2, .product-occasions-section h2, .product-review-section h2 { margin: 0 0 13px; color: #50301e; font-family: 'Playfair Display', serif; font-size: clamp(27px, 3vw, 38px); font-weight: 800; }
+.product-story-copy > p:not(.section-eyebrow) { color: #765b49; font-size: 15px; line-height: 1.8; }
+.product-ingredients-card { border: 1px solid #e8d2b7; border-radius: 17px; background: #fffdf8; box-shadow: 0 10px 25px rgba(91,50,31,.08); padding: 29px; }
+.product-ingredients-card h2 { font-size: 27px; }
+.product-ingredients-card ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; padding: 0; list-style: none; }
+.product-ingredients-card li { color: #654530; font-size: 14px; font-weight: 600; }
+.product-ingredients-card li i { margin-right: 7px; color: #4f9a55; }
+.ingredients-footer { margin: 0; border-top: 1px dashed #d7b996; padding-top: 14px; color: #906e54; font-size: 11px; font-weight: 700; }
+.product-occasions-section { padding: 70px 0; background: #f3e6d3; }
+.product-occasions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 31px; }
+.product-occasions-grid > div { display: grid; justify-items: center; gap: 8px; min-height: 164px; border: 1px solid #e4cdb2; border-radius: 14px; background: #fffaf2; padding: 24px 16px; box-shadow: 0 7px 16px rgba(91,50,31,.07); }
+.product-occasions-grid i { color: #9a572c; font-size: 30px; }
+.product-occasions-grid strong { color: #573523; font-family: 'Playfair Display', serif; font-size: 18px; }
+.product-occasions-grid span { color: #826854; font-size: 12px; }
+.product-review-section { padding: 57px 0; background: #61402e; }
+.product-review-inner { display: flex; justify-content: space-between; align-items: center; gap: 35px; color: #fff7ed; }
+.product-review-section .section-eyebrow { color: #f0bd75; }
+.product-review-section h2 { color: #fff7ed; margin: 0; }
+.product-review-section blockquote { max-width: 540px; margin: 0; color: #fff7ed; font-family: 'Playfair Display', serif; font-size: 22px; line-height: 1.45; }
+.product-review-section blockquote footer { margin-top: 11px; color: #ebd6c0; font-family: 'Poppins', sans-serif; font-size: 12px; }
 .product-hero {
   background: linear-gradient(135deg, var(--orange), var(--orange-dark));
   padding: 80px 0 60px;
@@ -2419,6 +2487,11 @@ a  { text-decoration: none; }
 .products-grid { max-width: 1120px; margin: 0 auto; gap: 22px; }
 .product-card { border-radius: 0; box-shadow: none; background: #fff2dc; border: 2px solid #a55a32; }
 .product-card.bestseller-card { border-color: var(--orange); }
+.product-card { position: relative; }
+.product-card-link { position: absolute; z-index: 1; inset: 0; display: block; border-radius: inherit; }
+.product-card .btn-try { position: relative; z-index: 2; }
+.product-card:hover { cursor: pointer; }
+.product-card:has(.product-card-link:focus-visible) { outline: 3px solid #7b431f; outline-offset: 3px; }
 .prod-label { padding: 6px 12px; font-size: 12px; text-align: center; }
 .label-everyday { background: #78401e; color: #fff; }
 .label-bestseller { background: var(--orange); }
@@ -2543,6 +2616,30 @@ a  { text-decoration: none; }
   .cart-preview-item strong { grid-column: 2; }
 }
 
+/* Desktop product detail canvas: a restrained, centred D2C layout at 1200–1440px. */
+@media (min-width: 992px) {
+  .flavour-hero { padding: 46px 0 38px; }
+  .flavour-hero-grid { max-width: 1080px; margin: 0 auto; grid-template-columns: 505px minmax(0, 1fr); gap: 60px; }
+  .flavour-pack { min-height: 385px; }.flavour-pack img { max-height: 385px; }
+  .flavour-copy h1 { font-size: 36px; }.flavour-copy > p { max-width: 500px; }
+  .flavour-trust .container { max-width: 900px; }
+  .flavour-ingredients { padding-top: 48px; }.ingredient-art { max-width: 920px; }.ingredient-art img { height: 255px; }
+  .flavour-compare { padding: 50px 0; }.flavour-compare-grid { max-width: 700px; gap: 70px; }
+  .flavour-proof { padding: 48px 0 30px; }.proof-grid { max-width: 700px; gap: 18px; }.proof-grid figure { min-height: 260px; }
+  .flavour-moments { padding: 55px 0; }.moment-grid { max-width: 820px; gap: 22px; }.moment-grid article { min-height: 205px; }
+  .flavour-combo { padding: 52px 0 38px; }.combo-banner { max-width: 780px; min-height: 215px; }
+  .more-flavours { padding: 48px 0; }
+}
+
+/* Customer photos are present in the supplied home-page composition. Crop them
+   here instead of showing the empty testimonial texture as an image. */
+.proof-grid figure { background-image: url('../images/Shakti%20Bites%20Home%20Page.png'); background-repeat: no-repeat; background-size: 768px auto; }
+.proof-grid figure img { display: none; }
+.proof-grid figure:nth-child(1) { background-position: -18px -2380px; }
+.proof-grid figure:nth-child(2) { background-position: -266px -2380px; }
+.proof-grid figure:nth-child(3) { background-position: -516px -2380px; }
+@media (max-width: 576px) { .proof-grid figure { background-size: 510px auto; }.proof-grid figure:nth-child(1) { background-position: -12px -1580px; }.proof-grid figure:nth-child(2) { background-position: -177px -1580px; }.proof-grid figure:nth-child(3) { background-position: -343px -1580px; } }
+
 @media (max-width: 991px) {
   .navbar-collapse .cart-dropdown-menu { margin: 0 0 8px !important; }
 }
@@ -2643,4 +2740,90 @@ a  { text-decoration: none; }
   .prod-img-wrap { min-height: 220px; }
   .combo-card { max-width: 380px; width: 100%; margin: 0 auto; }
   .reviews-grid { gap: 18px; }
+}
+
+/* Product page responsive overrides (kept last to supersede legacy page styles). */
+.product-hero { padding: 22px 0; text-align: left; background: #f7e4ca; }
+.product-hero--cacao { background: #eee2d4; } .product-hero--dryfruit { background: #e9eedb; }
+.product-detail-section { padding: 54px 0 64px; } .product-info-col { padding: 0; box-shadow: none; background: transparent; }
+.product-image-wrapper { min-height: 470px; } .product-image-wrapper .product-main-image { max-height: 410px; }
+.product-title { font-size: clamp(31px, 4vw, 47px); }
+@media (max-width: 991px) { .product-image-wrapper { min-height: 400px; } .product-story-grid { grid-template-columns: 1fr; gap: 30px; } .product-review-inner { align-items: flex-start; flex-direction: column; gap: 18px; } }
+@media (max-width: 576px) { .product-hero { padding: 16px 0; } .product-breadcrumb { font-size: 11px; } .product-detail-section { padding: 32px 0 42px; } .product-image-wrapper { min-height: 310px; padding: 28px; border-radius: 17px; } .product-image-wrapper .product-main-image { max-height: 275px; } .product-image-badge { top: 12px; left: 12px; font-size: 10px; } .product-title { font-size: 30px; } .product-lead { font-size: 15px; } .product-benefits { grid-template-columns: 1fr; gap: 8px; } .product-purchase-row { display: grid; grid-template-columns: 1fr 1fr; align-items: end; } .quantity-selector { grid-column: 1 / -1; } .quantity-input-wrapper { width: 100%; } .quantity-input-wrapper input { flex: 1; } .btn-add-cart, .btn-buy-now { padding: 0 9px; } .product-assurance { justify-content: center; gap: 7px 11px; } .product-story-section, .product-occasions-section { padding: 48px 0; } .product-ingredients-card { padding: 22px; } .product-ingredients-card ul { grid-template-columns: 1fr; } .product-occasions-grid { grid-template-columns: 1fr; margin-top: 20px; } .product-occasions-grid > div { min-height: 0; padding: 18px; } .product-review-section { padding: 42px 0; } .product-review-section blockquote { font-size: 19px; } }
+
+/* Full product landing page — mirrors the Shakti Bites D2C flavour layout. */
+.flavour-page { --flavour: #c87822; --flavour-dark: #89511f; background: #fbefd9; color: #3e2b20; overflow: hidden; }
+.flavour-page--peanut { --flavour: #c87822; --flavour-dark: #89511f; background: #fbefd9; }
+.flavour-page--cacao { --flavour: #b75d2d; --flavour-dark: #73391e; background: #fbecdc; }
+.flavour-page--dryfruit { --flavour: #567a55; --flavour-dark: #3f5e40; background: #eff0dc; }
+.flavour-page h1, .flavour-page h2, .flavour-page h3 { font-family: 'Playfair Display', serif; font-weight: 800; }
+.flavour-hero { padding: 32px 0 24px; background: linear-gradient(100deg, #fae9cf, #f5debb); }
+.flavour-page--cacao .flavour-hero { background: linear-gradient(100deg, #f8e8d8, #f0d7c0); }.flavour-page--dryfruit .flavour-hero { background: linear-gradient(100deg, #f0f1dd, #dde7c7); }
+.flavour-hero-grid { display: grid; grid-template-columns: minmax(280px, .95fr) minmax(0, 1.05fr); align-items: center; gap: clamp(24px, 5vw, 70px); }
+.flavour-pack { display: grid; min-height: 330px; place-items: center; background: linear-gradient(135deg, rgba(255,255,255,.62), rgba(181,116,48,.15)); box-shadow: inset 0 0 0 1px rgba(109,68,35,.13); }
+.flavour-pack img { max-width: 88%; max-height: 330px; object-fit: contain; filter: drop-shadow(0 12px 12px rgba(71,37,17,.2)); }
+.flavour-kicker { display: inline-block; background: var(--flavour-dark); color: #fff; padding: 3px 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.flavour-copy h1 { max-width: 540px; margin: 7px 0; color: #4d301f; font-size: clamp(24px, 2.6vw, 37px); line-height: 1.08; }.flavour-copy > p { margin: 0 0 11px; font-size: 14px; }
+.flavour-price { display: flex; align-items: baseline; gap: 8px; }.flavour-price del { color: #7c6553; font-size: 14px; }.flavour-price strong { color: #3e2b20; font-size: 28px; }.flavour-price em { color: #42914b; font-size: 12px; font-style: normal; font-weight: 700; }
+.flavour-rating { margin: 4px 0 13px; font-size: 12px; font-weight: 600; }.flavour-rating span, .flavour-stars { color: #e99e20; letter-spacing: 1px; }
+.flavour-actions { display: flex; gap: 10px; }.flavour-btn { border: 0; border-radius: 99px; background: var(--flavour); color: #fff; padding: 9px 19px; font-size: 12px; font-weight: 800; }.flavour-btn--outline { background: #fff9ee; border: 1px solid var(--flavour); color: var(--flavour-dark); }
+.flavour-bullets { display: grid; grid-template-columns: repeat(2, max-content); gap: 7px 22px; margin-top: 13px; font-size: 11px; font-weight: 600; }.flavour-bullets i { color: #43a55a; margin-right: 5px; }
+.flavour-trust { border-top: 1px solid #eed8b7; border-bottom: 1px solid #eed8b7; background: #faebd2; }.flavour-trust .container { display: flex; justify-content: center; gap: clamp(25px, 10vw, 150px); padding: 13px 0; color: #74533d; font-size: 13px; font-weight: 700; }.flavour-trust i { color: var(--flavour); margin-right: 7px; }
+.flavour-ingredients { padding: 35px 0 18px; background: #fff1dc; text-align: center; }.flavour-page--dryfruit .flavour-ingredients { background: #eef0d7; }.flavour-ingredients h2 { margin: 0; font-size: 29px; }.flavour-ingredients > .container > p { margin: 1px 0 15px; font-size: 12px; font-weight: 600; }.ingredient-art { position: relative; overflow: hidden; max-width: 980px; margin: auto; }.ingredient-art img { display: block; width: 100%; height: 245px; object-fit: cover; object-position: center 50%; mix-blend-mode: multiply; }.ingredient-names { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: -22px; position: relative; z-index: 2; }.ingredient-names span { font-size: 11px; font-weight: 700; }.flavour-ingredients strong { display: inline-block; margin-top: 24px; border-top: 1px solid #bfa884; padding: 10px 25px 0; font-size: 12px; }
+.ingredient-promises { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-top: 20px; color: #4a392c; font-size: 12px; font-weight: 800; }.ingredient-promises i { margin-right: 5px; color: #cf6f72; }
+.flavour-compare { padding: 32px 0; background: #fae8cc; text-align: center; }.flavour-page--dryfruit .flavour-compare { background: #e1e9cd; }.flavour-compare h2 { margin: 0 0 20px; font-size: 29px; }.flavour-compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 350px)); justify-content: center; gap: 35px; text-align: left; }.flavour-compare-grid > div { padding: 10px 20px; }.flavour-compare h3 { margin: 0 0 9px; font-size: 19px; text-align: center; }.flavour-compare ul { margin: 0; padding: 0; list-style: none; }.flavour-compare li { margin: 8px 0; font-size: 13px; font-weight: 600; }.flavour-compare li i { margin-right: 8px; color: #e67f76; }.flavour-compare-good li i, .flavour-compare-good h3 i { color: #49a660; }
+.flavour-page--dryfruit .flavour-compare-grid > div { border: 1px solid rgba(78, 105, 62, .14); background: rgba(250, 250, 236, .45); box-shadow: 0 4px 7px rgba(62, 70, 40, .18); }
+.flavour-proof { padding: 34px 0 18px; background: #f9e7cb; text-align: center; }.flavour-proof h2 { margin: 0; font-size: 29px; }.flavour-proof > .container > p { margin: 1px 0; font-size: 12px; }.flavour-stars { margin: 6px 0 14px; font-size: 13px; }.flavour-stars b { color: #4a3324; letter-spacing: 0; }.proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: auto; }.proof-grid figure { position: relative; min-height: 230px; overflow: hidden; margin: 0; background: #eee; }.proof-grid img { width: 100%; height: 100%; object-fit: cover; object-position: center; }.proof-grid figure:nth-child(1) img { object-position: 23% center; }.proof-grid figure:nth-child(2) img { object-position: 50% center; }.proof-grid figure:nth-child(3) img { object-position: 78% center; }.proof-grid figcaption { position: absolute; bottom: 7px; left: 7px; right: 7px; background: #fff; padding: 5px; color: #312015; font-size: 11px; font-weight: 800; text-align: left; }
+.fresh-strip { background: var(--flavour); color: #fff7e6; padding: 8px; text-align: center; font-size: 13px; font-weight: 700; }.fresh-strip i { margin-right: 5px; }
+.flavour-moments { padding: 45px 0; background: #fff2df; text-align: center; }.flavour-page--dryfruit .flavour-moments { background: #f4f1df; }.flavour-moments h2, .flavour-combo h2 { margin: 0 0 25px; font-size: 30px; }.moment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 880px; margin: auto; }.moment-grid article { min-height: 230px; border: 1px solid #e5d3bc; border-radius: 10px; background: #fffaf4; box-shadow: 3px 4px 5px rgba(62,43,32,.24); padding: 30px 17px 18px; }.moment-grid i { color: var(--flavour-dark); font-size: 42px; }.moment-grid h3 { min-height: 55px; margin: 17px 0 12px; font-size: 21px; }.moment-grid p { margin: 0; font-size: 12px; font-weight: 700; }
+.moment-icon-art { display: block; width: 72px; height: 72px; margin: 0 auto; object-fit: contain; }.flavour-page--dryfruit .moment-icon-art { filter: hue-rotate(72deg) saturate(.55); }
+.flavour-combo { padding: 40px 0 25px; background: #f5e7d1; text-align: center; }.flavour-combo > .container > p { margin: -22px 0 15px; font-size: 12px; font-weight: 600; }.combo-banner { display: grid; grid-template-columns: 1fr 1fr; align-items: center; max-width: 900px; min-height: 230px; margin: auto; border-radius: 20px; background: #fff7e9; box-shadow: 0 6px 10px rgba(62,43,32,.25); text-align: left; overflow: hidden; }.combo-banner > div { padding: 28px 38px; }.combo-banner strong { color: #75452e; font-size: 20px; }.combo-banner p { margin: 8px 0; font-size: 12px; font-weight: 700; }.combo-banner b, .combo-banner small { display: block; }.combo-banner b { color: var(--flavour-dark); font-size: 19px; }.combo-banner small { margin: 4px 0 11px; font-size: 11px; }.combo-banner a, .flavour-final button { display: inline-block; border: 0; border-radius: 99px; background: var(--flavour); color: #fff; padding: 7px 20px; font-size: 12px; font-weight: 800; }.combo-banner img { max-width: 100%; max-height: 245px; justify-self: center; object-fit: contain; }
+.flavour-final { padding: 72px 0; background: #fbf0dd url('../images/Order Now.png') center/cover no-repeat; text-align: center; }.flavour-final h2 { margin: 0; font-size: 31px; }.flavour-final p { margin: 8px; }.flavour-final span { display: block; margin-bottom: 10px; font-size: 12px; font-weight: 600; }
+.more-flavours { padding: 38px 0; background: #fff8ed; text-align: center; }.more-flavours h2 { font-size: 25px; }.more-flavours > .container > div { display: flex; justify-content: center; gap: 16px; }.more-flavours a { display: grid; max-width: 180px; color: #4a3020; font-size: 12px; font-weight: 800; }.more-flavours img { width: 100%; height: 125px; object-fit: contain; }
+@media (max-width: 576px) { .flavour-hero { padding: 20px 0; }.flavour-hero-grid { grid-template-columns: 1.04fr .96fr; gap: 10px; }.flavour-pack { min-height: 210px; }.flavour-pack img { max-height: 210px; }.flavour-copy h1 { font-size: 14px; }.flavour-copy > p { font-size: 8px; line-height: 1.3; }.flavour-kicker { font-size: 7px; padding: 2px 4px; }.flavour-price { gap: 4px; }.flavour-price del, .flavour-price em, .flavour-rating { font-size: 8px; }.flavour-price strong { font-size: 17px; }.flavour-actions { gap: 5px; }.flavour-btn { padding: 6px 7px; font-size: 8px; }.flavour-bullets { grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 8px; font-size: 7px; }.flavour-trust .container { gap: 12px; justify-content: space-between; padding: 9px 10px; font-size: 9px; }.flavour-trust i { margin-right: 3px; }.flavour-ingredients { padding-top: 23px; }.flavour-ingredients h2, .flavour-compare h2, .flavour-proof h2 { font-size: 23px; }.ingredient-art img { height: 132px; }.ingredient-names { margin-top: -10px; }.ingredient-names span { font-size: 7px; }.flavour-ingredients strong { margin-top: 15px; padding: 7px 10px 0; font-size: 8px; }.flavour-compare { padding: 25px 0; }.flavour-compare-grid { gap: 2px; }.flavour-compare-grid > div { padding: 8px; }.flavour-compare h3 { font-size: 13px; }.flavour-compare li { margin: 5px 0; font-size: 8px; }.flavour-compare li i { margin-right: 3px; }.flavour-proof { padding-top: 25px; }.proof-grid { gap: 7px; }.proof-grid figure { min-height: 175px; }.proof-grid figcaption { bottom: 4px; left: 3px; right: 3px; padding: 3px; font-size: 8px; }.fresh-strip { padding: 6px; font-size: 9px; }.flavour-moments { padding: 30px 0; }.flavour-moments h2, .flavour-combo h2 { font-size: 23px; }.moment-grid { gap: 8px; }.moment-grid article { min-height: 180px; padding: 18px 6px 9px; }.moment-grid i { font-size: 28px; }.moment-icon-art { width: 54px; height: 54px; }.moment-grid h3 { min-height: 43px; margin: 10px 0 6px; font-size: 15px; }.moment-grid p { font-size: 8px; }.flavour-combo { padding-top: 28px; }.combo-banner { min-height: 175px; }.combo-banner > div { padding: 17px; }.combo-banner strong { font-size: 12px; }.combo-banner p, .combo-banner small { font-size: 8px; }.combo-banner b { font-size: 14px; }.combo-banner a { padding: 5px 10px; font-size: 8px; }.combo-banner img { max-height: 175px; }.flavour-final { padding: 52px 0; }.flavour-final h2 { font-size: 24px; }.flavour-final span { font-size: 9px; }.flavour-final button { padding: 6px 16px; font-size: 9px; }.more-flavours { padding: 25px 0; }.more-flavours h2 { font-size: 21px; }.more-flavours a { max-width: 130px; font-size: 9px; }.more-flavours img { height: 90px; } }
+
+/* Mobile pixel-fit: never let a grid item's intrinsic width push this page off-screen. */
+.flavour-page, .flavour-page * { min-width: 0; }
+@media (max-width: 576px) {
+  .sb-navbar { min-height: 48px; padding: 5px 0; }
+  .sb-navbar .container { flex-wrap: nowrap; padding-right: 8px; padding-left: 8px; }
+  .sb-brand { flex: 0 0 auto; margin-right: 8px; }
+  .sb-brand img { height: 34px; }
+  .navbar-toggler { display: none; }
+  .navbar-collapse { display: block !important; flex: 1 1 auto; margin: 0; padding: 0; background: transparent; }
+  .navbar-nav { flex-direction: row; align-items: center; justify-content: space-between; }
+  .sb-nav-link { padding: 5px 4px !important; font-size: 8px; letter-spacing: .15px; }
+  .cart-dropdown-wrap, .account-nav-link { display: none !important; }
+  .flavour-hero-grid { grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); }
+  .flavour-copy h1, .flavour-compare h2, .flavour-moments h2 { overflow-wrap: anywhere; white-space: normal; }
+  .flavour-compare h2, .flavour-moments h2 { max-width: 340px; margin-right: auto; margin-left: auto; font-size: 20px; line-height: 1.18; }
+  .flavour-compare-grid, .proof-grid, .moment-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .flavour-compare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flavour-compare li, .moment-grid p, .proof-grid figcaption { overflow-wrap: anywhere; }
+  .proof-grid figure { min-width: 0; }
+  .more-flavours > .container > div { gap: 8px; }
+}
+
+@media (max-width: 576px) {
+  /* Reference mobile canvas: the supplied 384px compositions use a compact
+     product panel so the complete conversion story stays above the footer. */
+  .flavour-hero { padding: 12px 0; }
+  .flavour-pack { min-height: 168px; }
+  .flavour-pack img { max-height: 168px; max-width: 94%; }
+  .ingredient-promises { gap: 14px; margin-top: 14px; font-size: 8px; }
+  .flavour-page--dryfruit .flavour-compare-grid > div { padding: 8px; }
+  .flavour-compare h2 { width: 300px; font-size: 17px; }
+  .flavour-moments h2 { width: 310px; font-size: 18px; }
+  .proof-grid, .moment-grid { width: 100%; max-width: 100%; grid-template-columns: repeat(3, calc((100% - 16px) / 3)); }
+  .flavour-compare-grid { width: 100%; max-width: 100%; grid-template-columns: repeat(2, calc((100% - 2px) / 2)); }
+  .moment-grid article, .proof-grid figure, .flavour-compare-grid > div { width: 100%; max-width: 100%; }
+}
+
+/* Product artwork is a complete square scene (pack + ingredients + tabletop).
+   Let it fill its frame; contain() was exposing a white box around the artwork. */
+.flavour-pack { min-height: 0; aspect-ratio: 1; overflow: hidden; background: transparent; box-shadow: none; }
+.flavour-pack img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; filter: none; }
+@media (max-width: 576px) {
+  .flavour-pack { min-height: 0; }
+  .flavour-pack img { max-width: none; max-height: none; }
 }

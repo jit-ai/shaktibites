@@ -9,6 +9,7 @@ RewriteRule ^(.+)\.php$ $1 [R=301,L,NE]
 
 # Serve an extensionless request from its matching PHP file. Existing files,
 # directories and assets remain untouched.
+RewriteRule ^product/([a-z0-9-]+)/?$ product.php?product=$1 [END,QSA,NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f

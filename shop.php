@@ -19,6 +19,7 @@ include 'includes/header.php';
     <div class="products-grid">
 
       <div class="product-card">
+        <a class="product-card-link" href="product/peanut-jaggery-power-bites" aria-label="View Peanut Jaggery Power Bites details"></a>
         <div class="prod-label label-everyday">Everyday Energy</div>
         <div class="prod-img-wrap peanut-light">
           <img src="assets/images/product1.PNG" alt="Peanut Jaggery Power Bites">
@@ -30,11 +31,12 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Peanuts • Jaggery • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Refined Sugar</div>
-          <a href="product?id=1" class="btn btn-try">View Details</a>
+          <a href="product/peanut-jaggery-power-bites" class="btn btn-try">View Details</a>
         </div>
       </div>
 
       <div class="product-card bestseller-card">
+        <a class="product-card-link" href="product/almond-cacao-power-bites" aria-label="View Almond Cacao Power Bites details"></a>
         <div class="prod-label label-bestseller">⭐ Best Seller ⭐</div>
         <div class="prod-img-wrap cacao-dark">
           <img src="assets/images/product2.PNG" alt="Almond Cacao Power Bites">
@@ -46,11 +48,12 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Almonds • Cacao • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>100% Natural Ingredients</div>
-          <a href="product?id=2" class="btn btn-try btn-try-filled">View Details</a>
+          <a href="product/almond-cacao-power-bites" class="btn btn-try btn-try-filled">View Details</a>
         </div>
       </div>
 
       <div class="product-card">
+        <a class="product-card-link" href="product/dry-fruit-cardamom-bites" aria-label="View Dry Fruit Cardamom Bites details"></a>
         <div class="prod-label label-premium">Premium Pick</div>
         <div class="prod-img-wrap dryfruit-light">
           <img src="assets/images/product3.PNG" alt="Dry Fruit Cardamom Bites">
@@ -62,7 +65,7 @@ include 'includes/header.php';
           <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
           <div class="prod-feature"><span class="dot-orange"></span>Cashews • Almonds • Cardamom</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Preservatives</div>
-          <a href="product?id=3" class="btn btn-try">View Details</a>
+          <a href="product/dry-fruit-cardamom-bites" class="btn btn-try">View Details</a>
         </div>
       </div>
 

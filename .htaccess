@@ -1,5 +1,16 @@
-Options -MultiViews
+Options -MultiViews -Indexes
+DirectoryIndex index.php
 RewriteEngine On
+
+# Block direct web access to PHP includes. They hold config.php with the
+# database credentials and are only ever loaded by PHP, never requested.
+RewriteRule ^includes/ - [F,L]
+
+# Force HTTPS. Enable this once the SSL certificate is active in Hostinger,
+# otherwise visitors land on a certificate error.
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # Canonical public URLs never expose the PHP implementation.
 RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.php[?\s] [NC]

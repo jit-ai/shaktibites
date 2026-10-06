@@ -23,7 +23,6 @@ include 'includes/header.php';
 <!-- ===== TRUST BAR ===== -->
 <div class="trust-bar">
   <div class="container">
-    <h2 class="trust-brand">Shakti Bites</h2>
     <div class="trust-pills">
       <span class="trust-pill">10g Protein per Laddoo</span>
       <span class="trust-pill">No Refined sugar</span>
@@ -35,7 +34,7 @@ include 'includes/header.php';
 </div>
 
 <!-- ===== WHY SWITCH ===== -->
-<section class="why-section" style="background-image: url('assets/images/Why.png');">
+<section class="why-section" style="background-image: url('assets/images/Why%20Switch.png');">
   <div class="container">
     <h2 class="section-title text-center">Why Switch to Shakti Bites?</h2>
     <div class="compare-grid">
@@ -72,7 +71,7 @@ include 'includes/header.php';
         <a class="product-card-link" href="product/peanut-jaggery-power-bites" aria-label="View Peanut Jaggery Power Bites details"></a>
         <div class="prod-label label-everyday">Everyday Energy</div>
         <div class="prod-img-wrap peanut-light">
-          <img src="assets/images/product1.PNG" alt="Peanut Jaggery Power Bites">
+          <img src="assets/images/Peanut-product.png" alt="Peanut Jaggery Power Bites">
         </div>
         <div class="prod-body">
           <h4>Peanut Jaggery Power Bites</h4>
@@ -88,7 +87,7 @@ include 'includes/header.php';
         <a class="product-card-link" href="product/almond-cacao-power-bites" aria-label="View Almond Cacao Power Bites details"></a>
         <div class="prod-label label-bestseller">⭐ Best Seller ⭐</div>
         <div class="prod-img-wrap cacao-dark">
-          <img src="assets/images/product2.PNG" alt="Almond Cacao Power Bites">
+          <img src="assets/images/Almond-product.png" alt="Almond Cacao Power Bites">
         </div>
         <div class="prod-body">
           <h4>Almond Cacao Power Bites</h4>
@@ -104,7 +103,7 @@ include 'includes/header.php';
         <a class="product-card-link" href="product/dry-fruit-cardamom-bites" aria-label="View Dry Fruit Cardamom Bites details"></a>
         <div class="prod-label label-premium">Premium Pick</div>
         <div class="prod-img-wrap dryfruit-light">
-          <img src="assets/images/product3.PNG" alt="Dry Fruit Cardamom Bites">
+          <img src="assets/images/Dryfruit-product.png" alt="Dry Fruit Cardamom Bites">
         </div>
         <div class="prod-body">
           <h4>Dry Fruit Cardamom Bites</h4>
@@ -130,7 +129,7 @@ include 'includes/header.php';
       <div class="combo-card">
         <div class="combo-top-label">STARTER COMBO</div>
         <div class="combo-images">
-          <img src="assets/images/product1.PNG" alt="Peanut Jaggery" class="combo-prod-img-full">
+          <img src="assets/images/Combo-product-3.png" alt="Starter Pro Combo of 3 boxes" class="combo-prod-img-full">
         </div>
         <div class="combo-name">STARTER PRO COMBO</div>
         <div class="combo-qty">3 BOXES</div>
@@ -146,7 +145,7 @@ include 'includes/header.php';
         <div class="combo-best-badge">BEST VALUE</div>
         <div class="combo-top-label" style="color:var(--orange);font-weight:800;">BEST VALUE</div>
         <div class="combo-images">
-          <img src="assets/images/product1.PNG" alt="Peanut Jaggery" class="combo-prod-img-full">
+          <img src="assets/images/Combo-product-6.png" alt="Best Value Combo of 6 boxes" class="combo-prod-img-full">
         </div>
         <div class="combo-name">BEST VALUE COMBO</div>
         <div class="combo-qty">6 BOXES</div>
@@ -161,7 +160,7 @@ include 'includes/header.php';
       <div class="combo-card">
         <div class="combo-top-label">POWER COMBO</div>
         <div class="combo-images">
-          <img src="assets/images/product2.PNG" alt="Almond Cacao" class="combo-prod-img-full">
+          <img src="assets/images/Combo-product-9.png" alt="High Protein Combo" class="combo-prod-img-full">
         </div>
         <div class="combo-name">HIGH PROTEIN COMBO</div>
         <div class="combo-qty">4 BOXES</div>
@@ -193,24 +192,69 @@ include 'includes/header.php';
       <div class="stars-big">★★★★★ <span class="rating-num">4.8</span></div>
       <p class="rating-meta">4.8/5 based on 500+ reviews</p>
     </div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="reviewer-avatar"><img src="assets/images/1.png" alt="Manish A."></div>
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Tasty, healthy laddoos that keep me full for hours. Perfect for my gym snacks!</p>
-        <div class="reviewer-name">Manish A.</div>
+
+    <div class="reviews-slider" id="reviewsSlider">
+      <div class="reviews-track" id="reviewsTrack">
+        <div class="review-card review-slide">
+          <div class="review-card-inner">
+            <div class="reviewer-avatar video-avatar">
+              <iframe src="https://www.youtube.com/embed/FlfJcz9_2Qs?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Tasty, healthy laddoos that keep me full for hours. Perfect for my gym snacks!</p>
+            <div class="reviewer-name">Manish A.</div>
+          </div>
+        </div>
+
+        <div class="review-card review-slide">
+          <div class="review-card-inner">
+            <div class="reviewer-avatar video-avatar">
+              <iframe src="https://www.youtube.com/embed/PRSm9W9EwPY?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">I've tried all flavours; the Almond Cacao is my absolute favourite! A guilt-free treat.</p>
+            <div class="reviewer-name">Priya R.</div>
+          </div>
+        </div>
+
+        <div class="review-card review-slide">
+          <div class="review-card-inner">
+            <div class="reviewer-avatar video-avatar">
+              <iframe src="https://www.youtube.com/embed/HY5XZhLGzIA?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">No refined sugar, 10g protein, and delicious! Finally found my go-to snack.</p>
+            <div class="reviewer-name">Rahul G.</div>
+          </div>
+        </div>
+
+        <div class="review-card review-slide">
+          <div class="review-card-inner">
+            <div class="reviewer-avatar video-avatar">
+              <iframe src="https://www.youtube.com/embed/aCrxkoBtMns?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Best protein snack I've found — clean ingredients, great taste, and actually keeps you full.</p>
+            <div class="reviewer-name">Anjali S.</div>
+          </div>
+        </div>
+
+        <div class="review-card review-slide">
+          <div class="review-card-inner">
+            <div class="reviewer-avatar video-avatar">
+              <iframe src="https://www.youtube.com/embed/qj7kdaccKAY?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Perfect post-workout snack. No crash, no guilt, just clean energy that tastes amazing.</p>
+            <div class="reviewer-name">Vikram K.</div>
+          </div>
+        </div>
       </div>
-      <div class="review-card">
-        <div class="reviewer-avatar"><img src="assets/images/2.png" alt="Priya R."></div>
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">I've tried all flavours; the Almond Cacao is my absolute favourite! A guilt-free treat.</p>
-        <div class="reviewer-name">Priya R.</div>
-      </div>
-      <div class="review-card">
-        <div class="reviewer-avatar"><img src="assets/images/3 (1).png" alt="Rahul G."></div>
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">No refined sugar, 10g protein, and delicious! Finally found my go-to snack.</p>
-        <div class="reviewer-name">Rahul G.</div>
+
+      <div class="reviews-nav">
+        <button class="reviews-btn reviews-prev" id="reviewsPrev" aria-label="Previous review"><i class="bi bi-chevron-left"></i></button>
+        <div class="reviews-dots" id="reviewsDots"></div>
+        <button class="reviews-btn reviews-next" id="reviewsNext" aria-label="Next review"><i class="bi bi-chevron-right"></i></button>
       </div>
     </div>
   </div>

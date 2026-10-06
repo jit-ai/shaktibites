@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/includes/catalog.php';
+
 $page_title = 'Shopping Cart';
 include 'includes/header.php';
 
@@ -10,12 +12,8 @@ if (empty($_SESSION['cart_token'])) {
     $_SESSION['cart_token'] = bin2hex(random_bytes(32));
 }
 
-// Product data (same as in product.php)
-$products = [
-    1 => ['name' => 'Peanut Jaggery Power Bites', 'price' => 249, 'img' => 'product1.PNG'],
-    2 => ['name' => 'Almond Cacao Power Bites', 'price' => 279, 'img' => 'product2.PNG'],
-    3 => ['name' => 'Dry Fruit Cardamom Bites', 'price' => 299, 'img' => 'product3.PNG']
-];
+// Single boxes and combo packs, priced from the shared catalogue
+$products = shakti_cart_catalog();
 ?>
 
 <!-- ===== CART HERO ===== -->
@@ -37,27 +35,16 @@ $products = [
     <?php else: ?>
         <?php $itemIndex = 1; ?>
         <?php foreach ($_SESSION['cart'] as $productId => $quantity): ?>
-            <?php 
-                $productName = '';
-                $productImg = '';
-                $productPrice = 0;
-                switch($productId) {
-                    case 1:
-                        $productName = 'Peanut Jaggery Power Bites';
-                        $productImg = 'product1.PNG';
-                        $productPrice = 249;
-                        break;
-                    case 2:
-                        $productName = 'Almond Cacao Power Bites';
-                        $productImg = 'product2.PNG';
-                        $productPrice = 279;
-                        break;
-                    case 3:
-                        $productName = 'Dry Fruit Cardamom Bites';
-                        $productImg = 'product3.PNG';
-                        $productPrice = 299;
-                        break;
+            <?php
+                $quantity = (int) $quantity;
+                // Skip anything that is no longer in the catalogue so the row
+                // list and the summary always show the same line items.
+                if ($quantity < 1 || !isset($products[$productId])) {
+                    continue;
                 }
+                $productName = $products[$productId]['name'];
+                $productImg = $products[$productId]['image'];
+                $productPrice = (int) $products[$productId]['price'];
             ?>
             <div class="cart-item" data-product-id="<?php echo (int) $productId; ?>" data-price="<?php echo (int) $productPrice; ?>">
                 <img src="assets/images/<?php echo $productImg; ?>" alt="<?php echo htmlspecialchars($productName); ?>" class="cart-item-image">
@@ -83,13 +70,11 @@ $products = [
     <?php 
         $subtotal = 0;
         foreach ($_SESSION['cart'] as $productId => $quantity) {
-            switch($productId) {
-                case 1: $price = 249; break;
-                case 2: $price = 279; break;
-                case 3: $price = 299; break;
-                default: $price = 0;
+            $quantity = (int) $quantity;
+            if ($quantity < 1 || !isset($products[$productId])) {
+                continue;
             }
-            $subtotal += ($price * $quantity);
+            $subtotal += $products[$productId]['price'] * $quantity;
         }
         $tax = $subtotal * 0.05; // 5% tax
         $total = $subtotal + $tax;
@@ -140,11 +125,10 @@ function updateCartSummary(result) {
   rows[0].lastElementChild.textContent = formatMoney(result.subtotal);
   rows[2].lastElementChild.textContent = formatMoney(result.tax);
   document.querySelector('.cart-total-row strong:last-child').textContent = formatMoney(result.total);
-  const badge = document.getElementById('cart-badge');
-  if (badge) {
+  document.querySelectorAll('[id^="cart-badge"], .sb-nav-cart-count').forEach(badge => {
     badge.textContent = result.cart_count;
     badge.classList.toggle('d-none', result.cart_count === 0);
-  }
+  });
 }
 
 async function changeQuantity(id, quantity) {

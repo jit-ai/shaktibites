@@ -20,7 +20,7 @@ if ($id === null) { $id = 1; }
 $productDefaults = [
   'name' => 'Shakti Bites',
   'price' => 249,
-  'image' => 'product1.PNG',
+  'image' => 'Peanut-product.png',
   'label' => 'Everyday Energy',
   'accent' => 'peanut',
   'short' => 'Clean, steady energy in every bite.',
@@ -57,7 +57,7 @@ $displayBenefits = is_array($product['benefits'] ?? null) ? $product['benefits']
 $displayIngredients = is_array($product['ingredients'] ?? null) ? $product['ingredients'] : $productDefaults['ingredients'];
 $displayPrice = is_numeric($product['price'] ?? null) ? (float) $product['price'] : $productDefaults['price'];
 $page_title = 'Shop';
-$comboImage = $id === 1 ? 'Peanut.png' : $displayImage;
+$comboImage = $id === 1 ? 'Combo-product-9.png' : ($id === 2 ? 'Combo-product-6.png' : 'Combo-product-3.png');
 $heroHeadline = [
   1 => '10g Protein Bites That Give You Real Energy. No Sugar Crash.',
   2 => '10g Protein Chocolate Bites That Actually Taste Amazing.',
@@ -93,7 +93,7 @@ include 'includes/header.php';
         <span class="flavour-kicker"><?php echo htmlspecialchars($displayLabel, ENT_QUOTES, 'UTF-8'); ?></span>
         <h1><?php echo $heroHeadline; ?></h1>
         <p><?php echo htmlspecialchars($displayShort, ENT_QUOTES, 'UTF-8'); ?> Made with ingredients you can recognise.</p>
-        <div class="flavour-price"><del>&#8377;349</del> <strong>&#8377;<?php echo number_format($displayPrice); ?></strong> <em>Save &#8377;50 today</em></div>
+        <div class="flavour-price"><del>&#8377;349</del> <strong>&#8377;<?php echo number_format($displayPrice); ?></strong> <em>Save &#8377;<?php echo number_format(max(0, 349 - $displayPrice)); ?> today</em></div>
         <div class="flavour-rating"><span>&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 | 500+ Reviews</div>
         <form method="post" action="add_to_cart" class="flavour-actions"><input type="hidden" name="id" value="<?php echo $id; ?>"><input type="hidden" name="quantity" value="1"><button class="flavour-btn flavour-btn--outline" type="submit">Try First Box</button><a class="flavour-btn" href="combo">View Combo</a></form>
         <div class="flavour-bullets"><?php foreach (array_slice($displayBenefits, 0, 4) as $benefit): ?><span><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div>
@@ -105,13 +105,13 @@ include 'includes/header.php';
 
   <section class="flavour-ingredients"><div class="container">
     <h2>Ingredients:</h2><p>Real ingredients = real energy. No chemicals. No shortcuts.</p>
-    <div class="ingredient-art"><img src="assets/images/Ingridents.png" alt="Natural ingredients"><div class="ingredient-names"><?php foreach ($displayIngredients as $ingredient): ?><span><?php echo htmlspecialchars((string) $ingredient, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div></div>
+    <div class="ingredient-art"><img src="assets/images/Ingridents.png" alt="Natural ingredients" onerror="this.style.display='none'"><div class="ingredient-names"><?php foreach ($displayIngredients as $ingredient): ?><span><?php echo htmlspecialchars((string) $ingredient, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div></div>
     <?php if ($ingredientNote): ?><div class="ingredient-promises"><?php foreach ($ingredientNote as $note): ?><span><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($note); ?></span><?php endforeach; ?></div><?php else: ?><strong>What you see is what you eat - no hidden chemicals.</strong><?php endif; ?>
   </div></section>
 
   <section class="flavour-compare"><div class="container"><h2>Why Shakti Bites &gt; Regular Mithai</h2><div class="flavour-compare-grid"><div><h3>Other Snacks</h3><ul><?php foreach ($comparison as $item): ?><li><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div><div class="flavour-compare-good"><h3><i class="bi bi-patch-check-fill"></i> Shakti Bites</h3><ul><?php foreach ($displayBenefits as $benefit): ?><li><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div></div></div></section>
 
-  <section class="flavour-proof"><div class="container"><h2><?php echo $socialHeading; ?></h2><p><?php echo $id === 3 ? 'Real People. Real Results.' : 'Don&apos;t take our word for it.'; ?></p><div class="flavour-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <b>4.8 | 500+ Reviews</b></div><div class="proof-grid"><figure><img src="assets/images/Testinomial.png" alt="Happy customer"><figcaption><?php echo $id === 2 ? 'Gym people love it' : 'Perfect for my workouts - no energy crash at all'; ?></figcaption></figure><figure><img src="assets/images/Testinomial.png" alt="Happy customer"><figcaption><?php echo $id === 2 ? 'Perfect family snacks' : 'Much better than tea &amp; biscuits during office hunger'; ?></figcaption></figure><figure><img src="assets/images/Testinomial.png" alt="Happy customer"><figcaption><?php echo $id === 2 ? 'Perfect office snacks' : 'Keeps me active even during long travel days'; ?></figcaption></figure></div></div></section>
+  <section class="flavour-proof"><div class="container"><h2><?php echo $socialHeading; ?></h2><p><?php echo $id === 3 ? 'Real People. Real Results.' : 'Don&apos;t take our word for it.'; ?></p><div class="flavour-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <b>4.8 | 500+ Reviews</b></div><div class="proof-grid"><figure><div class="proof-visual proof-visual-workout" aria-hidden="true"><i class="bi bi-heart-pulse-fill"></i></div><figcaption><?php echo $id === 2 ? 'Gym people love it' : 'Perfect for my workouts - no energy crash at all'; ?></figcaption></figure><figure><div class="proof-visual proof-visual-office" aria-hidden="true"><i class="bi bi-cup-hot-fill"></i></div><figcaption><?php echo $id === 2 ? 'Perfect family snacks' : 'Much better than tea &amp; biscuits during office hunger'; ?></figcaption></figure><figure><div class="proof-visual proof-visual-travel" aria-hidden="true"><i class="bi bi-suitcase-fill"></i></div><figcaption><?php echo $id === 2 ? 'Perfect office snacks' : 'Keeps me active even during long travel days'; ?></figcaption></figure></div></div></section>
 
   <div class="fresh-strip"><i class="bi bi-lightning-charge-fill"></i> Selling Fast - Limited Fresh Batch Available Today</div>
 

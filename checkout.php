@@ -1,18 +1,31 @@
 <?php
-$page_title = 'Checkout';
-include 'includes/header.php';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/catalog.php';
 
-// Initialize cart if not exists
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
+// The cart lives in the session, so it must be readable before the guard runs.
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Product data (same as in product.php)
-$products = [
-    1 => ['name' => 'Peanut Jaggery Power Bites', 'price' => 249],
-    2 => ['name' => 'Almond Cacao Power Bites', 'price' => 279],
-    3 => ['name' => 'Dry Fruit Cardamom Bites', 'price' => 299]
-];
+// Single boxes and combo packs, priced from the shared catalogue
+$products = shakti_cart_catalog();
+
+// There is nothing to check out, so send the customer back to the cart rather
+// than rendering a full order form with an empty summary and a zero total.
+$checkoutCart = [];
+foreach ($_SESSION['cart'] ?? [] as $productId => $quantity) {
+    $quantity = (int) $quantity;
+    if ($quantity > 0 && isset($products[$productId])) {
+        $checkoutCart[$productId] = $quantity;
+    }
+}
+if (empty($checkoutCart)) {
+    header('Location: cart');
+    exit;
+}
+
+$page_title = 'Checkout';
+include 'includes/header.php';
 ?>
 
 <!-- ===== CHECKOUT HERO ===== -->
@@ -144,68 +157,51 @@ $products = [
       </div>
 
 <!-- Order Summary -->
-<div class="checkout-summary-col">
-    <div class="checkout-summary-heading">
-      <h3>Your Order Summary</h3>
-      <i class="bi bi-bag-check"></i>
-    </div>
-    <div class="checkout-items">
-        <?php
-        $subtotal = 0;
-        foreach ($_SESSION['cart'] as $productId => $quantity) {
-            $productName = '';
-            $productPrice = 0;
-            switch($productId) {
-                case 1:
-                    $productName = 'Peanut Jaggery Power Bites';
-                    $productPrice = 249;
-                    break;
-                case 2:
-                    $productName = 'Almond Cacao Power Bites';
-                    $productPrice = 279;
-                    break;
-                case 3:
-                    $productName = 'Dry Fruit Cardamom Bites';
-                    $productPrice = 299;
-                    break;
-            }
-            if ($productName) {
-                $itemTotal = $productPrice * $quantity;
-                $subtotal += $itemTotal;
-                ?>
-                <div class="checkout-item">
-                    <span><?php echo htmlspecialchars($productName); ?> × <?php echo $quantity; ?></span>
-                    <span>₹<?php echo $itemTotal; ?></span>
-                </div>
-                <?php
-            }
-        }
-        ?>
-    </div>
-    <hr>
-    <div class="checkout-summary-row">
-        <span>Subtotal</span>
-        <span>₹<?php echo number_format($subtotal, 0); ?></span>
-    </div>
-    <div class="checkout-summary-row">
-        <span>Shipping</span>
-        <span style="color: var(--green);">Free</span>
-    </div>
-    <div class="checkout-summary-row">
-        <span>Tax (GST)</span>
-        <span>₹<?php echo number_format($subtotal * 0.05, 0); ?></span>
-    </div>
-    <hr>
-    <div class="checkout-total-row">
-        <strong>Total</strong>
-        <strong style="color: var(--orange);">₹<?php echo number_format($subtotal * 1.05, 0); ?></strong>
-    </div>
+      <div class="checkout-summary-col">
+        <div class="checkout-summary-heading">
+          <h3>Your Order Summary</h3>
+          <i class="bi bi-bag-check"></i>
+        </div>
+        <div class="checkout-items">
+          <?php
+          $subtotal = 0;
+          foreach ($checkoutCart as $productId => $quantity) {
+              $productPrice = $products[$productId]['price'];
+              $itemTotal = $productPrice * $quantity;
+              $subtotal += $itemTotal;
+              ?>
+              <div class="checkout-item">
+                  <span><?php echo htmlspecialchars($products[$productId]['name']); ?> &times; <?php echo $quantity; ?></span>
+                  <span>&#8377;<?php echo number_format($itemTotal, 0); ?></span>
+              </div>
+          <?php
+          }
+          ?>
+        </div>
+        <hr>
+        <div class="checkout-summary-row">
+            <span>Subtotal</span>
+            <span>&#8377;<?php echo number_format($subtotal, 0); ?></span>
+        </div>
+        <div class="checkout-summary-row">
+            <span>Shipping</span>
+            <span style="color: var(--green);">Free</span>
+        </div>
+        <div class="checkout-summary-row">
+            <span>Tax (GST)</span>
+            <span>&#8377;<?php echo number_format($subtotal * 0.05, 0); ?></span>
+        </div>
+        <hr>
+        <div class="checkout-total-row">
+            <strong>Total</strong>
+            <strong style="color: var(--orange);">&#8377;<?php echo number_format($subtotal * 1.05, 0); ?></strong>
+        </div>
 
-    <div class="checkout-guarantee">
-        <i class="bi bi-shield-check"></i>
-        <span>100% Secure Checkout</span>
-    </div>
-</div>
+        <div class="checkout-guarantee">
+            <i class="bi bi-shield-check"></i>
+            <span>100% Secure Checkout</span>
+        </div>
+      </div>
 
     </div>
   </div>

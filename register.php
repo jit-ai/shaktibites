@@ -1,32 +1,19 @@
 <?php
 session_start();
-include 'includes/config.php';
+require_once __DIR__ . '/includes/db.php';
 
 $page_title = 'Register';
 
 // Initialize database connection
-$host = 'localhost';
-$db   = 'shakti_bites';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    if (strpos($e->getMessage(), "Unknown database") !== false) {
+    $pdo = getPDO();
+} catch (\Throwable $e) {
+    if ($e instanceof \PDOException
+        && strpos($e->getMessage(), 'Unknown database') !== false) {
         header('Location: setup');
         exit;
-    } else {
-        die("Database connection error. Please contact administrator.");
     }
+    die(db_connection_error_message($e));
 }
 
 // Redirect if already logged in

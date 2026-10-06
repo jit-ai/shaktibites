@@ -1,0 +1,10 @@
+# Live database credentials and payment secrets. Never commit these.
+# Copy includes/config.example.php to includes/config.php and fill it in locally.
+includes/config.php
+
+# Local tooling
+.kilo/worktrees/
+*.log
+
+# Temporary troubleshooting script, delete after use.
+_diag.php

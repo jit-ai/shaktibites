@@ -1,15 +1,15 @@
 <?php
 session_start();
-include 'includes/config.php';
+include __DIR__ . '/includes/db.php';
 
 try {
-    $pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4', DB_USER, DB_PASS, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
-} catch (PDOException $exception) {
+    $pdo = getPDO();
+} catch (Throwable $e) {
     http_response_code(503);
-    exit('Unable to load your profile right now. Please try again shortly.');
+    error_log('[shakti-bites] profile page could not reach the database: ' . $e->getMessage());
+    exit(db_is_transient($e)
+        ? 'We could not reach the store database. Please try again in a moment.'
+        : 'Database connection error. Please contact administrator.');
 }
 
 // Redirect if not logged in

@@ -1,29 +1,16 @@
 <?php
 session_start();
-include '../includes/config.php';
-
-$host = 'localhost';
-$db   = 'shakti_bites';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+require_once __DIR__ . '/../includes/db.php';
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    if (strpos($e->getMessage(), "Unknown database") !== false) {
+    $pdo = getPDO();
+} catch (\Throwable $e) {
+    if ($e instanceof \PDOException
+        && strpos($e->getMessage(), 'Unknown database') !== false) {
         header('Location: ../setup');
         exit;
-    } else {
-        die("Database connection error. Please contact administrator.");
     }
+    die(db_connection_error_message($e));
 }
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
@@ -78,91 +65,111 @@ $products = $productsStmt->fetchAll();
 $categoriesStmt = $pdo->query("SELECT id, name FROM categories WHERE is_active = 1 ORDER BY name");
 $categories = $categoriesStmt->fetchAll();
 
+require_once __DIR__ . '/../includes/catalog.php';
+$comboProductIds = array_keys(shakti_combo_catalog());
+
 include 'includes/header.php';
 ?>
 
-<div class="row mb-4">
-    <div class="col">
-        <h2 class="h4">Manage Products</h2>
+<div class="admin-page-header">
+    <div>
+        <p class="admin-eyebrow">Catalog</p>
+        <h1 class="admin-page-title">Products</h1>
+        <p class="admin-page-subtitle">Every box and combo pack a customer can order. Deactivate an item to hide it from the storefront.</p>
     </div>
-    <div class="col-auto">
+    <div class="admin-page-actions">
+        <span class="admin-count-chip"><?php echo number_format((int) $totalProducts); ?> total</span>
         <a href="product-add" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i> Add Product
+            <i class="bi bi-plus-lg me-1"></i> Add Product
         </a>
     </div>
 </div>
 
-<div class="admin-card mb-4">
+<div class="admin-card">
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle admin-table admin-table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Image</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>SKU</th>
-                        <th>Stock</th>
-                        <th>Status</th>
-                        <th>Added</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($products)): ?>
+            <div class="table-responsive">
+                <table class="table align-middle admin-table admin-table-hover">
+                    <thead>
                         <tr>
-                            <td colspan="10" class="text-center py-4">No products found</td>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th class="text-end">Price</th>
+                            <th>SKU</th>
+                            <th class="text-end">Stock</th>
+                            <th>Status</th>
+                            <th>Added</th>
+                            <th class="text-end">Actions</th>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($products as $product): ?>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($products)): ?>
                             <tr>
-                                <td><?php echo $product['id']; ?></td>
-                                <td>
-                                    <?php if (!empty($product['image'])): ?>
-                                        <img src="../assets/images/<?php echo htmlspecialchars($product['image']); ?>" 
-                                             alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                                             class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                                    <?php else: ?>
-                                        <div class="bg-light d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                            <i class="bi bi-image"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo htmlspecialchars($product['name']); ?></td>
-                                <td><?php echo htmlspecialchars($product['category_name'] ?? 'Uncategorized'); ?></td>
-                                <td>₹<?php echo number_format($product['price'], 2); ?></td>
-                                <td><?php echo htmlspecialchars($product['sku']); ?></td>
-                                <td><?php echo $product['stock']; ?></td>
-                                <td>
-                                    <form method="POST" action="" class="d-inline">
-                                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                        <button type="submit" name="toggle_status" class="btn btn-sm btn-outline-admin-<?php echo $product['is_active'] ? 'success' : 'secondary'; ?>">
-                                            <i class="bi bi-<?php echo $product['is_active'] ? 'check-circle' : 'x-circle'; ?>"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td><?php echo date('M d, Y', strtotime($product['created_at'])); ?></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="product-edit?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-admin-primary">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <form method="POST" action="" class="d-inline">
-                                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                            <button type="submit" name="delete_product" class="btn btn-sm btn-outline-admin-danger" 
-                                                    onclick="return confirm('Are you sure you want to delete this product?');">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                <td colspan="10">
+                                    <div class="admin-empty">
+                                        <i class="bi bi-box admin-empty-icon"></i>
+                                        <p class="admin-empty-title">No products found</p>
+                                        <p class="admin-empty-text">Add your first product to start selling.</p>
+                                        <a href="product-add" class="btn btn-primary btn-sm">Add Product</a>
                                     </div>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                        <?php else: ?>
+                            <?php foreach ($products as $product): ?>
+                                <?php $isCombo = in_array((int) $product['id'], $comboProductIds, true); ?>
+                                <tr>
+                                    <td class="admin-cell-strong"><?php echo (int) $product['id']; ?></td>
+                                    <td>
+                                        <?php if (!empty($product['image'])): ?>
+                                            <img src="../assets/images/<?php echo htmlspecialchars($product['image']); ?>" 
+                                                 alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                                                 class="admin-thumb">
+                                        <?php else: ?>
+                                            <span class="admin-thumb-empty"><i class="bi bi-image"></i></span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <div class="admin-cell-strong"><?php echo htmlspecialchars($product['name']); ?></div>
+                                        <?php if ($isCombo): ?>
+                                            <span class="status-pill status-accent">Combo</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="admin-cell-muted"><?php echo htmlspecialchars($product['category_name'] ?? 'Uncategorized'); ?></td>
+                                    <td class="text-end admin-amount">₹<?php echo number_format((float) $product['price'], 2); ?></td>
+                                    <td class="admin-cell-muted"><?php echo htmlspecialchars((string) ($product['sku'] ?? '—')); ?></td>
+                                    <td class="text-end admin-amount"><?php echo (int) $product['stock']; ?></td>
+                                    <td>
+                                        <form method="POST" action="" class="d-inline">
+                                            <input type="hidden" name="product_id" value="<?php echo (int) $product['id']; ?>">
+                                            <button type="submit" name="toggle_status" class="btn btn-sm <?php echo $product['is_active'] ? 'btn-outline-admin-success' : 'btn-outline-admin-secondary'; ?>"
+                                                    title="<?php echo $product['is_active'] ? 'Deactivate product' : 'Activate product'; ?>">
+                                                <i class="bi bi-<?php echo $product['is_active'] ? 'check-circle' : 'x-circle'; ?>"></i>
+                                                <span class="visually-hidden">Toggle product status</span>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td class="admin-cell-muted admin-nowrap"><?php echo date('M d, Y', strtotime($product['created_at'])); ?></td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex gap-1">
+                                            <a href="product-edit?id=<?php echo (int) $product['id']; ?>" class="btn btn-sm btn-outline-admin-primary" title="Edit product">
+                                                <i class="bi bi-pencil"></i><span class="visually-hidden">Edit product</span>
+                                            </a>
+                                            <form method="POST" action="" class="d-inline">
+                                                <input type="hidden" name="product_id" value="<?php echo (int) $product['id']; ?>">
+                                                <button type="submit" name="delete_product" class="btn btn-sm btn-outline-admin-danger" 
+                                                        onclick="return confirm('Delete &quot;<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>&quot;? This cannot be undone.');">
+                                                    <i class="bi bi-trash"></i><span class="visually-hidden">Delete product</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

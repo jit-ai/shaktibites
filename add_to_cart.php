@@ -2,7 +2,8 @@
 session_start();
 require_once __DIR__ . '/includes/catalog.php';
 
-$catalog = shakti_catalog();
+// Both single boxes and combo packs are orderable from here.
+$catalog = shakti_orderable_catalog();
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT) ?: filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT) ?: filter_input(INPUT_GET, 'quantity', FILTER_VALIDATE_INT) ?: 1;
 

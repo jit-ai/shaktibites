@@ -59,8 +59,12 @@
     #wrapper.sidebar-collapsed #sidebar-wrapper {
         transform: translateX(-100%);
     }
+    /* Margin and width must move together: the sidebar offset is taken out of
+       the content width, so resetting one without the other leaves the panel
+       short of the right edge or overflowing past it. */
     #wrapper.sidebar-collapsed #page-content-wrapper {
         margin-left: 0;
+        width: 100%;
     }
     #wrapper.sidebar-collapsed #page-content-wrapper .admin-navbar {
         left: 0;

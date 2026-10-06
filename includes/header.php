@@ -23,7 +23,7 @@ $siteBasePath = ($scriptDirectory === '' || $scriptDirectory === '.') ? '/' : $s
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=20260924-product-layout-v6">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261003-combo-order">
 </head>
 <body>
 <?php include 'navbar.php'; ?>

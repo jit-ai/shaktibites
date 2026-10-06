@@ -2,9 +2,19 @@
 /**
  * Setup script for Shakti Bites
  * Run this in your browser to initialize the database
+ *
+ * WARNING: this drops and recreates every table, so it refuses to run unless
+ * the setup key from includes/config.php is supplied. Delete this file from the
+ * server once the schema has been created.
  */
 
+require_once __DIR__ . '/includes/config.php';
+
 header('Content-Type: text/html; charset=utf-8');
+
+$setupAllowed = isset($_POST['setup_key'])
+    && hash_equals((string) SETUP_KEY, (string) $_POST['setup_key'])
+    && SETUP_KEY !== 'change-me-before-running-setup';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,21 +34,30 @@ header('Content-Type: text/html; charset=utf-8');
                 </div>
                 <div class="card-body">
                     <?php
-                    // Show form if not submitted
-                    if (!isset($_POST['setup_db'])) {
+                    // Nothing destructive happens until a valid setup key is posted.
+                    if (!$setupAllowed) {
                     ?>
+                    <div class="alert alert-warning">
+                        This installer drops and recreates every table. Enter the setup key
+                        defined in <code>includes/config.php</code> to continue, then delete
+                        <code>setup.php</code> from the server once the database is ready.
+                    </div>
                     <form method="POST" action="">
+                        <div class="mb-3">
+                            <label class="form-label">Setup Key</label>
+                            <input type="password" class="form-control" name="setup_key" required>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Database Host</label>
                             <input type="text" class="form-control" name="db_host" value="localhost" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Database Name</label>
-                            <input type="text" class="form-control" name="db_name" value="shakti_bites" required>
+                            <input type="text" class="form-control" name="db_name" value="u403139549_shakti" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Database Username</label>
-                            <input type="text" class="form-control" name="db_user" value="root" required>
+                            <input type="text" class="form-control" name="db_user" value="u403139549_shakti" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Database Password</label>
@@ -52,8 +71,8 @@ header('Content-Type: text/html; charset=utf-8');
                     } else {
                         // Process database setup
                         $host = $_POST['db_host'] ?? 'localhost';
-                        $db   = $_POST['db_name'] ?? 'shakti_bites';
-                        $user = $_POST['db_user'] ?? 'root';
+                        $db   = $_POST['db_name'] ?? 'u403139549_shakti';
+                        $user = $_POST['db_user'] ?? 'u403139549_shakti';
                         $pass = $_POST['db_pass'] ?? '';
                         $charset = 'utf8mb4';
                         
@@ -61,12 +80,18 @@ header('Content-Type: text/html; charset=utf-8');
                         flush();
                         
                         try {
-                            // First connect without database to create it
+                            // Connect to the server. Managed hosts such as Hostinger
+                            // normally refuse CREATE DATABASE because the database is
+                            // already provisioned, so that failure is not fatal.
                             $pdo = new PDO("mysql:host=$host;charset=$charset", $user, $pass, [
                                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
                             ]);
-                            $pdo->exec("CREATE DATABASE IF NOT EXISTS $db");
-                            echo "<div class='alert alert-success'>Database '$db' created or already exists.</div>";
+                            try {
+                                $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                                echo "<div class='alert alert-success'>Database '$db' created.</div>";
+                            } catch (\PDOException $e) {
+                                echo "<div class='alert alert-info'>Using the existing database '$db' (this host does not allow creating databases).</div>";
+                            }
                             flush();
                             
                             // Now connect to the database
@@ -236,11 +261,20 @@ header('Content-Type: text/html; charset=utf-8');
                             // Insert sample products
                             $productsSql = "
                                 INSERT INTO products (name, description, price, image, label, label_class, category_id, is_active, stock, sku) VALUES 
-                                ('Peanut Jaggery Power Bites', 'Experience the perfect blend of roasted peanuts and jaggery in every bite. Our Peanut Jaggery Power Bites are crafted to give you instant energy without any sugar crash. Made with premium peanuts, organic jaggery, and dates, these laddoos pack a powerful punch of protein and natural goodness.', 249, 'product1.PNG', 'Everyday Energy', 'label-everyday', 1, 1, 100, 'SB-PROD-001'),
-                                ('Almond Cacao Power Bites', 'Indulge in the rich, chocolatey goodness of our Almond Cacao Power Bites. Made with premium almonds, raw cacao powder, and dates, these laddoos satisfy your chocolate cravings while providing the energy you need. The perfect guilt-free treat for chocolate lovers.', 279, 'product2.PNG', '⭐ Best Seller ⭐', 'label-bestseller', 1, 1, 100, 'SB-PROD-002'),
-                                ('Dry Fruit Cardamom Bites', 'Savor the royal taste of our Dry Fruit Cardamom Bites. Packed with premium cashews, almonds, and aromatic cardamom, these laddoos offer a luxurious snacking experience. The perfect blend of tradition and nutrition in every bite.', 299, 'product3.PNG', 'Premium Pick', 'label-premium', 1, 1, 100, 'SB-PROD-003')
+                                ('Peanut Jaggery Power Bites', 'Experience the perfect blend of roasted peanuts and jaggery in every bite. Our Peanut Jaggery Power Bites are crafted to give you instant energy without any sugar crash. Made with premium peanuts, organic jaggery, and dates, these laddoos pack a powerful punch of protein and natural goodness.', 249, 'Peanut-product.png', 'Everyday Energy', 'label-everyday', 1, 1, 100, 'SB-PROD-001'),
+                                ('Almond Cacao Power Bites', 'Indulge in the rich, chocolatey goodness of our Almond Cacao Power Bites. Made with premium almonds, raw cacao powder, and dates, these laddoos satisfy your chocolate cravings while providing the energy you need. The perfect guilt-free treat for chocolate lovers.', 279, 'Almond-product.png', '⭐ Best Seller ⭐', 'label-bestseller', 1, 1, 100, 'SB-PROD-002'),
+                                ('Dry Fruit Cardamom Bites', 'Savor the royal taste of our Dry Fruit Cardamom Bites. Packed with premium cashews, almonds, and aromatic cardamom, these laddoos offer a luxurious snacking experience. The perfect blend of tradition and nutrition in every bite.', 299, 'Dryfruit-product.png', 'Premium Pick', 'label-premium', 1, 1, 100, 'SB-PROD-003')
                             ";
                             $pdo->exec($productsSql);
+                            // Combo packs share the storefront catalogue, so their
+                            // ids and prices must match includes/catalog.php.
+                            $comboProductsSql = "
+                                INSERT INTO products (id, name, description, price, image, label, label_class, category_id, is_active, stock, sku) VALUES
+                                (4, '2 Box Combo', 'A two box starter combo of Peanut Jaggery Power Bites and Almond Cacao Power Bites at combo pricing.', 549, 'Combo-product-3.png', 'Good to Start', 'label-everyday', 3, 1, 100, 'SB-COMBO-001'),
+                                (5, '3 Box Combo', 'The full Shakti Bites range in one combo: Peanut Jaggery, Almond Cacao and Dry Fruit Cardamom Power Bites.', 799, 'Combo-product-3.png', 'Most Popular', 'label-bestseller', 3, 1, 100, 'SB-COMBO-002'),
+                                (6, '4 Box Combo', 'Our biggest value combo with four boxes: Peanut Jaggery (2 boxes), Almond Cacao and Dry Fruit Cardamom Power Bites.', 1199, 'Combo-product-6.png', 'Best Value', 'label-premium', 3, 1, 100, 'SB-COMBO-003')
+                            ";
+                            $pdo->exec($comboProductsSql);
                             echo "<div class='alert alert-info'>Sample products inserted.</div>";
                             flush();
                             

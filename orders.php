@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'includes/config.php';
+require_once __DIR__ . '/includes/db.php';
 
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['redirect_url'] = 'orders';
@@ -10,15 +10,13 @@ if (!isset($_SESSION['user_id'])) {
 
 $orders = [];
 try {
-    $pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4', DB_USER, DB_PASS, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
+    $pdo = getPDO();
     $statement = $pdo->prepare('SELECT order_number, total_amount, payment_status, order_status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC');
     $statement->execute([$_SESSION['user_id']]);
     $orders = $statement->fetchAll();
-} catch (PDOException $exception) {
+} catch (Throwable $e) {
     // The account page stays available even before the store database is configured.
+    error_log('[shakti-bites] orders page could not load orders: ' . $e->getMessage());
     $orders = [];
 }
 

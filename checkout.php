@@ -45,65 +45,68 @@ include 'includes/header.php';
       <!-- Checkout Form -->
       <div class="checkout-form-col">
         <div class="billing-details-card">
-          <h3 class="checkout-section-title"><i class="bi bi-geo-alt-fill"></i> Billing Details</h3>
+          <h3 class="checkout-section-title"><i class="bi bi-geo-alt-fill"></i> Delivery Details</h3>
+          <p class="checkout-card-subtitle">Tell us where to deliver your Shakti Bites.</p>
           <form action="place-order" method="post" class="checkout-form" id="checkout-form">
             <div class="form-row">
               <div class="form-group">
                 <label for="first-name">First Name *</label>
-                <input type="text" id="first-name" name="first_name" placeholder="Enter your first name" required>
+                <input type="text" id="first-name" autocomplete="given-name" name="first_name" placeholder="Enter your first name" required>
               </div>
               <div class="form-group">
                 <label for="last-name">Last Name *</label>
-                <input type="text" id="last-name" name="last_name" placeholder="Enter your last name" required>
+                <input type="text" id="last-name" autocomplete="family-name" name="last_name" placeholder="Enter your last name" required>
               </div>
             </div>
 
             <div class="form-group">
               <label for="address">Address *</label>
-              <textarea id="address" name="address" placeholder="Street address, apartment, suite, etc." rows="2" required></textarea>
+              <textarea id="address" autocomplete="street-address" name="address" placeholder="Street address, apartment, suite, etc." rows="2" required></textarea>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="city">City *</label>
-                <input type="text" id="city" name="city" placeholder="City" required>
+                <input type="text" id="city" autocomplete="address-level2" name="city" placeholder="City" required>
               </div>
               <div class="form-group">
                 <label for="state">State *</label>
-                <input type="text" id="state" name="state" placeholder="State" required>
+                <input type="text" id="state" autocomplete="address-level1" name="state" placeholder="State" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="pincode">Pincode *</label>
-                <input type="text" id="pincode" name="pincode" placeholder="6-digit pincode" required>
+                <input type="text" id="pincode" autocomplete="postal-code" name="pincode" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit pincode" required>
               </div>
               <div class="form-group">
                 <label for="phone">Phone *</label>
-                <input type="tel" id="phone" name="phone" placeholder="10-digit mobile number" required>
+                <input type="tel" id="phone" autocomplete="tel" name="phone" placeholder="10-digit mobile number" required>
               </div>
             </div>
 
             <div class="form-group">
               <label for="email">Email Address *</label>
-              <input type="email" id="email" name="email" placeholder="your@email.com" required>
+              <input type="email" id="email" autocomplete="email" name="email" placeholder="your@email.com" required>
             </div>
 
-          <h3 class="checkout-section-title"><i class="bi bi-person-circle"></i> Account Options</h3>
+          <fieldset class="checkout-choice-group">
+            <legend class="checkout-section-title">Account Options</legend>
+            <p class="checkout-choice-help">Choose how you would like to check out.</p>
             <div class="payment-options" id="account-options">
               <label class="payment-option" data-account="guest">
                 <input type="radio" name="account_type" value="guest" checked>
                 <span class="payment-option-details">
-                  <i class="bi bi-person-badge"></i> <strong>Continue as Guest</strong>
-                  <small>Place your order without creating an account</small>
+                  <i class="bi bi-person-badge"></i> <strong>Guest checkout</strong>
+                  <small>No signup needed. Just place your order.</small>
                 </span>
               </label>
               <label class="payment-option" data-account="create">
                 <input type="radio" name="account_type" value="create">
                 <span class="payment-option-details">
                   <i class="bi bi-person-plus"></i> <strong>Create an Account</strong>
-                  <small>Faster checkout on your next order</small>
+                  <small>Save your details for your next order.</small>
                 </span>
               </label>
             </div>
@@ -121,7 +124,10 @@ include 'includes/header.php';
               </div>
             </div>
 
-          <h3 class="checkout-section-title"><i class="bi bi-credit-card-2-front"></i> Payment Method</h3>
+          </fieldset>
+          <fieldset class="checkout-choice-group">
+            <legend class="checkout-section-title">Payment Method</legend>
+            <p class="checkout-choice-help">Select your preferred way to pay.</p>
             <div class="payment-options">
               <label class="payment-option" data-method="cod">
                 <input type="radio" name="payment" value="cod" checked>
@@ -143,6 +149,8 @@ include 'includes/header.php';
               <i class="bi bi-shield-lock"></i> Your payment is processed securely by Razorpay.
             </div>
 
+          </fieldset>
+
             <?php if (!empty($_SESSION['checkout_error'])): ?>
               <div class="alert alert-danger mt-3" role="alert">
                 <?php echo htmlspecialchars($_SESSION['checkout_error']); unset($_SESSION['checkout_error']); ?>
@@ -158,6 +166,7 @@ include 'includes/header.php';
 
 <!-- Order Summary -->
       <div class="checkout-summary-col">
+        <a class="checkout-edit-cart" href="cart"><span aria-hidden="true">&#8592;</span> Edit your cart</a>
         <div class="checkout-summary-heading">
           <h3>Your Order Summary</h3>
           <i class="bi bi-bag-check"></i>
@@ -171,7 +180,8 @@ include 'includes/header.php';
               $subtotal += $itemTotal;
               ?>
               <div class="checkout-item">
-                  <span><?php echo htmlspecialchars($products[$productId]['name']); ?> &times; <?php echo $quantity; ?></span>
+                  <img class="checkout-item-image" src="assets/images/<?php echo htmlspecialchars($products[$productId]['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
+                  <div class="checkout-item-copy"><span><?php echo htmlspecialchars($products[$productId]['name']); ?></span><small>Quantity: <?php echo $quantity; ?></small></div>
                   <span>&#8377;<?php echo number_format($itemTotal, 0); ?></span>
               </div>
           <?php

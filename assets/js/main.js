@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var drawer = document.getElementById('sbMobileNav');
     var toggle = document.querySelector('[data-bs-target="#sbMobileNav"]');
 
-    if (!drawer || !toggle || typeof bootstrap === 'undefined') {
-        return;
-    }
+    if (drawer && toggle && typeof bootstrap !== 'undefined') {
 
     drawer.addEventListener('show.bs.offcanvas', function () {
         toggle.classList.add('is-open');
@@ -34,151 +32,77 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Reviews Slider
-    var reviewsSlider = document.getElementById('reviewsSlider');
-    if (reviewsSlider) {
-        var track = document.getElementById('reviewsTrack');
-        var slides = track ? track.querySelectorAll('.review-slide') : [];
-        var prevBtn = document.getElementById('reviewsPrev');
-        var nextBtn = document.getElementById('reviewsNext');
-        var dotsContainer = document.getElementById('reviewsDots');
-
-        var slideCount = slides.length;
-        var slidesPerView = 3;
-        var currentPage = 0;
-        var autoSlideTimer = null;
-        var AUTO_SLIDE_DELAY = 5000;
-
-        function updateSlidesPerView() {
-            var width = window.innerWidth;
-            if (width <= 575) {
-                slidesPerView = 1;
-            } else if (width <= 991) {
-                slidesPerView = 2;
-            } else {
-                slidesPerView = 3;
-            }
-        }
-
-        function pageCount() {
-            if (slideCount === 0) return 1;
-            return Math.max(1, Math.ceil(slideCount / slidesPerView));
-        }
-
-        function createDots() {
-            if (!dotsContainer) return;
-            var dots = pageCount();
-            dotsContainer.innerHTML = '';
-            for (var i = 0; i < dots; i++) {
-                (function (idx) {
-                    var dot = document.createElement('button');
-                    dot.className = 'reviews-dot' + (idx === 0 ? ' active' : '');
-                    dot.setAttribute('aria-label', 'Go to page ' + (idx + 1));
-                    dot.addEventListener('click', function () {
-                        stopAutoSlide();
-                        goToPage(idx);
-                        startAutoSlide();
-                    });
-                    dotsContainer.appendChild(dot);
-                })(i);
-            }
-        }
-
-        function updateButtons() {
-            var pages = pageCount();
-            if (prevBtn) prevBtn.disabled = currentPage === 0;
-            if (nextBtn) nextBtn.disabled = pages <= 1;
-            if (dotsContainer) {
-                var dots = dotsContainer.querySelectorAll('.reviews-dot');
-                for (var i = 0; i < dots.length; i++) {
-                    dots[i].classList.toggle('active', i === currentPage);
-                }
-            }
-        }
-
-        function goToPage(index) {
-            updateSlidesPerView();
-            var pages = pageCount();
-            if (index < 0) index = pages - 1;
-            if (index >= pages) index = 0;
-            currentPage = index;
-            if (track) {
-                /* The track is block-level, so it is exactly
-                   slidesPerView slides wide (the container width).
-                   translateX percentages are relative to that
-                   track width, so moving N slides means
-                   N / slidesPerView * 100 percent. On the final
-                   page we stop once the last slide reaches the
-                   right edge instead of leaving empty space. */
-                var slidesToMove = Math.min(
-                    currentPage * slidesPerView,
-                    slideCount - slidesPerView
-                );
-                var percent = (slidesToMove / slidesPerView) * 100;
-                track.style.transform = 'translateX(-' + percent + '%)';
-            }
-            updateButtons();
-        }
-
-        function nextPage() {
-            var pages = pageCount();
-            goToPage((currentPage + 1) % pages);
-        }
-
-        function prevPage() {
-            var pages = pageCount();
-            goToPage((currentPage - 1 + pages) % pages);
-        }
-
-        function startAutoSlide() {
-            stopAutoSlide();
-            if (pageCount() <= 1) return;
-            autoSlideTimer = setInterval(function () {
-                nextPage();
-            }, AUTO_SLIDE_DELAY);
-        }
-
-        function stopAutoSlide() {
-            if (autoSlideTimer) {
-                clearInterval(autoSlideTimer);
-                autoSlideTimer = null;
-            }
-        }
-
-        if (prevBtn) prevBtn.addEventListener('click', function () {
-            stopAutoSlide();
-            prevPage();
-            startAutoSlide();
-        });
-        if (nextBtn) nextBtn.addEventListener('click', function () {
-            stopAutoSlide();
-            nextPage();
-            startAutoSlide();
-        });
-
-        // Pause the auto slide while the visitor is reading a review.
-        reviewsSlider.addEventListener('mouseenter', stopAutoSlide);
-        reviewsSlider.addEventListener('mouseleave', startAutoSlide);
-        reviewsSlider.addEventListener('touchstart', stopAutoSlide, { passive: true });
-        reviewsSlider.addEventListener('touchend', startAutoSlide, { passive: true });
-
-        // Recalculate when the viewport changes.
-        var resizeTimer = null;
-        window.addEventListener('resize', function () {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function () {
-                updateSlidesPerView();
-                var pages = pageCount();
-                if (currentPage >= pages) currentPage = pages - 1;
-                createDots();
-                goToPage(currentPage);
-                startAutoSlide();
-            }, 150);
-        });
-
-        updateSlidesPerView();
-        createDots();
-        goToPage(0);
-        startAutoSlide();
     }
+
+    // Native scrolling keeps touch gestures and video controls independent.
+    var slider = document.getElementById('reviewsSlider');
+    if (!slider) return;
+    var track = document.getElementById('reviewsTrack');
+    var slides = Array.from(track.querySelectorAll('.review-slide'));
+    var prev = document.getElementById('reviewsPrev');
+    var next = document.getElementById('reviewsNext');
+    var dots = document.getElementById('reviewsDots');
+    var status = document.getElementById('reviewsStatus');
+    var positions = [];
+    var page = 0;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    slider.querySelector('.reviews-nav').hidden = false;
+
+    function update() {
+        page = positions.reduce(function (nearest, position, index) {
+            return Math.abs(position - track.scrollLeft) < Math.abs(positions[nearest] - track.scrollLeft) ? index : nearest;
+        }, 0);
+        prev.disabled = page === 0;
+        next.disabled = page === positions.length - 1;
+        Array.from(dots.children).forEach(function (dot, index) {
+            dot.classList.toggle('active', index === page);
+            dot.setAttribute('aria-current', index === page ? 'true' : 'false');
+        });
+        var first = Math.round(track.scrollLeft / (slides[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap))) + 1;
+        var visible = Math.round(track.clientWidth / slides[0].getBoundingClientRect().width);
+        status.textContent = 'Reviews ' + first + '\u2013' + Math.min(slides.length, first + visible - 1) + ' of ' + slides.length;
+    }
+
+    function goTo(index) {
+        index = Math.max(0, Math.min(positions.length - 1, index));
+        track.scrollTo({ left: positions[index], behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+    }
+
+    function layout() {
+        var max = Math.max(0, track.scrollWidth - track.clientWidth);
+        var step = slides[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap);
+        var visible = Math.max(1, Math.round(track.clientWidth / step));
+        positions = [0];
+        for (var offset = step * visible; offset < max - 1; offset += step * visible) positions.push(offset);
+        if (max > 1) positions.push(max);
+        dots.replaceChildren();
+        positions.forEach(function (_, index) {
+            var dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'reviews-dot';
+            dot.setAttribute('aria-label', 'Show review page ' + (index + 1));
+            dot.setAttribute('aria-controls', 'reviewsTrack');
+            dot.addEventListener('click', function () { goTo(index); });
+            dots.appendChild(dot);
+        });
+        update();
+    }
+
+    prev.addEventListener('click', function () { goTo(page - 1); });
+    next.addEventListener('click', function () { goTo(page + 1); });
+    track.addEventListener('keydown', function (event) {
+        if (event.target !== track) return;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.preventDefault();
+            goTo(page + (event.key === 'ArrowRight' ? 1 : -1));
+        }
+    });
+    var scrollTimer;
+    track.addEventListener('scroll', function () {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(update, 100);
+    }, { passive: true });
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(layout).observe(track);
+    else window.addEventListener('resize', layout);
+    layout();
 });

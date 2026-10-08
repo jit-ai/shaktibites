@@ -108,31 +108,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261006-auth-refresh">
 </head>
-<body>
+<body class="account-entry-page">
 <?php include 'includes/navbar.php'; ?>
-
-<!-- Auth Hero Header -->
-<section class="auth-hero">
-    <div class="container">
-        <h1 class="auth-hero-title">Join Shakti Bites</h1>
-        <p class="auth-hero-sub">Create your account and start your healthy snacking journey</p>
-    </div>
-</section>
 
 <!-- Register Section -->
 <section class="auth-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5">
+            <div class="col-12 auth-form-column">
                 <div class="auth-card">
                     <div class="card-body">
                         <!-- Brand -->
                         <div class="auth-brand">
                             <img src="assets/images/logo.PNG" alt="Shakti Bites" class="img-fluid">
-                            <div class="auth-brand-text">Shakti Bites</div>
-                            <p class="auth-brand-tagline">Fuel Your Day, Naturally</p>
+                            <h1 class="auth-brand-text">Create your account</h1>
+                            <p class="auth-brand-tagline">Join Shakti Bites for easier ordering.</p>
                         </div>
 
                         <?php if (!empty($errors)): ?>
@@ -150,39 +142,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
                         <form method="POST" action="" id="registerForm">
                             <!-- Full Name -->
+                            <label class="auth-field-label" for="name">Full name</label>
                             <div class="auth-icon-input">
-                                <input type="text" class="form-control" id="name" name="name"
+                                <input type="text" class="form-control" id="name" autocomplete="name" name="name"
                                        placeholder="Full Name" required autofocus
                                        value="<?php echo isset($old_data['name']) ? htmlspecialchars($old_data['name']) : ''; ?>">
                                 <i class="bi bi-person input-icon"></i>
                             </div>
 
                             <!-- Email -->
+                            <label class="auth-field-label" for="email">Email address</label>
                             <div class="auth-icon-input">
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input type="email" class="form-control" id="email" autocomplete="email" name="email"
                                        placeholder="Email address" required
                                        value="<?php echo isset($old_data['email']) ? htmlspecialchars($old_data['email']) : ''; ?>">
                                 <i class="bi bi-envelope input-icon"></i>
                             </div>
 
                             <!-- Phone -->
+                            <label class="auth-field-label" for="phone">Phone number (optional)</label>
                             <div class="auth-icon-input">
-                                <input type="tel" class="form-control" id="phone" name="phone"
+                                <input type="tel" class="form-control" id="phone" autocomplete="tel" name="phone"
                                        placeholder="Phone Number (Optional)"
                                        value="<?php echo isset($old_data['phone']) ? htmlspecialchars($old_data['phone']) : ''; ?>">
                                 <i class="bi bi-telephone input-icon"></i>
                             </div>
 
                             <!-- Address -->
+                            <label class="auth-field-label" for="address">Address (optional)</label>
                             <div class="auth-icon-input">
-                                <textarea class="form-control" id="address" name="address" rows="2"
+                                <textarea class="form-control" id="address" autocomplete="street-address" name="address" rows="2"
                                           placeholder="Address (Optional)"><?php echo isset($old_data['address']) ? htmlspecialchars($old_data['address']) : ''; ?></textarea>
                                 <i class="bi bi-geo-alt input-icon" style="top: 24px;"></i>
                             </div>
 
                             <!-- Password -->
+                            <label class="auth-field-label" for="password">Password</label>
                             <div class="auth-icon-input auth-password-wrapper">
-                                <input type="password" class="form-control" id="password" name="password"
+                                <input type="password" class="form-control" id="password" autocomplete="new-password" name="password"
                                        placeholder="Create Password" required>
                                 <i class="bi bi-lock input-icon"></i>
                                 <button type="button" class="auth-toggle-password" data-target="password" aria-label="Toggle password visibility">
@@ -200,8 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                             <div class="auth-strength-text" id="strengthText" style="color: var(--text-muted);"></div>
 
                             <!-- Confirm Password -->
+                            <label class="auth-field-label" for="confirm_password">Confirm password</label>
                             <div class="auth-icon-input auth-password-wrapper">
-                                <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                                <input type="password" class="form-control" id="confirm_password" autocomplete="new-password" name="confirm_password"
                                        placeholder="Confirm Password" required>
                                 <i class="bi bi-lock-fill input-icon"></i>
                                 <button type="button" class="auth-toggle-password" data-target="confirm_password" aria-label="Toggle password visibility">
@@ -222,21 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                                 <i class="bi bi-person-plus"></i> Create Account
                             </button>
                         </form>
-
-                        <!-- Divider -->
-                        <div class="auth-divider">
-                            <span>or sign up with</span>
-                        </div>
-
-                        <!-- Social Signup -->
-                        <div class="auth-social">
-                            <a href="#" class="auth-social-btn google">
-                                <i class="bi bi-google"></i> Google
-                            </a>
-                            <a href="#" class="auth-social-btn facebook">
-                                <i class="bi bi-facebook"></i> Facebook
-                            </a>
-                        </div>
 
                         <!-- Footer -->
                         <p class="auth-footer-text">

@@ -72,31 +72,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=20260920-profile-fix">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261006-auth-refresh">
 </head>
-<body>
+<body class="account-entry-page">
 <?php include 'includes/navbar.php'; ?>
-
-<!-- Auth Hero Header -->
-<section class="auth-hero">
-    <div class="container">
-        <h1 class="auth-hero-title">Welcome Back</h1>
-        <p class="auth-hero-sub">Sign in to continue your protein journey</p>
-    </div>
-</section>
 
 <!-- Login Section -->
 <section class="auth-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+            <div class="col-12 auth-form-column">
                 <div class="auth-card">
                     <div class="card-body">
                         <!-- Brand -->
                         <div class="auth-brand">
                             <img src="assets/images/logo.PNG" alt="Shakti Bites" class="img-fluid">
-                            <div class="auth-brand-text">Shakti Bites</div>
-                            <p class="auth-brand-tagline">Fuel Your Day, Naturally</p>
+                            <h1 class="auth-brand-text">Welcome back</h1>
+                            <p class="auth-brand-tagline">Sign in to your Shakti Bites account.</p>
                         </div>
 
                         <?php if (isset($error)): ?>
@@ -108,16 +100,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
                         <form method="POST" action="">
                             <!-- Email -->
+                            <label class="auth-field-label" for="email">Email address</label>
                             <div class="auth-icon-input">
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input type="email" class="form-control" id="email" autocomplete="email" name="email"
                                        placeholder="Email address" required autofocus
                                        value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                                 <i class="bi bi-envelope input-icon"></i>
                             </div>
 
                             <!-- Password -->
+                            <label class="auth-field-label" for="password">Password</label>
                             <div class="auth-icon-input auth-password-wrapper">
-                                <input type="password" class="form-control" id="password" name="password"
+                                <input type="password" class="form-control" id="password" autocomplete="current-password" name="password"
                                        placeholder="Password" required>
                                 <i class="bi bi-lock input-icon"></i>
                                 <button type="button" class="auth-toggle-password" data-target="password" aria-label="Toggle password visibility">
@@ -141,21 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                                 <i class="bi bi-box-arrow-in-right"></i> Sign In
                             </button>
                         </form>
-
-                        <!-- Divider -->
-                        <div class="auth-divider">
-                            <span>or continue with</span>
-                        </div>
-
-                        <!-- Social Login -->
-                        <div class="auth-social">
-                            <a href="#" class="auth-social-btn google">
-                                <i class="bi bi-google"></i> Google
-                            </a>
-                            <a href="#" class="auth-social-btn facebook">
-                                <i class="bi bi-facebook"></i> Facebook
-                            </a>
-                        </div>
 
                         <!-- Footer -->
                         <p class="auth-footer-text">

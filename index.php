@@ -193,69 +193,69 @@ include 'includes/header.php';
       <p class="rating-meta">4.8/5 based on 500+ reviews</p>
     </div>
 
-    <div class="reviews-slider" id="reviewsSlider">
-      <div class="reviews-track" id="reviewsTrack">
-        <div class="review-card review-slide">
+    <div class="reviews-slider" id="reviewsSlider" role="region" aria-roledescription="carousel" aria-label="Customer video testimonials">
+      <div class="reviews-track" id="reviewsTrack" tabindex="0" aria-label="Video reviews. Swipe or use the arrow keys to browse.">
+        <article class="review-card review-slide" aria-label="1 of 5: Amit Awasthi">
           <div class="review-card-inner">
             <div class="reviewer-avatar video-avatar">
-              <iframe src="https://www.youtube.com/embed/FlfJcz9_2Qs?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/FlfJcz9_2Qs?rel=0&playsinline=1" title="Amit Awasthi's Shakti Bites video review" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">Tasty, healthy laddoos that keep me full for hours. Perfect for my gym snacks!</p>
-            <div class="reviewer-name">Manish A.</div>
+            <p class="review-text">&ldquo;The taste is incredible&mdash;the more people eat it, the more physiques we'll build.&rdquo;</p>
+            <div class="reviewer-name">Amit Awasthi</div>
+            <a class="review-video-link" href="https://youtube.com/shorts/FlfJcz9_2Qs" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">&#8599;</span></a>
           </div>
-        </div>
+        </article>
 
-        <div class="review-card review-slide">
+        <article class="review-card review-slide" aria-label="2 of 5: Aniket">
           <div class="review-card-inner">
             <div class="reviewer-avatar video-avatar">
-              <iframe src="https://www.youtube.com/embed/PRSm9W9EwPY?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/PRSm9W9EwPY?rel=0&playsinline=1" title="Aniket's Shakti Bites video review" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">I've tried all flavours; the Almond Cacao is my absolute favourite! A guilt-free treat.</p>
-            <div class="reviewer-name">Priya R.</div>
+            <p class="review-text">&ldquo;Taste is really good - much better compared to typical protein powder.&rdquo;</p>
+            <div class="reviewer-name">Aniket</div>
+            <a class="review-video-link" href="https://youtube.com/shorts/PRSm9W9EwPY" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">&#8599;</span></a>
           </div>
-        </div>
+        </article>
 
-        <div class="review-card review-slide">
+        <article class="review-card review-slide" aria-label="3 of 5: Vandana">
           <div class="review-card-inner">
             <div class="reviewer-avatar video-avatar">
-              <iframe src="https://www.youtube.com/embed/HY5XZhLGzIA?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/HY5XZhLGzIA?rel=0&playsinline=1" title="Vandana's Shakti Bites video review" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">No refined sugar, 10g protein, and delicious! Finally found my go-to snack.</p>
-            <div class="reviewer-name">Rahul G.</div>
+            <p class="review-text">&ldquo;Amazing taste, a solid 9/10, and something everyone can enjoy&mdash;from kids to grandparents.&rdquo;</p>
+            <div class="reviewer-name">Vandana</div>
+            <a class="review-video-link" href="https://youtube.com/shorts/HY5XZhLGzIA" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">&#8599;</span></a>
           </div>
-        </div>
+        </article>
 
-        <div class="review-card review-slide">
+        <article class="review-card review-slide" aria-label="4 of 5: Arnika">
           <div class="review-card-inner">
             <div class="reviewer-avatar video-avatar">
-              <iframe src="https://www.youtube.com/embed/aCrxkoBtMns?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/aCrxkoBtMns?rel=0&playsinline=1" title="Arnika's Shakti Bites video review" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">Best protein snack I've found — clean ingredients, great taste, and actually keeps you full.</p>
-            <div class="reviewer-name">Anjali S.</div>
+            <p class="review-text">&ldquo;It tastes so good, I want to take it to school and share it with my friends!&rdquo;</p>
+            <div class="reviewer-name">Arnika</div>
+            <a class="review-video-link" href="https://youtube.com/shorts/aCrxkoBtMns" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">&#8599;</span></a>
           </div>
-        </div>
+        </article>
 
-        <div class="review-card review-slide">
+        <article class="review-card review-slide" aria-label="5 of 5: Gym Guy">
           <div class="review-card-inner">
             <div class="reviewer-avatar video-avatar">
-              <iframe src="https://www.youtube.com/embed/qj7kdaccKAY?rel=0&modestbranding=1&playsinline=1" title="Customer review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/qj7kdaccKAY?rel=0&playsinline=1" title="Gym Guy's Shakti Bites video review" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">Perfect post-workout snack. No crash, no guilt, just clean energy that tastes amazing.</p>
-            <div class="reviewer-name">Vikram K.</div>
+            <p class="review-text">&ldquo;Shakti Bites combines great taste with high protein&mdash;definitely worth it!&rdquo;</p>
+            <div class="reviewer-name">Gym Guy</div>
+            <a class="review-video-link" href="https://youtube.com/shorts/qj7kdaccKAY" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">&#8599;</span></a>
           </div>
-        </div>
+        </article>
       </div>
-
       <div class="reviews-nav">
-        <button class="reviews-btn reviews-prev" id="reviewsPrev" aria-label="Previous review"><i class="bi bi-chevron-left"></i></button>
-        <div class="reviews-dots" id="reviewsDots"></div>
-        <button class="reviews-btn reviews-next" id="reviewsNext" aria-label="Next review"><i class="bi bi-chevron-right"></i></button>
+        <button type="button" class="reviews-btn reviews-prev" id="reviewsPrev" aria-label="Previous reviews" aria-controls="reviewsTrack"><span aria-hidden="true">&#8592;</span></button>
+        <div class="reviews-dots" id="reviewsDots" aria-label="Review pages"></div>
+        <button type="button" class="reviews-btn reviews-next" id="reviewsNext" aria-label="Next reviews" aria-controls="reviewsTrack"><span aria-hidden="true">&#8594;</span></button>
       </div>
+      <p class="reviews-status" id="reviewsStatus" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 </section>

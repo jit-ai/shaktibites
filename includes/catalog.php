@@ -125,11 +125,18 @@ function shakti_cart_catalog(): array
     foreach (shakti_orderable_catalog() as $id => $entry) {
         $items[$id] = [
             'name'  => (string) $entry['name'],
+            'original_price' => (float) $entry['price'] + (float) ($entry['saving'] ?? 0),
             'price' => (float) $entry['price'],
             'image' => (string) $entry['image'],
             'type'  => (string) $entry['type'],
             'slug'  => (string) $entry['slug'],
         ];
+    }
+    require_once __DIR__ . '/combo-builder.php';
+    foreach ($_SESSION['custom_combos'] ?? [] as $customId => $custom) {
+        try {
+            $items[$customId] = shakti_build_combo((int) $custom['boxes'], $custom['selection']);
+        } catch (InvalidArgumentException $e) { /* Ignore invalid or expired selections. */ }
     }
     return $items;
 }

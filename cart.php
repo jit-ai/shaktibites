@@ -45,12 +45,19 @@ $products = shakti_cart_catalog();
                 $productName = $products[$productId]['name'];
                 $productImg = $products[$productId]['image'];
                 $productPrice = (int) $products[$productId]['price'];
+                $originalPrice = (int) ($products[$productId]['original_price'] ?? $productPrice);
+                $itemSaving = max(0, $originalPrice - $productPrice);
             ?>
             <div class="cart-item" data-product-id="<?php echo (int) $productId; ?>" data-price="<?php echo (int) $productPrice; ?>">
                 <img src="assets/images/<?php echo $productImg; ?>" alt="<?php echo htmlspecialchars($productName); ?>" class="cart-item-image">
                 <div class="cart-item-details">
                     <h5><?php echo htmlspecialchars($productName); ?></h5>
-                    <p class="cart-item-price">₹<?php echo $productPrice; ?></p>
+                    <div class="cart-item-pricing">
+                        <?php if ($itemSaving > 0): ?><s class="cart-original-price">&#8377;<?php echo number_format($originalPrice); ?></s><?php endif; ?>
+                        <strong class="cart-discounted-price">&#8377;<?php echo number_format($productPrice); ?></strong>
+                        <span class="cart-price-unit">each</span>
+                    </div>
+                    <?php if ($itemSaving > 0): ?><p class="cart-item-saving">You save &#8377;<?php echo number_format($itemSaving); ?> per combo</p><?php endif; ?>
                     <div class="cart-item-quantity">
                         <button class="qty-btn" onclick="decrementCart(<?php echo $itemIndex; ?>)">-</button>
                         <span id="qty-<?php echo $itemIndex; ?>"><?php echo $quantity; ?></span>
@@ -69,27 +76,25 @@ $products = shakti_cart_catalog();
     <h4>Order Summary</h4>
     <?php 
         $subtotal = 0;
+        $savings = 0;
         foreach ($_SESSION['cart'] as $productId => $quantity) {
             $quantity = (int) $quantity;
             if ($quantity < 1 || !isset($products[$productId])) {
                 continue;
             }
             $subtotal += $products[$productId]['price'] * $quantity;
+            $savings += max(0, ($products[$productId]['original_price'] ?? $products[$productId]['price']) - $products[$productId]['price']) * $quantity;
         }
-        $tax = $subtotal * 0.05; // 5% tax
-        $total = $subtotal + $tax;
+        $tax = 0;
+        $total = $subtotal;
     ?>
-    <div class="cart-summary-row">
-        <span>Subtotal</span>
+    <div class="cart-savings-summary" id="cart-savings" <?php if ($savings <= 0) echo 'hidden'; ?>><span>You save on this order</span><strong id="cart-savings-amount">&#8377;<?php echo number_format($savings); ?></strong></div>
+    <div class="cart-summary-row"><span>Subtotal (after discount)</span>
         <span>₹<?php echo number_format($subtotal, 0); ?></span>
     </div>
     <div class="cart-summary-row">
         <span>Shipping</span>
         <span>Free</span>
-    </div>
-    <div class="cart-summary-row">
-        <span>Tax</span>
-        <span>₹<?php echo number_format($tax, 0); ?></span>
     </div>
     <hr>
     <div class="cart-total-row">
@@ -121,9 +126,10 @@ async function persistCartChange(item, quantity) {
 }
 
 function updateCartSummary(result) {
+  document.getElementById('cart-savings').hidden = result.savings <= 0;
+  document.getElementById('cart-savings-amount').textContent = formatMoney(result.savings);
   const rows = document.querySelectorAll('.cart-summary-row');
   rows[0].lastElementChild.textContent = formatMoney(result.subtotal);
-  rows[2].lastElementChild.textContent = formatMoney(result.tax);
   document.querySelector('.cart-total-row strong:last-child').textContent = formatMoney(result.total);
   document.querySelectorAll('[id^="cart-badge"], .sb-nav-cart-count').forEach(badge => {
     badge.textContent = result.cart_count;

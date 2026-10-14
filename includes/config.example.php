@@ -33,5 +33,5 @@ define('DB_CHARSET', $env('DB_CHARSET', 'utf8mb4'));
 define('RAZORPAY_KEY_ID', $env('RAZORPAY_KEY_ID', 'rzp_test_your_key_id'));
 define('RAZORPAY_KEY_SECRET', $env('RAZORPAY_KEY_SECRET', 'your_key_secret'));
 define('RAZORPAY_CURRENCY', 'INR');
-define('TAX_RATE', 0.05);
+define('TAX_RATE', 0.0);
 ?>

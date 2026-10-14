@@ -1,75 +1,41 @@
 <?php
 require_once __DIR__ . '/includes/catalog.php';
-
+require_once __DIR__ . '/includes/combo-builder.php';
 $page_title = 'Combo';
 include 'includes/header.php';
-
-// Combo offers come from the shared catalogue, so the price shown here is
-// exactly the price that is added to the cart and charged at checkout.
-$comboOffers = shakti_combo_catalog();
-$maxComboSaving = max(array_column($comboOffers, 'saving'));
+if (empty($_SESSION['combo_token'])) $_SESSION['combo_token'] = bin2hex(random_bytes(32));
 ?>
 
-<main class="combo-landing">
-  <section class="combo-intro" aria-labelledby="combo-title">
+<main class="combo-redesign">
+  <?php $bundleHeadingTag = 'h1'; include __DIR__ . '/includes/combo-offers.php'; ?>
+
+  <section class="bundle-benefits" aria-labelledby="bundle-benefits-title">
+    <div class="bundle-benefits-band"><h2 id="bundle-benefits-title">Why choose combo?</h2></div>
     <div class="container">
-      <h1 id="combo-title">Save More When You Stock Up</h1>
-      <p class="combo-intro-subtitle">More protein. More savings. Fewer reorders.</p>
-      <p class="combo-intro-promo">🔥 Limited launch combo pricing — ending soon</p>
-      <div class="combo-savings-pill">Up to &#8377;<?php echo number_format($maxComboSaving); ?> OFF on combos</div>
+      <p class="bundle-benefits-subtitle">3 reasons our customers pick combos</p>
+      <div class="bundle-benefit-list">
+        <article><span class="bundle-benefit-icon" aria-hidden="true"><i class="bi bi-currency-rupee"></i></span><div><h3>Save up to &#8377;<?php echo number_format($maxComboSaving); ?></h3><p>More of your favourite bites, better combo value.</p></div></article>
+        <article><span class="bundle-benefit-icon" aria-hidden="true"><i class="bi bi-truck"></i></span><div><h3>Free shipping + fresh batch</h3><p>Freshly made snacks, delivered to your door.</p></div></article>
+        <article><span class="bundle-benefit-icon" aria-hidden="true"><i class="bi bi-heart"></i></span><div><h3>A flavour for everyone</h3><p>Delicious variety, perfect for the whole family.</p></div></article>
+      </div>
     </div>
   </section>
 
-  <section id="combo-offers" class="combo-offers" aria-label="Combo offers">
-    <div class="container combo-offer-grid">
-      <?php foreach ($comboOffers as $offerId => $offer): ?>
-        <article class="combo-offer-card combo-offer-<?php echo htmlspecialchars($offer['tone'], ENT_QUOTES, 'UTF-8'); ?>">
-          <?php if ($offer['tone'] === 'popular'): ?><div class="combo-offer-ribbon">MOST POPULAR</div><?php else: ?><div class="combo-offer-tag"><?php echo htmlspecialchars($offer['tag']); ?></div><?php endif; ?>
-          <div class="combo-offer-content">
-            <h2><?php echo htmlspecialchars($offer['name']); ?></h2>
-            <div class="combo-divider"></div>
-            <p class="combo-offer-save">Save &#8377;<?php echo number_format($offer['saving']); ?></p>
-            <a class="combo-offer-image" href="shop" aria-label="Browse snacks included in the <?php echo htmlspecialchars($offer['name']); ?>">
-              <img src="assets/images/<?php echo htmlspecialchars($offer['image']); ?>" alt="<?php echo htmlspecialchars($offer['alt']); ?>">
-            </a>
-            <p class="combo-offer-price">&#8377;<?php echo number_format($offer['price']); ?></p>
-            <p class="combo-offer-unit"><?php echo (int) $offer['boxes']; ?> full boxes</p>
-            <form class="combo-offer-form" method="post" action="add_to_cart">
-              <input type="hidden" name="id" value="<?php echo (int) $offerId; ?>">
-              <input type="hidden" name="quantity" value="1">
-              <button type="submit" class="combo-offer-button">Get Combo Deal</button>
-            </form>
-          </div>
-        </article>
-      <?php endforeach; ?>
-    </div>
-  </section>
+  <div class="bundle-launch-strip"><span aria-hidden="true">&#9889;</span> Discover your favourite combo today</div>
 
-  <section class="combo-benefits" aria-labelledby="combo-benefits-title">
-    <div class="combo-benefits-heading"><h2 id="combo-benefits-title">Why Choose Combo?</h2></div>
+  <section class="bundle-cta" aria-labelledby="bundle-cta-title">
     <div class="container">
-      <div class="combo-benefit-art"><img src="assets/images/Untitled%20design%20(37)%20(1).png" alt="Save more, fewer deliveries, family sharing, and always-ready snacks"></div>
-      <div class="combo-benefit-labels" aria-hidden="true"><span>Save more<br>per box</span><span>Fewer<br>reorders</span><span>Perfect<br>for family</span><span>Always have<br>healthy snacks ready</span></div>
-    </div>
-  </section>
-
-  <div class="combo-limited-strip">⚡ Only a few combo packs left today</div>
-
-<?php
-$videoReviewGroup = 'combo';
-include __DIR__ . '/includes/video-reviews.php';
-?>
-
-  <section class="combo-final" aria-labelledby="combo-final-title">
-    <div class="container">
-      <h2 id="combo-final-title">Ready to Switch to<br>Clean Protein Snacks?</h2>
-      <div class="combo-final-sparkle" aria-hidden="true">—　✦　✧　✦　—</div>
+      <h2 id="bundle-cta-title">Ready to Switch to<br>Clean Protein Snacks?</h2>
+      <div class="bundle-sparkles" aria-hidden="true"><span></span> &#10022; &#10022; &#10022; <span></span></div>
       <p>Save up to &#8377;<?php echo number_format($maxComboSaving); ?> today</p>
-      <a href="#combo-offers" class="combo-final-button">Get Your Combo Now</a>
+      <a href="#combo-offers" class="bundle-button">Get Your Combo Now</a>
     </div>
   </section>
+
+  <?php
+  $videoReviewGroup = 'combo';
+  include __DIR__ . '/includes/video-reviews.php';
+  ?>
 </main>
 
-<?php
-include 'includes/footer.php';
-?>
+<?php include 'includes/footer.php'; ?>

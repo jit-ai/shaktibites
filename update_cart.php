@@ -47,10 +47,12 @@ foreach ($_SESSION['cart'] as $cartId => $cartQty) {
 
 $cartCount = 0;
 $subtotal = 0;
+$savings = 0;
 foreach ($_SESSION['cart'] as $id => $qty) {
     if (isset($catalog[$id])) {
         $cartCount += (int) $qty;
         $subtotal += $catalog[$id]['price'] * (int) $qty;
+        $savings += max(0, ($catalog[$id]['original_price'] ?? $catalog[$id]['price']) - $catalog[$id]['price']) * (int) $qty;
     }
 }
 
@@ -58,6 +60,7 @@ echo json_encode([
     'ok' => true,
     'cart_count' => $cartCount,
     'subtotal' => $subtotal,
-    'tax' => (int) round($subtotal * 0.05),
-    'total' => (int) round($subtotal * 1.05),
+    'savings' => $savings,
+    'tax' => 0,
+    'total' => (int) round($subtotal),
 ]);

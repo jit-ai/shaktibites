@@ -266,13 +266,14 @@ function collectCartItems(): array
             'type'       => $products[$productId]['type'],
             'quantity'   => $quantity,
             'price'      => $price,
+            'selection'  => $products[$productId]['selection'] ?? null,
         ];
     }
     if (empty($items)) {
         throw new RuntimeException('Your cart is empty.');
     }
-    $tax = round($subtotal * (float) TAX_RATE, 2);
-    $total = round($subtotal + $tax, 2);
+    $tax = 0.0;
+    $total = round($subtotal, 2);
     return ['items' => $items, 'subtotal' => $subtotal, 'tax' => $tax, 'total' => $total];
 }
 
@@ -368,7 +369,25 @@ function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $pa
             "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)"
         );
         foreach ($cart['items'] as $item) {
-            $itemStmt->execute([$orderId, $item['product_id'], $item['quantity'], $item['price']]);
+            if ($item['type'] === 'custom_combo' && !empty($item['selection'])) {
+                $flavours = shakti_builder_products();
+                $original = 0;
+                foreach ($item['selection'] as $flavourId => $boxes) $original += $flavours[$flavourId]['price'] * $boxes;
+                $remaining = (int) round($item['price'] * $item['quantity'] * 100);
+                $parts = $item['selection']; $last = array_key_last($parts);
+                foreach ($parts as $flavourId => $boxes) {
+                    $quantity = $boxes * $item['quantity'];
+                    $lineCents = $flavourId === $last ? $remaining : (int) round($item['price'] * $item['quantity'] * 100 * ($flavours[$flavourId]['price'] * $boxes) / $original);
+                    $remaining -= $lineCents;
+                    // Individual rows preserve selected flavours and exact discounted totals.
+                    for ($box = 0; $box < $quantity; $box++) {
+                        $cents = intdiv($lineCents, $quantity) + ($box < $lineCents % $quantity ? 1 : 0);
+                        $itemStmt->execute([$orderId, $flavourId, 1, $cents / 100]);
+                    }
+                }
+            } else {
+                $itemStmt->execute([$orderId, $item['product_id'], $item['quantity'], $item['price']]);
+            }
         }
         $pdo->commit();
 

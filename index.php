@@ -119,62 +119,10 @@ include 'includes/header.php';
   </div>
 </section>
 
-<!-- ===== COMBO SECTION ===== -->
-<section class="combo-section">
-  <div class="container">
-    <h2 class="section-title text-center">Save More with Combo</h2>
-    <p class="section-sub text-center">Best value. More protein. More savings.</p>
-    <div class="combo-grid">
-
-      <div class="combo-card">
-        <div class="combo-top-label">STARTER COMBO</div>
-        <div class="combo-images">
-          <img src="assets/images/Combo-product-3.png" alt="Starter Pro Combo of 3 boxes" class="combo-prod-img-full">
-        </div>
-        <div class="combo-name">STARTER PRO COMBO</div>
-        <div class="combo-qty">3 BOXES</div>
-        <div class="combo-note">Try all three flavours</div>
-        <div class="combo-price">
-          <span class="price-old">699</span>
-          <span class="price-new">₹549</span>
-        </div>
-        <a href="combo" class="btn btn-buy">Buy Now</a>
-      </div>
-
-      <div class="combo-card best-value-card">
-        <div class="combo-best-badge">BEST VALUE</div>
-        <div class="combo-top-label" style="color:var(--orange);font-weight:800;">BEST VALUE</div>
-        <div class="combo-images">
-          <img src="assets/images/Combo-product-6.png" alt="Best Value Combo of 6 boxes" class="combo-prod-img-full">
-        </div>
-        <div class="combo-name">BEST VALUE COMBO</div>
-        <div class="combo-qty">6 BOXES</div>
-        <div class="combo-note" style="color:var(--orange);font-weight:600;">Only ₹16 per pack</div>
-        <div class="combo-price">
-          <span class="price-old">1494</span>
-          <span class="price-new">₹1199</span>
-        </div>
-        <a href="combo" class="btn btn-buy">Buy Now</a>
-      </div>
-
-      <div class="combo-card">
-        <div class="combo-top-label">POWER COMBO</div>
-        <div class="combo-images">
-          <img src="assets/images/Combo-product-9.png" alt="High Protein Combo" class="combo-prod-img-full">
-        </div>
-        <div class="combo-name">HIGH PROTEIN COMBO</div>
-        <div class="combo-qty">4 BOXES</div>
-        <div class="combo-note">For Fitness Lovers</div>
-        <div class="combo-price">
-          <span class="price-old">747</span>
-          <span class="price-new">₹699</span>
-        </div>
-        <a href="combo" class="btn btn-buy">Buy Now</a>
-      </div>
-
-    </div>
-  </div>
-</section>
+<!-- ===== BUILD YOUR COMBO ===== -->
+<div class="combo-redesign home-combo-bundles">
+  <?php $bundleHeadingTag = 'h2'; include __DIR__ . '/includes/combo-offers.php'; ?>
+</div>
 
 <!-- ===== SHIPPING BAR ===== -->
 <div class="shipping-bar">

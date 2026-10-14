@@ -197,14 +197,10 @@ include 'includes/header.php';
             <span>Shipping</span>
             <span style="color: var(--green);">Free</span>
         </div>
-        <div class="checkout-summary-row">
-            <span>Tax (GST)</span>
-            <span>&#8377;<?php echo number_format($subtotal * 0.05, 0); ?></span>
-        </div>
         <hr>
         <div class="checkout-total-row">
             <strong>Total</strong>
-            <strong style="color: var(--orange);">&#8377;<?php echo number_format($subtotal * 1.05, 0); ?></strong>
+            <strong style="color: var(--orange);">&#8377;<?php echo number_format($subtotal, 0); ?></strong>
         </div>
 
         <div class="checkout-guarantee">

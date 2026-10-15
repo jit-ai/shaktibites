@@ -25,15 +25,21 @@ if (empty($checkoutCart)) {
 }
 
 $page_title = 'Checkout';
+$checkoutTotal = 0;
+foreach ($checkoutCart as $productId => $quantity) $checkoutTotal += $products[$productId]['price'] * $quantity;
 include 'includes/header.php';
 ?>
 
 <!-- ===== CHECKOUT HERO ===== -->
+<section class="checkout-launchpad"><a href="./"><img src="assets/images/logo.PNG" alt="Shakti Bites"></a><p>REAL INGREDIENTS. REAL ENERGY.</p><h1>Your goodness bag is ready.</h1><p>Complete your checkout to bring home your favourite bites.</p><button type="button" id="checkout-reopen">Continue to checkout &#8594;</button><a href="cart">&#8592; Back to your cart</a></section>
+<div class="checkout-modal-backdrop" id="checkout-popup">
+<div class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-popup-title" tabindex="-1">
+<h2 id="checkout-popup-title" class="visually-hidden">Shakti Bites secure checkout</h2>
+<main class="commerce-page commerce-checkout">
 <section class="checkout-hero">
   <div class="container">
-    <p class="checkout-kicker">Secure checkout</p>
-    <h1 class="checkout-hero-title">Almost there</h1>
-    <p class="checkout-hero-sub">Complete your details and we’ll bring your protein snacks to your door.</p>
+    <div class="quick-checkout-brand"><a href="cart" aria-label="Back to cart">&#8592;</a><a href="./"><img src="assets/images/logo.PNG" alt="Shakti Bites"></a><button type="button" id="checkout-close" aria-label="Close checkout">&times;</button></div>
+    <div class="quick-checkout-banner">Real ingredients. Real energy. Delivered to your door.</div>
   </div>
 </section>
 
@@ -45,9 +51,15 @@ include 'includes/header.php';
       <!-- Checkout Form -->
       <div class="checkout-form-col">
         <div class="billing-details-card">
-          <h3 class="checkout-section-title"><i class="bi bi-geo-alt-fill"></i> Delivery Details</h3>
-          <p class="checkout-card-subtitle">Tell us where to deliver your Shakti Bites.</p>
           <form action="place-order" method="post" class="checkout-form" id="checkout-form">
+            <div id="checkout-phone-step" hidden>
+              <h1>Enter mobile number</h1><p>Provide your mobile number to continue</p>
+              <label class="phone-entry" for="checkout-mobile"><span>&#127470;&#127475; +91</span><input type="tel" id="checkout-mobile" autocomplete="tel-national" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile number" aria-describedby="checkout-phone-error"></label>
+              <p id="checkout-phone-error" role="status" aria-live="polite"></p>
+              <button type="button" class="quick-next" id="checkout-phone-next">Continue &#8594;</button>
+            </div>
+            <fieldset id="checkout-address-step" class="quick-checkout-fields">
+            <h2 class="checkout-section-title">Add shipping address</h2>
             <div class="form-row">
               <div class="form-group">
                 <label for="first-name">First Name *</label>
@@ -82,17 +94,23 @@ include 'includes/header.php';
               </div>
               <div class="form-group">
                 <label for="phone">Phone *</label>
-                <input type="tel" id="phone" autocomplete="tel" name="phone" placeholder="10-digit mobile number" required>
+                <input type="tel" id="phone" autocomplete="tel-national" name="phone" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile number" required>
               </div>
             </div>
-
             <div class="form-group">
               <label for="email">Email Address *</label>
               <input type="email" id="email" autocomplete="email" name="email" placeholder="your@email.com" required>
             </div>
+            <div class="quick-address-type"><span>Address type</span><label><input type="radio" name="address_type" value="home" checked> Home</label><label><input type="radio" name="address_type" value="office"> Office</label><label><input type="radio" name="address_type" value="other"> Others</label></div>
+            <button type="button" class="quick-next" id="checkout-address-next" hidden>Add address</button>
+            </fieldset>
+            <div id="checkout-phone-confirmation" class="quick-phone-confirmation" hidden><span id="checkout-phone-display"></span><button type="button" id="checkout-phone-edit">Edit</button></div>
+            <fieldset id="checkout-payment-step" class="quick-checkout-fields">
+            <div id="checkout-address-confirmation" class="quick-address-confirmation" hidden><strong>Delivering to</strong><p id="checkout-address-display"></p><button type="button" id="checkout-address-edit">Edit address</button></div>
+
 
           <fieldset class="checkout-choice-group">
-            <legend class="checkout-section-title">Account Options</legend>
+            <legend class="checkout-section-title"><span class="commerce-section-number">2</span> Your account</legend>
             <p class="checkout-choice-help">Choose how you would like to check out.</p>
             <div class="payment-options" id="account-options">
               <label class="payment-option" data-account="guest">
@@ -126,7 +144,7 @@ include 'includes/header.php';
 
           </fieldset>
           <fieldset class="checkout-choice-group">
-            <legend class="checkout-section-title">Payment Method</legend>
+            <legend class="checkout-section-title"><span class="commerce-section-number">3</span> Payment method</legend>
             <p class="checkout-choice-help">Select your preferred way to pay.</p>
             <div class="payment-options">
               <label class="payment-option" data-method="cod">
@@ -160,24 +178,25 @@ include 'includes/header.php';
             <button type="submit" class="btn btn-place-order" id="place-order-btn">
               <i class="bi bi-lock-fill"></i> <span>Place Order</span>
             </button>
+            <p class="commerce-tax-note">By placing your order, you agree to our <a href="terms">terms</a> and <a href="privacy">privacy policy</a>.</p>
+            </fieldset>
           </form>
         </div>
       </div>
 
 <!-- Order Summary -->
       <div class="checkout-summary-col">
-        <a class="checkout-edit-cart" href="cart"><span aria-hidden="true">&#8592;</span> Edit your cart</a>
-        <div class="checkout-summary-heading">
-          <h3>Your Order Summary</h3>
-          <i class="bi bi-bag-check"></i>
-        </div>
+        <details class="quick-order-summary"><summary><span>Order summary <small>(<?php echo array_sum($checkoutCart); ?> items)</small></span><strong>&#8377;<?php echo number_format($checkoutTotal); ?> <span aria-hidden="true">&#8250;</span></strong></summary>
+        <a class="checkout-edit-cart" href="cart">Edit your cart</a>
         <div class="checkout-items">
           <?php
           $subtotal = 0;
+          $orderSavings = 0;
           foreach ($checkoutCart as $productId => $quantity) {
               $productPrice = $products[$productId]['price'];
               $itemTotal = $productPrice * $quantity;
               $subtotal += $itemTotal;
+              $orderSavings += max(0, ($products[$productId]['original_price'] ?? $productPrice) - $productPrice) * $quantity;
               ?>
               <div class="checkout-item">
                   <img class="checkout-item-image" src="assets/images/<?php echo htmlspecialchars($products[$productId]['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
@@ -188,30 +207,36 @@ include 'includes/header.php';
           }
           ?>
         </div>
-        <hr>
-        <div class="checkout-summary-row">
-            <span>Subtotal</span>
-            <span>&#8377;<?php echo number_format($subtotal, 0); ?></span>
-        </div>
-        <div class="checkout-summary-row">
-            <span>Shipping</span>
-            <span style="color: var(--green);">Free</span>
-        </div>
-        <hr>
-        <div class="checkout-total-row">
-            <strong>Total</strong>
-            <strong style="color: var(--orange);">&#8377;<?php echo number_format($subtotal, 0); ?></strong>
+        <?php if ($orderSavings > 0): ?><div class="commerce-order-saving"><i class="bi bi-tag" aria-hidden="true"></i> You're saving &#8377;<?php echo number_format($orderSavings); ?> on this order</div><?php endif; ?>
+        <div class="checkout-price-breakdown">
+          <table class="checkout-price-table" aria-label="Order price breakdown">
+            <tbody>
+              <tr><th scope="row">Subtotal</th><td>&#8377;<?php echo number_format($subtotal, 0); ?></td></tr>
+              <tr><th scope="row">Shipping</th><td>Free</td></tr>
+            </tbody>
+            <tfoot><tr><th scope="row">Total</th><td data-checkout-total>&#8377;<?php echo number_format($subtotal, 0); ?></td></tr></tfoot>
+          </table>
         </div>
 
         <div class="checkout-guarantee">
             <i class="bi bi-shield-check"></i>
             <span>100% Secure Checkout</span>
         </div>
+        <div class="commerce-payments"><span>UPI</span><span>VISA</span><span>Mastercard</span><span>COD</span></div>
+        <a class="commerce-help" href="contact">Need a hand? We're here to help <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        </details>
+        <div class="quick-checkout-saving">Free shipping &middot; No hidden charges</div>
       </div>
 
     </div>
   </div>
 </section>
+<div class="quick-checkout-trust"><span>&#128274; Secure payments</span><span>&#128666; Delivered with care</span><span>&#10003; COD available</span></div>
+<div class="quick-checkout-policies"><a href="terms">Terms &amp; Conditions</a><a href="privacy">Privacy Policy</a><a href="contact">Need help?</a></div>
+</main>
+</div>
+</div>
+<script src="assets/js/checkout-steps.js?v=20261014-popup" defer></script>
 
 <script>
 (function () {
@@ -223,7 +248,7 @@ include 'includes/header.php';
     if (!form || !btn) { return; }
 
     function getTotalText() {
-        var el = document.querySelector('.checkout-total-row strong:last-child');
+        var el = document.querySelector('[data-checkout-total]');
         return el ? el.textContent.trim() : '';
     }
 
@@ -306,7 +331,7 @@ include 'includes/header.php';
                     })
                     .catch(function () { alert('Something went wrong during verification.'); setButtonBusy(false); });
             },
-            theme: { color: '#ff6b35' }
+            theme: { color: '#cf5a0a' }
         };
         var rzp = new Razorpay(options);
         rzp.open();

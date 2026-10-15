@@ -31,7 +31,7 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
 
     <!-- Mobile quick actions -->
     <div class="sb-nav-actions d-lg-none">
-      <a class="sb-nav-cart" href="cart" aria-label="View cart, <?php echo $cartCount; ?> item<?php echo $cartCount === 1 ? '' : 's'; ?>">
+      <a class="sb-nav-cart" href="cart" data-cart-open aria-haspopup="dialog" aria-controls="headerCartDrawer" aria-label="View cart, <?php echo $cartCount; ?> item<?php echo $cartCount === 1 ? '' : 's'; ?>">
         <i class="bi bi-cart" aria-hidden="true"></i>
         <span class="sb-nav-cart-count<?php echo $cartCount === 0 ? ' d-none' : ''; ?>"><?php echo $cartCount; ?></span>
       </a>
@@ -65,3 +65,5 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     <p class="sb-drawer-note"><i class="bi bi-truck" aria-hidden="true"></i> Free shipping above &#8377;499 &middot; COD available</p>
   </div>
 </div>
+
+<?php include __DIR__ . '/cart-drawer.php'; ?>

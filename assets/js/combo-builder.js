@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     el('builderSubtotal').textContent = money(subtotal);
     el('builderSaving').textContent = 'You Save ' + money(subtotal - total) + ' (' + plans[limit].discount + '%)';
     el('builderTotal').textContent = el('builderButtonTotal').textContent = money(total);
-    dialog.querySelector('.builder-add').disabled = selected !== limit;
     el('builderMessage').textContent = selected === limit ? 'Your combo is ready.' : 'Choose ' + (limit - selected) + ' more ' + (limit - selected === 1 ? 'box' : 'boxes') + ' to complete your combo.';
   }
   cards.forEach(card => {
@@ -49,5 +48,14 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   dialog.querySelector('.builder-clear').addEventListener('click', () => { cards.forEach(card => card.querySelector('input').value = 0); render(); });
   render();
-  form.addEventListener('submit', event => { if (count() !== limit) { event.preventDefault(); render(); } });
+  form.addEventListener('submit', event => {
+    if (count() !== limit) {
+      event.preventDefault();
+      render();
+      el('builderMessage').textContent = 'Please select ' + limit + ' boxes to add this combo to your cart. ' + (limit - count()) + ' more needed.';
+      el('builderMessage').setAttribute('role', 'alert');
+      const nextInput = cards.find(card => !card.querySelector('[data-change="1"]').disabled);
+      if (nextInput) nextInput.querySelector('[data-change="1"]').focus();
+    }
+  });
 });

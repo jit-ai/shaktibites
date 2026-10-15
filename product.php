@@ -63,24 +63,21 @@ $heroHeadline = [
   2 => '10g Protein Chocolate Bites That Actually Taste Amazing.',
   3 => '10g Protein Bites Made with Rich Dry Fruits & Clean Energy. Royal Taste.',
 ][$id];
-$momentsHeading = [
-  1 => 'Perfect For When You Need Real Energy',
-  2 => 'Perfect For',
-  3 => 'Perfect For Your Daily Energy Moments',
-][$id];
+$momentsHeading = 'Perfect For When You Need Real Energy';
 $comparison = $id === 1 ? ['Sugar spike & crash', 'Empty calories', 'Artificial sweetness', 'Makes you feel heavy'] : ($id === 2 ? ['Sugar-loaded sweets', 'Artificial chocolate', 'Refined sugar', 'Energy crash'] : ['Processed mithai', 'Added preservatives', 'Empty calories', 'Makes you feel sluggish']);
-$momentIcons = $id === 3
-  ? ['bi-flower1', 'bi-gift-fill', 'bi-car-front-fill']
-  : ($id === 2 ? ['bi-activity', 'bi-cup-hot-fill', 'bi-car-front-fill'] : ['bi-activity', 'bi-briefcase-fill', 'bi-car-front-fill']);
-$momentTitles = $id === 2
-  ? ['Pre Post Workout', 'Office Snacks', 'Travel Energy']
-  : ($id === 3 ? ['Pre Post Workout', 'Office Energy Boost', 'Travel / On the Go'] : ['Pre Post Workout', 'Office Energy Boost', 'Travel / On the Go']);
-$momentCopy = $id === 2
-  ? ['Fuel your fitness routine', 'Beat the work slump', 'Healthy on-the-go energy']
-  : ['Fuel your workouts without a sugar crash', 'Beat 4PM fatigue with a better snack', 'Clean energy for long days & travel'];
-$ingredientNote = $id === 3
-  ? ['No preservatives', 'No artificial sweeteners', 'No refined sugar']
-  : [];
+$momentTitles = ['Pre & Post Workout', 'Office Energy Boost', 'Travel / On the Go'];
+$momentCopy = ['A convenient bite for your active routine.', 'Your workday snack for busy afternoons.', 'A handy snack for busy days and journeys.'];
+$momentIcons = [
+  '<rect x="8" y="26" width="8" height="28" rx="4"/><rect x="20" y="16" width="12" height="48" rx="6"/><rect x="32" y="34" width="32" height="12"/><rect x="64" y="16" width="12" height="48" rx="6"/><rect x="80" y="26" width="8" height="28" rx="4"/>',
+  '<path d="M34 18v-4a6 6 0 0 1 6-6h16a6 6 0 0 1 6 6v4" fill="none" stroke="currentColor" stroke-width="5"/><rect x="12" y="20" width="72" height="52" rx="6"/><path d="M12 35q0 11 12 11h48q12 0 12-11" fill="none" stroke="var(--moment-card)" stroke-width="3"/><rect x="39" y="36" width="18" height="23" rx="4" fill="var(--moment-card)"/><path d="m50 39-7 11h6l-3 8 10-13h-7z"/>',
+  '<path d="m24 37 7-17a8 8 0 0 1 7-5h20a8 8 0 0 1 7 5l7 17M20 41l5-5h46l5 5v19H20z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><rect x="21" y="60" width="11" height="9" rx="3"/><rect x="64" y="60" width="11" height="9" rx="3"/><rect x="26" y="45" width="14" height="7" rx="3"/><rect x="56" y="45" width="14" height="7" rx="3"/><path d="m8 28 6 4M5 42h8M8 56l6-4m68-20 6-4m-5 14h8m-9 10 6 4" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>',
+];
+$majorIngredients = [
+  1 => ['Peanuts' => 0, 'Dates' => 2, 'Jaggery' => 4, 'Pea Protein' => 5, 'Sesame Seeds' => 10, 'Desi Ghee' => 7],
+  2 => ['Peanuts' => 0, 'Almonds' => 1, 'Dates' => 2, 'Cacao Powder' => 3, 'Jaggery' => 4, 'Pea Protein' => 5, 'Cardamom' => 6, 'Desi Ghee' => 7],
+  3 => ['Cashews' => 8, 'Almonds' => 1, 'Pistachio' => 9, 'Dates' => 2, 'Cardamom' => 6, 'Jaggery' => 4, 'Pea Protein' => 5, 'Desi Ghee' => 7],
+][$id];
+$ingredientImage = [1 => 'Peanut .JPG', 2 => 'Almond.JPG', 3 => 'Dryfruit.JPG'][$id];
 include 'includes/header.php';
 ?>
 
@@ -102,18 +99,30 @@ include 'includes/header.php';
 
   <div class="flavour-trust"><div class="container"><span><i class="bi bi-truck"></i> Free Shipping</span><span><i class="bi bi-cash-stack"></i> COD Available</span><span><i class="bi bi-lock-fill"></i> Secure Checkout</span></div></div>
 
-  <section class="flavour-ingredients"><div class="container">
-    <h2>Ingredients:</h2><p>Real ingredients = real energy. No chemicals. No shortcuts.</p>
-    <div class="ingredient-art"><img src="assets/images/Ingridents.png" alt="Natural ingredients" onerror="this.style.display='none'"><div class="ingredient-names"><?php foreach ($displayIngredients as $ingredient): ?><span><?php echo htmlspecialchars((string) $ingredient, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div></div>
-    <?php if ($ingredientNote): ?><div class="ingredient-promises"><?php foreach ($ingredientNote as $note): ?><span><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($note); ?></span><?php endforeach; ?></div><?php else: ?><strong>What you see is what you eat - no hidden chemicals.</strong><?php endif; ?>
-  </div></section>
+  <section class="flavour-ingredients ingredient-reference" aria-labelledby="ingredients-heading">
+    <h2 id="ingredients-heading" class="visually-hidden">Major Ingredients</h2>
+    <img class="ingredient-reference-image" src="assets/images/<?php echo rawurlencode($ingredientImage); ?>" alt="Major Ingredients: <?php echo htmlspecialchars(implode(', ', array_keys($majorIngredients)), ENT_QUOTES, 'UTF-8'); ?>. Real ingredients = real energy. No chemicals. No shortcuts. No artificial preservatives. No refined sugar. No artificial sweeteners." width="2752" height="1536" loading="lazy" decoding="async">
+  </section>
 
   <section class="flavour-compare"><div class="container"><h2>Why Shakti Bites &gt; Regular Mithai</h2><div class="flavour-compare-grid"><div><h3>Other Snacks</h3><ul><?php foreach ($comparison as $item): ?><li><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div><div class="flavour-compare-good"><h3><i class="bi bi-patch-check-fill"></i> Shakti Bites</h3><ul><?php foreach ($displayBenefits as $benefit): ?><li><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div></div></div></section>
 
 
   <div class="fresh-strip"><i class="bi bi-lightning-charge-fill"></i> Selling Fast - Limited Fresh Batch Available Today</div>
 
-  <section class="flavour-moments"><div class="container"><h2><?php echo $momentsHeading; ?></h2><div class="moment-grid"><?php foreach ($momentTitles as $index => $occasion): ?><article><img class="moment-icon-art" src="assets/images/<?php echo $index + 1; ?><?php echo $index === 2 ? ' (1)' : ''; ?>.png" alt="" aria-hidden="true"><h3><?php echo htmlspecialchars($occasion); ?></h3><p><?php echo $momentCopy[$index]; ?></p></article><?php endforeach; ?></div></div></section>
+  <section class="flavour-moments" aria-labelledby="moments-heading">
+    <div class="container">
+      <h2 id="moments-heading"><?php echo $momentsHeading; ?></h2>
+      <div class="moment-grid">
+        <?php foreach ($momentTitles as $index => $occasion): ?>
+          <article>
+            <svg class="moment-symbol" viewBox="0 0 96 80" fill="currentColor" aria-hidden="true" focusable="false"><?php echo $momentIcons[$index]; ?></svg>
+            <h3><?php echo htmlspecialchars($occasion, ENT_QUOTES, 'UTF-8'); ?></h3>
+            <p><?php echo htmlspecialchars($momentCopy[$index], ENT_QUOTES, 'UTF-8'); ?></p>
+          </article>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
 
   <section class="flavour-combo"><div class="container"><h2>Want Better Value?</h2><p>Best Value. More Protein. More Savings.</p><div class="combo-banner"><div><strong>SAVE MORE WITH COMBO</strong><p>Best Value. More Protein. More Savings.</p><b>Save &#8377;300</b><small>Only &#8377;20 Per Laddoo</small><a href="combo">Get This Combo</a></div><img src="assets/images/<?php echo htmlspecialchars($comboImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?> combo"></div></div></section>
 

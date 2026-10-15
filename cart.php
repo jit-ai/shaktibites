@@ -14,12 +14,19 @@ if (empty($_SESSION['cart_token'])) {
 
 // Single boxes and combo packs, priced from the shared catalogue
 $products = shakti_cart_catalog();
+$validCart = [];
+foreach ($_SESSION['cart'] as $productId => $quantity) {
+    if (isset($products[$productId]) && (int) $quantity > 0) $validCart[$productId] = (int) $quantity;
+}
+$bagCount = array_sum($validCart);
 ?>
 
+<main class="commerce-page commerce-cart">
 <!-- ===== CART HERO ===== -->
 <section class="cart-hero">
   <div class="container">
-    <h1 class="cart-hero-title">Your Shopping Cart</h1>
+    <nav class="commerce-steps" aria-label="Order progress"><span class="is-current" aria-current="step">01 &nbsp; Your cart</span><span>02 &nbsp; Delivery &amp; payment</span><span>03 &nbsp; All done</span></nav>
+    <div class="commerce-title-row"><div><p class="commerce-eyebrow">GOOD FOOD. GREAT CHOICES.</p><h1 class="cart-hero-title">Your cart <span id="bag-count"><?php echo $bagCount; ?></span></h1><p>A little closer to better everyday snacking.</p></div><a href="shop" class="commerce-back">Continue shopping <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
   </div>
 </section>
 
@@ -30,9 +37,11 @@ $products = shakti_cart_catalog();
 
 <!-- Cart Items -->
 <div class="cart-items-col">
-    <?php if (empty($_SESSION['cart'])): ?>
-        <p>Your cart is empty.</p>
+    <?php if (empty($validCart)): ?>
+        <div class="commerce-empty"><div class="commerce-empty-icon"><i class="bi bi-bag-heart" aria-hidden="true"></i></div><h2>Your next good habit starts here.</h2><p>Your cart is empty. Fill it with a little real energy.</p><a href="shop" class="commerce-primary">Explore Shakti Bites <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
     <?php else: ?>
+        <div class="commerce-delivery"><i class="bi bi-truck" aria-hidden="true"></i><div><strong>Good snacks, delivered to your door</strong><span>Free shipping on this order</span></div><i class="bi bi-check-circle-fill" aria-hidden="true"></i></div>
+        <div class="cart-list-label"><span>YOUR GOODNESS BAG</span><span>QUANTITY</span></div>
         <?php $itemIndex = 1; ?>
         <?php foreach ($_SESSION['cart'] as $productId => $quantity): ?>
             <?php
@@ -64,7 +73,7 @@ $products = shakti_cart_catalog();
                         <button class="qty-btn" onclick="incrementCart(<?php echo $itemIndex; ?>)">+</button>
                     </div>
                 </div>
-                <button class="cart-item-remove" onclick="removeItem(<?php echo $itemIndex; ?>)">×</button>
+                <button class="cart-item-remove" onclick="removeItem(<?php echo $itemIndex; ?>)" aria-label="Remove <?php echo htmlspecialchars($productName, ENT_QUOTES, 'UTF-8'); ?>"><i class="bi bi-trash3" aria-hidden="true"></i></button>
             </div>
             <?php $itemIndex++; ?>
         <?php endforeach; ?>
@@ -73,7 +82,7 @@ $products = shakti_cart_catalog();
 
 <!-- Cart Summary -->
 <div class="cart-summary-col">
-    <h4>Order Summary</h4>
+    <p class="commerce-eyebrow">THE HAPPY TOTAL</p><h4>Order summary</h4>
     <?php 
         $subtotal = 0;
         $savings = 0;
@@ -101,13 +110,24 @@ $products = shakti_cart_catalog();
         <strong>Total</strong>
         <strong>₹<?php echo number_format($total, 0); ?></strong>
     </div>
-    <a href="checkout" class="btn btn-checkout">Proceed to Checkout</a>
+    <?php if ($bagCount > 0): ?><a href="checkout" class="btn btn-checkout"><i class="bi bi-lock" aria-hidden="true"></i> Checkout securely <i class="bi bi-arrow-right" aria-hidden="true"></i></a><?php endif; ?>
     <a href="shop" class="btn btn-continue">Continue Shopping</a>
+    <p class="commerce-tax-note">All taxes included. No surprises at checkout.</p>
+    <div class="commerce-payments"><span>UPI</span><span>VISA</span><span>Mastercard</span><span>COD</span></div>
+    <div class="commerce-safe"><i class="bi bi-shield-check" aria-hidden="true"></i> Safe payments. Happy snacking.</div>
 </div>
 
     </div>
   </div>
 </section>
+
+<section class="commerce-recommendations"><div class="container"><div class="commerce-recommend-heading"><div><p class="commerce-eyebrow">A LITTLE MORE GOODNESS</p><h2>Meet your next favourite.</h2></div><a href="shop">Shop all <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div><div class="commerce-product-grid">
+<?php foreach (shakti_catalog() as $recommended): ?>
+  <article class="commerce-product"><a href="product/<?php echo rawurlencode($recommended['slug']); ?>"><img src="assets/images/<?php echo htmlspecialchars($recommended['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($recommended['name'], ENT_QUOTES, 'UTF-8'); ?>" loading="lazy"><span class="commerce-product-tag"><?php echo htmlspecialchars($recommended['label']); ?></span><h3><?php echo htmlspecialchars($recommended['name']); ?></h3></a><div><strong>&#8377;<?php echo number_format($recommended['price']); ?></strong><form action="add_to_cart" method="post"><input type="hidden" name="id" value="<?php echo $recommended['id']; ?>"><input type="hidden" name="quantity" value="1"><button type="submit" aria-label="Add <?php echo htmlspecialchars($recommended['name'], ENT_QUOTES, 'UTF-8'); ?> to cart">ADD +</button></form></div></article>
+<?php endforeach; ?>
+</div></div></section>
+<div class="commerce-benefits"><span><i class="bi bi-flower1" aria-hidden="true"></i> Real ingredients</span><span><i class="bi bi-box-seam" aria-hidden="true"></i> Packed with care</span><span><i class="bi bi-shield-check" aria-hidden="true"></i> Secure checkout</span></div>
+</main>
 
 <script>
 const cartToken = '<?php echo $_SESSION['cart_token']; ?>';
@@ -126,6 +146,7 @@ async function persistCartChange(item, quantity) {
 }
 
 function updateCartSummary(result) {
+  document.getElementById('bag-count').textContent = result.cart_count;
   document.getElementById('cart-savings').hidden = result.savings <= 0;
   document.getElementById('cart-savings-amount').textContent = formatMoney(result.savings);
   const rows = document.querySelectorAll('.cart-summary-row');

@@ -13,7 +13,7 @@
             <h3><?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
             <p class="builder-protein">&#10086; 10g Protein / Bite</p>
             <p class="builder-unit-price">&#8377;<?php echo $flavour['price']; ?>/box</p>
-            <div class="builder-stepper"><button type="button" data-change="-1" aria-label="Remove one <?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?> box">&minus;</button><input type="number" min="0" max="<?php echo $builderBoxes; ?>" step="1" name="flavours[<?php echo $flavourId; ?>]" value="<?php echo $builderBoxes / 3; ?>" aria-label="<?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?> quantity"><button type="button" data-change="1" aria-label="Add one <?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?> box">+</button></div>
+            <div class="builder-stepper"><button type="button" data-change="-1" aria-label="Remove one <?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?> box">&minus;</button><input type="number" min="0" max="<?php echo $builderBoxes; ?>" step="1" name="flavours[<?php echo $flavourId; ?>]" value="0" aria-label="<?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?> quantity"><button type="button" data-change="1" aria-label="Add one <?php echo htmlspecialchars($flavour['name'], ENT_QUOTES, 'UTF-8'); ?> box">+</button></div>
           </article>
         <?php endforeach; ?>
       </div>

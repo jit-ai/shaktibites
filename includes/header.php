@@ -23,7 +23,7 @@ $siteBasePath = ($scriptDirectory === '' || $scriptDirectory === '.') ? '/' : $s
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=20261008-range-background-fix">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261015-brand-cart">
 </head>
-<body>
+<body<?php if (($page_title ?? '') === 'Checkout') echo ' class="quick-checkout-page"'; ?>>
 <?php include 'navbar.php'; ?>

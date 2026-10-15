@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <img src="assets/images/Banner.png" alt="Shakti Bites Banner" class="img-fluid rounded shadow-sm">
+                <img src="assets/images/Banner.PNG" alt="Shakti Bites Banner" class="img-fluid rounded shadow-sm">
             </div>
         </div>
     </div>

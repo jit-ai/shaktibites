@@ -202,7 +202,7 @@ a  { text-decoration: none; }
     HERO SECTION
     ============================================ */
 .hero-section {
-  background: url('../images/Banner.png') center/cover no-repeat;
+  background: url('../images/Banner.PNG') center/cover no-repeat;
   padding: 100px 0 100px;
   position: relative;
   background-size:100% 100%;
@@ -2522,10 +2522,12 @@ a  { text-decoration: none; }
 
 .why-section {
   background-color: #f8ebdf;
-  background-size: contain;
-  padding: clamp(60px, 7vw, 95px) 0 clamp(105px, 13vw, 180px);
+  background-size: 100% 100%;
+  background-position: center top;
+  margin-top: 0;
+  padding: 100px 0;
 }
-.why-section .section-title { margin-bottom: 28px; }
+.why-section .section-title { margin-top: 0; margin-bottom: 28px; }
 .compare-grid { max-width: 1120px; gap: 7px; margin-bottom: 0; }
 .compare-card, .compare-card.featured-card {
   border: 0;
@@ -2605,7 +2607,7 @@ a  { text-decoration: none; }
 }
 .sb-footer .footer-column, .sb-footer .footer-about { min-width: 0; }
 .sb-footer .footer-logo { display: inline-block; margin-bottom: 12px; }
-.sb-footer .footer-logo img { width: 82px; height: 82px; object-fit: contain; }
+.sb-footer .footer-logo img { height: 48px; object-fit: contain; }
 .sb-footer .footer-tagline { max-width: 370px; margin: 0 0 18px; font-size: 13px; line-height: 1.75; color: #664432; }
 .sb-footer .footer-heading { margin: 8px 0 17px; color: #563121; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; }
 .sb-footer .footer-links, .sb-footer .footer-contact { padding: 0; margin: 0; list-style: none; }

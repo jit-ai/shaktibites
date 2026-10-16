@@ -30,7 +30,7 @@ if ($error !== null) {
 }
 
 try {
-    $cart = collectCartItems();
+    $cart = collectCartItems('online');
 } catch (RuntimeException $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     exit;

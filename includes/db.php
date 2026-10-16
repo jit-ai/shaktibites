@@ -243,7 +243,7 @@ function generateOrderNumber(PDO $pdo): string
     return $prefix . $date . str_pad((string) $seq, 4, '0', STR_PAD_LEFT);
 }
 
-function collectCartItems(): array
+function collectCartItems(?string $paymentMethod = null): array
 {
     $cart = $_SESSION['cart'] ?? [];
     $products = getCartProducts();
@@ -274,6 +274,10 @@ function collectCartItems(): array
     }
     $tax = 0.0;
     $total = round($subtotal, 2);
+    if ($paymentMethod !== null) {
+        require_once __DIR__ . '/checkout-pricing.php';
+        $total = shakti_checkout_pricing($cart, $products, $paymentMethod)['total'];
+    }
     return ['items' => $items, 'subtotal' => $subtotal, 'tax' => $tax, 'total' => $total];
 }
 
@@ -333,7 +337,7 @@ function ensureCatalogProductRows(PDO $pdo): void
 
 function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $paymentStatus, ?string $razorpayPaymentId = null): array
 {
-    $cart = collectCartItems();
+    $cart = collectCartItems($paymentMethod);
     ensureCatalogProductRows($pdo);
 
     $orderNumber = generateOrderNumber($pdo);

@@ -129,6 +129,7 @@ function shakti_cart_catalog(): array
             'price' => (float) $entry['price'],
             'image' => (string) $entry['image'],
             'type'  => (string) $entry['type'],
+            'boxes' => (int) ($entry['boxes'] ?? (isset($entry['includes']) ? count($entry['includes']) : 1)),
             'slug'  => (string) $entry['slug'],
         ];
     }

@@ -25,6 +25,9 @@ if (empty($checkoutCart)) {
 }
 
 $page_title = 'Checkout';
+require_once __DIR__ . '/includes/checkout-pricing.php';
+$codPricing = shakti_checkout_pricing($checkoutCart, $products, 'cod');
+$onlinePricing = shakti_checkout_pricing($checkoutCart, $products, 'online');
 $checkoutTotal = 0;
 foreach ($checkoutCart as $productId => $quantity) $checkoutTotal += $products[$productId]['price'] * $quantity;
 include 'includes/header.php';
@@ -151,14 +154,14 @@ include 'includes/header.php';
                 <input type="radio" name="payment" value="cod" checked>
                 <span class="payment-option-details">
                   <i class="bi bi-cash-stack"></i> <strong>Cash on Delivery</strong>
-                  <small>Pay when you receive your order</small>
+                  <small>Pay on delivery &middot; &#8377;<?php echo $codPricing['cod_fee']; ?> COD fee</small>
                 </span>
               </label>
               <label class="payment-option" data-method="online">
                 <input type="radio" name="payment" value="online">
                 <span class="payment-option-details">
                   <i class="bi bi-credit-card"></i> <strong>Online Payment</strong>
-                  <small>UPI / Card / Netbanking</small>
+                  <small>UPI / Card / Netbanking &middot; Save &#8377;<?php echo $onlinePricing['prepaid_discount']; ?> extra</small>
                 </span>
               </label>
             </div>
@@ -213,8 +216,9 @@ include 'includes/header.php';
             <tbody>
               <tr><th scope="row">Subtotal</th><td>&#8377;<?php echo number_format($subtotal, 0); ?></td></tr>
               <tr><th scope="row">Shipping</th><td>Free</td></tr>
+              <tr id="checkout-payment-adjustment"><th scope="row">COD fee</th><td>&#8377;<?php echo $codPricing['cod_fee']; ?></td></tr>
             </tbody>
-            <tfoot><tr><th scope="row">Total</th><td data-checkout-total>&#8377;<?php echo number_format($subtotal, 0); ?></td></tr></tfoot>
+            <tfoot><tr><th scope="row">Total</th><td data-checkout-total>&#8377;<?php echo number_format($codPricing['total'], 0); ?></td></tr></tfoot>
           </table>
         </div>
 
@@ -225,7 +229,7 @@ include 'includes/header.php';
         <div class="commerce-payments"><span>UPI</span><span>VISA</span><span>Mastercard</span><span>COD</span></div>
         <a class="commerce-help" href="contact">Need a hand? We're here to help <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
         </details>
-        <div class="quick-checkout-saving">Free shipping &middot; No hidden charges</div>
+        <div class="quick-checkout-saving">Prepay and save &#8377;<?php echo $onlinePricing['prepaid_discount']; ?> extra &middot; COD fee &#8377;<?php echo $codPricing['cod_fee']; ?></div>
       </div>
 
     </div>
@@ -259,6 +263,14 @@ include 'includes/header.php';
 
     function refreshButton() {
         var online = getPaymentMethod() === 'online';
+        var prices = <?php echo json_encode(['cod' => $codPricing, 'online' => $onlinePricing]); ?>;
+        var price = online ? prices.online : prices.cod;
+        var money = function (value) { return '\u20b9' + Number(value).toLocaleString('en-IN'); };
+        document.querySelector('[data-checkout-total]').textContent = money(price.total);
+        document.querySelector('.quick-order-summary summary strong').firstChild.textContent = money(price.total) + ' ';
+        var adjustment = document.getElementById('checkout-payment-adjustment');
+        adjustment.querySelector('th').textContent = online ? 'Prepaid discount' : 'COD fee';
+        adjustment.querySelector('td').textContent = (online ? '\u2212' : '') + money(online ? price.prepaid_discount : price.cod_fee);
         btn.querySelector('i').className = online ? 'bi bi-credit-card' : 'bi bi-lock-fill';
         btn.querySelector('span').textContent = online ? ('Pay ' + getTotalText() + ' Online') : 'Place Order';
         if (note) { note.style.display = online ? 'flex' : 'none'; }

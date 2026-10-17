@@ -66,7 +66,7 @@ $bagCount = array_sum($validCart);
                         <strong class="cart-discounted-price">&#8377;<?php echo number_format($productPrice); ?></strong>
                         <span class="cart-price-unit">each</span>
                     </div>
-                    <?php if ($itemSaving > 0): ?><p class="cart-item-saving">You save &#8377;<?php echo number_format($itemSaving); ?> per combo</p><?php endif; ?>
+                    <?php if ($itemSaving > 0): ?><p class="cart-item-saving">You save &#8377;<?php echo number_format($itemSaving); ?> <?php echo $products[$productId]['type'] === 'single' ? 'per box' : 'per combo'; ?></p><?php endif; ?>
                     <div class="cart-item-quantity">
                         <button class="qty-btn" onclick="decrementCart(<?php echo $itemIndex; ?>)">-</button>
                         <span id="qty-<?php echo $itemIndex; ?>"><?php echo $quantity; ?></span>

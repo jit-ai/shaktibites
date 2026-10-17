@@ -125,7 +125,7 @@ function shakti_cart_catalog(): array
     foreach (shakti_orderable_catalog() as $id => $entry) {
         $items[$id] = [
             'name'  => (string) $entry['name'],
-            'original_price' => (float) $entry['price'] + (float) ($entry['saving'] ?? 0),
+            'original_price' => (float) ($entry['original_price'] ?? ($entry['type'] === 'single' ? 349 : $entry['price'] + ($entry['saving'] ?? 0))),
             'price' => (float) $entry['price'],
             'image' => (string) $entry['image'],
             'type'  => (string) $entry['type'],

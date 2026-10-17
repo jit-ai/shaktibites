@@ -51,8 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
       items.append(empty);
     }
     document.getElementById('headerCartCount').textContent = data.cart_count;
-    document.getElementById('headerCartTotal').textContent = money(data.total);
-    document.getElementById('headerCartSaving').textContent = data.savings > 0 ? 'You save ' + money(data.savings) + ' on this order!' : 'Free shipping \u00b7 COD available';
+    document.getElementById('headerCartTotal').textContent = money(data.online.total);
+    document.getElementById('headerCartSaving').textContent = 'You save ' + money(data.savings + data.online.prepaid_discount) + ' on this order with online payment';
+    document.getElementById('bagCodAlternative').textContent = data.cart_count ? 'or ' + money(data.cod.total) + ' with COD' : 'Your bag is empty';
+    document.getElementById('bagOrderLabel').textContent = 'Order total (' + data.online.boxes + (data.online.boxes === 1 ? ' box)' : ' boxes)');
+    document.getElementById('bagOriginalTotal').textContent = money(data.original_total);
+    document.getElementById('bagSingleDiscount').textContent = '\u2212 ' + money(data.single_savings);
+    document.getElementById('bagComboDiscount').textContent = '\u2212 ' + money(data.combo_savings);
+    document.getElementById('bagSingleRow').hidden = !data.single_savings;
+    document.getElementById('bagComboRow').hidden = !data.combo_savings;
+    document.getElementById('bagPrepaidDiscount').textContent = '\u2212 ' + money(data.online.prepaid_discount);
+    document.getElementById('bagCodFee').textContent = '+ ' + money(data.cod.cod_fee);
+    document.getElementById('bagOnlineTotal').textContent = money(data.online.total);
+    document.getElementById('bagCodTotal').textContent = money(data.cod.total);
+    ['bagPriceSummary', 'bagDelivery', 'headerCartSaving'].forEach(id => document.getElementById(id).hidden = !data.cart_count);
     const next = document.getElementById('headerCartContinue');
     next.href = data.cart_count ? 'checkout' : 'shop';
     next.firstChild.textContent = data.cart_count ? 'Continue ' : 'Shop bites ';

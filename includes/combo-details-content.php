@@ -1,8 +1,9 @@
 <?php
+$currentComboPlans = shakti_builder_plans();
 $comboFaqs = [
     ['How many laddus come in each combo?', 'Each box has 6 laddus. A 3-box combo has 18, a 6-box combo has 36, and a 9-box combo has 54.'],
     ['Can I mix flavours in a combo?', 'Yes. Pick any flavours you like in every combo.'],
-    ['How much will I save?', 'Up to ₹91 on 3 boxes, ₹341 on 6 boxes and ₹682 on 9 boxes. The exact saving depends on the flavours you pick.'],
+    ['How much will I save?', sprintf('Up to ₹%s on 3 boxes, ₹%s on 6 boxes and ₹%s on 9 boxes. The exact saving depends on the flavours you pick.', shakti_price_text($currentComboPlans[3]['saving']), shakti_price_text($currentComboPlans[6]['saving']), shakti_price_text($currentComboPlans[9]['saving']))],
     ['Is delivery free? Is COD available?', 'Yes, delivery is free on combos. COD is available for a small fee: ₹50 for 3 boxes, ₹75 for 6 boxes and ₹100 for 9 boxes. Pay online and save more, with no COD fee. Prepaid discounts are ₹30, ₹50 and ₹75 respectively.'],
     ['Will a big combo stay fresh?', 'Shakti Bites stay fresh for 30 days from packing. Store them in an airtight container in a cool, dry place, and refrigerate in hot or humid weather. Choose the combo size you can finish in 30 days.'],
 ];

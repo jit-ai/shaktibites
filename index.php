@@ -2,6 +2,8 @@
 $page_title = 'Home';
 $meta_title = 'Protein Laddu – 10g Protein per Laddu | Shakti Bites';
 $meta_description = 'Shop Shakti Bites protein laddu and protein bites. 10g protein per laddu, sweetened with dates and jaggery. No refined sugar, no preservatives. Free delivery on orders ₹499+.';
+require_once __DIR__ . '/includes/catalog.php';
+$homeStartingPrice = min(array_column(shakti_catalog(), 'price'));
 include 'includes/header.php';
 ?>
 
@@ -16,7 +18,7 @@ include 'includes/header.php';
           <a href="shop" class="btn btn-hero-white">Shop Now</a>
           <a href="combo" class="btn btn-hero-outline">Get Best Value Combo</a>
         </div>
-        <div class="launch-badge">Starting &#8377;249 &middot; Free Delivery on Orders &#8377;499+</div><div class="home-prepaid-note">&#128176; Save up to &#8377;75 with Prepaid Orders</div>
+        <div class="launch-badge">Starting &#8377;<?php echo shakti_price_text($homeStartingPrice); ?> &middot; Free Delivery on Orders &#8377;499+</div><div class="home-prepaid-note">&#128176; Save up to &#8377;75 with Prepaid Orders</div>
       </div>
     </div>
   </div>

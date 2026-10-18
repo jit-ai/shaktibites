@@ -55,20 +55,20 @@ $bagCount = array_sum($validCart);
                 }
                 $productName = $products[$productId]['name'];
                 $productImg = $products[$productId]['image'];
-                $productPrice = (int) $products[$productId]['price'];
-                $originalPrice = (int) ($products[$productId]['original_price'] ?? $productPrice);
+                $productPrice = (float) $products[$productId]['price'];
+                $originalPrice = (float) ($products[$productId]['original_price'] ?? $productPrice);
                 $itemSaving = max(0, $originalPrice - $productPrice);
             ?>
-            <div class="cart-item" data-product-id="<?php echo (int) $productId; ?>" data-price="<?php echo (int) $productPrice; ?>">
+            <div class="cart-item" data-product-id="<?php echo (int) $productId; ?>" data-price="<?php echo (float) $productPrice; ?>">
                 <img src="assets/images/<?php echo $productImg; ?>" alt="<?php echo htmlspecialchars($productName); ?>" class="cart-item-image">
                 <div class="cart-item-details">
                     <h5><?php echo htmlspecialchars($productName); ?></h5>
                     <div class="cart-item-pricing">
-                        <?php if ($itemSaving > 0): ?><s class="cart-original-price">&#8377;<?php echo number_format($originalPrice); ?></s><?php endif; ?>
-                        <strong class="cart-discounted-price">&#8377;<?php echo number_format($productPrice); ?></strong>
+                        <?php if ($itemSaving > 0): ?><s class="cart-original-price">&#8377;<?php echo shakti_price_text($originalPrice); ?></s><?php endif; ?>
+                        <strong class="cart-discounted-price">&#8377;<?php echo shakti_price_text($productPrice); ?></strong>
                         <span class="cart-price-unit">each</span>
                     </div>
-                    <?php if ($itemSaving > 0): ?><p class="cart-item-saving">You save &#8377;<?php echo number_format($itemSaving); ?> <?php echo $products[$productId]['type'] === 'single' ? 'per box' : 'per combo'; ?></p><?php endif; ?>
+                    <?php if ($itemSaving > 0): ?><p class="cart-item-saving">You save &#8377;<?php echo shakti_price_text($itemSaving); ?> <?php echo $products[$productId]['type'] === 'single' ? 'per box' : 'per combo'; ?></p><?php endif; ?>
                     <div class="cart-item-quantity">
                         <button class="qty-btn" onclick="decrementCart(<?php echo $itemIndex; ?>)">-</button>
                         <span id="qty-<?php echo $itemIndex; ?>"><?php echo $quantity; ?></span>
@@ -99,18 +99,18 @@ $bagCount = array_sum($validCart);
         $tax = 0;
         $total = $cartPricing['total'];
     ?>
-    <div class="cart-savings-summary" id="cart-savings" <?php if ($savings <= 0) echo 'hidden'; ?>><span>You save on this order</span><strong id="cart-savings-amount">&#8377;<?php echo number_format($savings); ?></strong></div>
+    <div class="cart-savings-summary" id="cart-savings" <?php if ($savings <= 0) echo 'hidden'; ?>><span>You save on this order</span><strong id="cart-savings-amount">&#8377;<?php echo shakti_price_text($savings); ?></strong></div>
     <div class="cart-summary-row"><span>Subtotal (after discount)</span>
-        <span>₹<?php echo number_format($subtotal, 0); ?></span>
+        <span>₹<?php echo shakti_price_text($subtotal, 0); ?></span>
     </div>
     <div class="cart-summary-row">
         <span>Shipping</span>
-        <span><?php echo $cartPricing['shipping'] ? '&#8377;' . number_format($cartPricing['shipping']) : 'Free'; ?></span>
+        <span><?php echo $cartPricing['shipping'] ? '&#8377;' . shakti_price_text($cartPricing['shipping']) : 'Free'; ?></span>
     </div>
     <hr>
     <div class="cart-total-row">
         <strong>Total</strong>
-        <strong>₹<?php echo number_format($total, 0); ?></strong>
+        <strong>₹<?php echo shakti_price_text($total, 0); ?></strong>
     </div>
     <?php if ($bagCount > 0): ?><a href="checkout" class="btn btn-checkout"><i class="bi bi-lock" aria-hidden="true"></i> Checkout securely <i class="bi bi-arrow-right" aria-hidden="true"></i></a><?php endif; ?>
     <a href="shop" class="btn btn-continue">Continue Shopping</a>
@@ -125,7 +125,7 @@ $bagCount = array_sum($validCart);
 
 <section class="commerce-recommendations"><div class="container"><div class="commerce-recommend-heading"><div><p class="commerce-eyebrow">A LITTLE MORE GOODNESS</p><h2>Meet your next favourite.</h2></div><a href="shop">Shop all <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div><div class="commerce-product-grid">
 <?php foreach (shakti_catalog() as $recommended): ?>
-  <article class="commerce-product"><a href="product/<?php echo rawurlencode($recommended['slug']); ?>"><img src="assets/images/<?php echo htmlspecialchars($recommended['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($recommended['name'], ENT_QUOTES, 'UTF-8'); ?>" loading="lazy"><span class="commerce-product-tag"><?php echo htmlspecialchars($recommended['label']); ?></span><h3><?php echo htmlspecialchars($recommended['name']); ?></h3></a><div><strong>&#8377;<?php echo number_format($recommended['price']); ?></strong><form action="add_to_cart" method="post"><input type="hidden" name="id" value="<?php echo $recommended['id']; ?>"><input type="hidden" name="quantity" value="1"><button type="submit" aria-label="Add <?php echo htmlspecialchars($recommended['name'], ENT_QUOTES, 'UTF-8'); ?> to cart">ADD +</button></form></div></article>
+  <article class="commerce-product"><a href="product/<?php echo rawurlencode($recommended['slug']); ?>"><img src="assets/images/<?php echo htmlspecialchars($recommended['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($recommended['name'], ENT_QUOTES, 'UTF-8'); ?>" loading="lazy"><span class="commerce-product-tag"><?php echo htmlspecialchars($recommended['label']); ?></span><h3><?php echo htmlspecialchars($recommended['name']); ?></h3></a><div><strong>&#8377;<?php echo shakti_price_text($recommended['price']); ?></strong><form action="add_to_cart" method="post"><input type="hidden" name="id" value="<?php echo $recommended['id']; ?>"><input type="hidden" name="quantity" value="1"><button type="submit" aria-label="Add <?php echo htmlspecialchars($recommended['name'], ENT_QUOTES, 'UTF-8'); ?> to cart">ADD +</button></form></div></article>
 <?php endforeach; ?>
 </div></div></section>
 <div class="commerce-benefits"><span><i class="bi bi-flower1" aria-hidden="true"></i> Real ingredients</span><span><i class="bi bi-box-seam" aria-hidden="true"></i> Packed with care</span><span><i class="bi bi-shield-check" aria-hidden="true"></i> Secure checkout</span></div>

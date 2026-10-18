@@ -14,8 +14,8 @@ foreach ($_SESSION['cart'] ?? [] as $id => $qty) {
     $qty = (int) $qty;
     if ($qty < 1 || !isset($catalog[$id])) continue;
     $product = $catalog[$id];
-    $price = (int) $product['price'];
-    $original = max($price, (int) ($product['original_price'] ?? $price));
+    $price = (float) $product['price'];
+    $original = max($price, (float) ($product['original_price'] ?? $price));
     $items[] = ['id' => (int) $id, 'name' => $product['name'], 'image' => $product['image'], 'quantity' => $qty, 'price' => $price, 'original_price' => $original, 'type' => $product['type']];
     $count += $qty;
     $total += $price * $qty;

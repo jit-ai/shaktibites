@@ -4,6 +4,7 @@ $meta_title = 'Buy High Protein Laddu Online – 3 Flavours | Shakti Bites';
 $meta_description = 'Buy Shakti Bites high protein laddu online. 10g protein per laddu, sweetened with dates and jaggery. No refined sugar. From ₹249. Free delivery on orders ₹499+.';
 require_once __DIR__ . '/includes/catalog.php';
 $products = shakti_catalog();
+$meta_description = preg_replace('/From ₹[0-9,]+/', 'From ₹' . shakti_price_text(min(array_column($products, 'price'))), $meta_description);
 include 'includes/header.php';
 ?>
 
@@ -73,7 +74,7 @@ include 'includes/header.php';
           </a>
           <h3><?php echo htmlspecialchars($product['name']); ?></h3>
           <div class="shop-rating"><span aria-hidden="true">✦</span><small>Clean ingredients · Made with care</small></div>
-          <div class="shop-product-price"><strong>&#8377;<?php echo number_format((int) $product['price']); ?></strong><small>per box</small></div>
+          <div class="shop-product-price"><strong>&#8377;<?php echo shakti_price_text($product['price']); ?></strong><small>per box</small></div>
           <a class="shop-pill shop-product-cta" href="product/<?php echo rawurlencode($product['slug']); ?>"><?php echo $allButtons[$id]; ?></a>
           <ul>
             <?php foreach (['10g protein per Laddu', 'No refined sugar', '6 laddus per box'] as $benefit): ?><li><?php echo htmlspecialchars($benefit); ?></li><?php endforeach; ?>

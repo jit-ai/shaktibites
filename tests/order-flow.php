@@ -1,4 +1,5 @@
 <?php
+define('SHAKTI_CATALOG_DEFAULTS_ONLY', true);
 // No database writes, payments, messages or credentials leave this test.
 putenv('WHATSAPP_ENABLED=false');
 require __DIR__ . '/../includes/db.php';

@@ -1,4 +1,5 @@
 <?php
+define('SHAKTI_CATALOG_DEFAULTS_ONLY', true);
 require __DIR__ . '/../includes/db.php';
 require __DIR__ . '/../includes/checkout-pricing.php';
 $_SESSION = [];

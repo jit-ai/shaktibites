@@ -61,7 +61,7 @@ require_once __DIR__ . '/includes/product-page-copy.php';
 require_once __DIR__ . '/includes/combo-builder.php';
 $pageCopy = shakti_product_page_copy($id);
 $meta_title = $pageCopy['title'];
-$meta_description = $pageCopy['description'];
+$meta_description = preg_replace('/₹[0-9,]+(?:\\.[0-9]+)?/u', '₹' . shakti_price_text($displayPrice), $pageCopy['description']);
 $originalDisplayPrice = max($displayPrice, (float) ($product['original_price'] ?? 349));
 $valueCombo = shakti_build_combo(9, [$id => 9]);
 $comboPerLaddu = $valueCombo['price'] / 54;
@@ -94,7 +94,7 @@ include 'includes/header.php';
         <span class="flavour-kicker"><?php echo htmlspecialchars($displayLabel, ENT_QUOTES, 'UTF-8'); ?></span>
         <h1><?php echo $heroHeadline; ?></h1>
         <p><?php echo htmlspecialchars($pageCopy['subline'], ENT_QUOTES, 'UTF-8'); ?></p>
-        <div class="flavour-price"><?php if ($originalDisplayPrice > $displayPrice): ?><del>&#8377;<?php echo number_format($originalDisplayPrice); ?></del><?php endif; ?> <strong>&#8377;<?php echo number_format($displayPrice); ?></strong><small>per box</small><?php if ($originalDisplayPrice > $displayPrice): ?><em>Save &#8377;<?php echo number_format($originalDisplayPrice - $displayPrice); ?> today</em><?php endif; ?></div>
+        <div class="flavour-price"><?php if ($originalDisplayPrice > $displayPrice): ?><del>&#8377;<?php echo shakti_price_text($originalDisplayPrice); ?></del><?php endif; ?> <strong>&#8377;<?php echo shakti_price_text($displayPrice); ?></strong><small>per box</small><?php if ($originalDisplayPrice > $displayPrice): ?><em>Save &#8377;<?php echo shakti_price_text($originalDisplayPrice - $displayPrice); ?> today</em><?php endif; ?></div>
         <div class="flavour-rating"><span>&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 | 500+ Reviews</div>
         <form method="post" action="add_to_cart" class="flavour-actions"><input type="hidden" name="id" value="<?php echo $id; ?>"><input type="hidden" name="quantity" value="1"><button class="flavour-btn flavour-btn--outline" type="submit">Try First Box</button><a class="flavour-btn" href="combo">Save with Combo</a></form>
         <div class="flavour-bullets"><?php foreach ($pageCopy['ticks'] as $benefit): ?><span><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div>
@@ -129,7 +129,7 @@ include 'includes/header.php';
     </div>
   </section>
 
-  <section class="flavour-combo"><div class="container"><h2>Save More With a Combo</h2><p>The more boxes you add, the more you save.</p><div class="combo-banner"><div><strong>SAVE MORE WITH COMBO</strong><p>Best Value. More Protein. More Savings.</p><b>Save up to &#8377;<?php echo number_format($maxComboSaving); ?></b><small>About &#8377;<?php echo number_format($comboPerLaddu); ?> per laddu with a 9-box combo of this flavour.</small><a href="combo/value">Build Your Combo</a></div><img src="assets/images/<?php echo htmlspecialchars($comboImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?> combo"></div></div></section>
+  <section class="flavour-combo"><div class="container"><h2>Save More With a Combo</h2><p>The more boxes you add, the more you save.</p><div class="combo-banner"><div><strong>SAVE MORE WITH COMBO</strong><p>Best Value. More Protein. More Savings.</p><b>Save up to &#8377;<?php echo shakti_price_text($maxComboSaving); ?></b><small>About &#8377;<?php echo number_format($comboPerLaddu); ?> per laddu with a 9-box combo of this flavour.</small><a href="combo/value">Build Your Combo</a></div><img src="assets/images/<?php echo htmlspecialchars($comboImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?> combo"></div></div></section>
 
   <?php include __DIR__ . '/includes/product-details-content.php'; ?>
 

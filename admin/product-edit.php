@@ -47,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_product'])) {
     $is_active = isset($_POST['is_active']) ? 1 : 0;
     
     try {
+        if (!is_numeric($price) || !is_finite((float) $price) || (float) $price < 0) throw new InvalidArgumentException('Enter a valid non-negative price.');
+        $price = round((float) $price, 2);
         $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, price = ?, sku = ?, category_id = ?, label = ?, label_class = ?, stock = ?, image = ?, is_active = ? WHERE id = ?");
         $stmt->execute([$name, $description, $price, $sku, $category_id, $label, $label_class, $stock, $image, $is_active, $product_id]);
         $success = "Product updated successfully!";

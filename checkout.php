@@ -193,7 +193,7 @@ include 'includes/header.php';
 
 <!-- Order Summary -->
       <div class="checkout-summary-col">
-        <details class="quick-order-summary"><summary><span>Order summary <small>(<?php echo array_sum($checkoutCart); ?> items)</small></span><strong>&#8377;<?php echo number_format($checkoutTotal); ?> <span aria-hidden="true">&#8250;</span></strong></summary>
+        <details class="quick-order-summary"><summary><span>Order summary <small>(<?php echo array_sum($checkoutCart); ?> items)</small></span><strong>&#8377;<?php echo shakti_price_text($checkoutTotal); ?> <span aria-hidden="true">&#8250;</span></strong></summary>
         <a class="checkout-edit-cart" href="cart">Edit your cart</a>
         <div class="checkout-items">
           <?php
@@ -208,21 +208,21 @@ include 'includes/header.php';
               <div class="checkout-item">
                   <img class="checkout-item-image" src="assets/images/<?php echo htmlspecialchars($products[$productId]['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
                   <div class="checkout-item-copy"><span><?php echo htmlspecialchars($products[$productId]['name']); ?></span><small>Quantity: <?php echo $quantity; ?></small></div>
-                  <span>&#8377;<?php echo number_format($itemTotal, 0); ?></span>
+                  <span>&#8377;<?php echo shakti_price_text($itemTotal, 0); ?></span>
               </div>
           <?php
           }
           ?>
         </div>
-        <?php if ($orderSavings > 0): ?><div class="commerce-order-saving"><i class="bi bi-tag" aria-hidden="true"></i> You're saving &#8377;<?php echo number_format($orderSavings); ?> on this order</div><?php endif; ?>
+        <?php if ($orderSavings > 0): ?><div class="commerce-order-saving"><i class="bi bi-tag" aria-hidden="true"></i> You're saving &#8377;<?php echo shakti_price_text($orderSavings); ?> on this order</div><?php endif; ?>
         <div class="checkout-price-breakdown">
           <table class="checkout-price-table" aria-label="Order price breakdown">
             <tbody>
-              <tr><th scope="row">Subtotal</th><td>&#8377;<?php echo number_format($subtotal, 0); ?></td></tr>
-              <tr><th scope="row">Shipping</th><td><?php echo $codPricing['shipping'] ? '&#8377;' . number_format($codPricing['shipping']) : 'Free'; ?></td></tr>
+              <tr><th scope="row">Subtotal</th><td>&#8377;<?php echo shakti_price_text($subtotal, 0); ?></td></tr>
+              <tr><th scope="row">Shipping</th><td><?php echo $codPricing['shipping'] ? '&#8377;' . shakti_price_text($codPricing['shipping']) : 'Free'; ?></td></tr>
               <tr id="checkout-payment-adjustment"><th scope="row">COD fee</th><td>&#8377;<?php echo $codPricing['cod_fee']; ?></td></tr>
             </tbody>
-            <tfoot><tr><th scope="row">Total</th><td data-checkout-total>&#8377;<?php echo number_format($codPricing['total'], 0); ?></td></tr></tfoot>
+            <tfoot><tr><th scope="row">Total</th><td data-checkout-total>&#8377;<?php echo shakti_price_text($codPricing['total'], 0); ?></td></tr></tfoot>
           </table>
         </div>
 
@@ -233,7 +233,7 @@ include 'includes/header.php';
         <div class="commerce-payments"><span>UPI</span><span>VISA</span><span>Mastercard</span><span>COD</span></div>
         <a class="commerce-help" href="contact">Need a hand? We're here to help <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
         </details>
-        <div class="checkout-prepaid-offer"><div><strong>&#10003; Extra &#8377;<?php echo number_format($onlinePricing['prepaid_discount']); ?> OFF on prepaid orders</strong><span>UPI / Card / Netbanking only</span></div><strong>&#8377;<?php echo number_format($onlinePricing['total']); ?><small>Online total</small></strong></div>
+        <div class="checkout-prepaid-offer"><div><strong>&#10003; Extra &#8377;<?php echo shakti_price_text($onlinePricing['prepaid_discount']); ?> OFF on prepaid orders</strong><span>UPI / Card / Netbanking only</span></div><strong>&#8377;<?php echo shakti_price_text($onlinePricing['total']); ?><small>Online total</small></strong></div>
       </div>
 
     </div>

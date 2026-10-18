@@ -12,9 +12,33 @@
  * Single flavour products. Ids here are also the slugs served by product.php,
  * so this list must stay limited to the individual boxes.
  */
+function shakti_catalog_prices(array $products): array
+{
+    // Explicitly used by isolated tests only; production reads admin prices.
+    if (defined('SHAKTI_CATALOG_DEFAULTS_ONLY') && SHAKTI_CATALOG_DEFAULTS_ONLY) return $products;
+    static $prices = null;
+    if ($prices === null) {
+        require_once __DIR__ . '/db.php';
+        $prices = [];
+        foreach (getPDO()->query('SELECT id, price FROM products WHERE id IN (1,2,3,4,5,6)')->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            if (!is_numeric($row['price']) || (float) $row['price'] < 0) throw new RuntimeException('Invalid product price. Please contact the store.');
+            $prices[(int) $row['id']] = (float) $row['price'];
+        }
+    }
+    foreach ($products as $id => &$product) if (isset($prices[$id])) $product['price'] = $prices[$id];
+    unset($product);
+    return $products;
+}
+
+function shakti_price_text(float $amount, int $unusedDecimals = 0): string
+{
+    $amount = round($amount, 2);
+    return number_format($amount, $amount == floor($amount) ? 0 : 2);
+}
+
 function shakti_catalog(): array
 {
-    return [
+    $products = [
         1 => [
             'id' => 1, 'type' => 'single', 'sku' => 'SB-PROD-001', 'category' => 'Energy Bites',
             'name' => 'Peanut Jaggery Power Bites', 'price' => 249, 'image' => 'Peanut-product.png',
@@ -52,6 +76,7 @@ function shakti_catalog(): array
             'review' => 'Premium taste, clean ingredients and very filling.',
         ],
     ];
+    return shakti_catalog_prices($products);
 }
 
 /**
@@ -60,7 +85,7 @@ function shakti_catalog(): array
  */
 function shakti_combo_catalog(): array
 {
-    return [
+    $products = [
         4 => [
             'id' => 4, 'type' => 'combo', 'sku' => 'SB-COMBO-001', 'category' => 'Combo Packs',
             'name' => '2 Box Combo', 'price' => 549, 'image' => 'Combo-product-3.png',
@@ -98,6 +123,7 @@ function shakti_combo_catalog(): array
             'ingredients' => ['Roasted peanuts', 'Almonds', 'Cashews', 'Cardamom', 'Pea protein'],
         ],
     ];
+    return shakti_catalog_prices($products);
 }
 
 /**

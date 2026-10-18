@@ -4,6 +4,7 @@ require_once __DIR__ . '/includes/combo-builder.php';
 $page_title = 'Combo';
 $meta_title = 'High Protein Laddu Combo Packs – Save Up to ₹682 | Shakti Bites';
 $meta_description = 'Buy high protein laddu combos from Shakti Bites. Choose 3, 6 or 9 boxes in any flavour. 10g protein per laddu, no refined sugar. Free delivery, COD available.';
+$meta_title = 'High Protein Laddu Combo Packs – Save Up to ₹' . shakti_price_text(max(array_column(shakti_builder_plans(), 'saving'))) . ' | Shakti Bites';
 include 'includes/header.php';
 if (empty($_SESSION['combo_token'])) $_SESSION['combo_token'] = bin2hex(random_bytes(32));
 ?>

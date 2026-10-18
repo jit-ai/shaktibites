@@ -1,13 +1,14 @@
 <?php
 function shakti_builder_products(): array {
     $products = shakti_catalog();
-    $products[2]['price'] = 249;
-    $products[1]['price'] = 299;
-    $products[3]['price'] = 379;
     return [2 => $products[2], 1 => $products[1], 3 => $products[3]];
 }
 function shakti_builder_plans(): array {
-    return [3 => ['title'=>'Starter','discount'=>8,'saving'=>91,'tone'=>'starter','tag'=>'Good to Start'],6 => ['title'=>'Popular','discount'=>15,'saving'=>341,'tone'=>'popular','tag'=>'Most Popular'],9 => ['title'=>'Value','discount'=>20,'saving'=>682,'tone'=>'value','tag'=>'Best Value']];
+    $plans = [3 => ['title'=>'Starter','discount'=>8,'saving'=>91,'tone'=>'starter','tag'=>'Good to Start'],6 => ['title'=>'Popular','discount'=>15,'saving'=>341,'tone'=>'popular','tag'=>'Most Popular'],9 => ['title'=>'Value','discount'=>20,'saving'=>682,'tone'=>'value','tag'=>'Best Value']];
+    $highest = max(array_column(shakti_builder_products(), 'price'));
+    foreach ($plans as $boxes => &$plan) $plan['saving'] = (int) round($highest * $boxes - round($highest * $boxes * (100 - $plan['discount']) / 100));
+    unset($plan);
+    return $plans;
 }
 function shakti_build_combo(int $boxes, array $selection): array {
     $plans = shakti_builder_plans();

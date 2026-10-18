@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
     el('builderSubtotal').textContent = money(subtotal);
     el('builderSaving').textContent = 'You Save ' + money(subtotal - total) + ' (' + plans[limit].discount + '%)';
     el('builderTotal').textContent = el('builderButtonTotal').textContent = money(total);
+    const prepaid = el('builderPrepaid');
+    prepaid.hidden = false;
+    el('builderPrepaidTotal').textContent = selected === limit ? money(Math.max(0, total - Number(prepaid.dataset.discount))) : '\u2014';
     el('builderMessage').textContent = selected === limit ? 'Your combo is ready.' : 'Choose ' + (limit - selected) + ' more ' + (limit - selected === 1 ? 'box' : 'boxes') + ' to complete your combo.';
   }
   cards.forEach(card => {

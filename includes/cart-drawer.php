@@ -20,7 +20,7 @@ foreach ($_SESSION['cart'] ?? [] as $drawerId => $drawerQty) {
     <div class="header-cart-heading"><h3><i class="bi bi-cart3" aria-hidden="true"></i> Cart details</h3><span>Total items: <b id="headerCartCount">0</b></span></div>
     <p id="headerCartStatus" class="header-cart-status" role="status" aria-live="polite"></p>
     <div id="headerCartItems"></div>
-    <div class="bag-delivery" id="bagDelivery"><strong>&#127881; You've unlocked FREE delivery</strong><div class="bag-delivery-track"><span></span></div><small>Free shipping on your order</small></div>
+    <div id="bagDelivery"><?php $deliveryPricing = $drawerOnline; include __DIR__ . '/delivery-progress.php'; ?></div>
     <a class="header-cart-more" href="shop">Add more items <span aria-hidden="true">&#8250;</span></a>
     <a href="cart" class="bag-full-cart">View full cart</a>
     <div class="header-cart-offer">Unlock your best offer at checkout!</div>
@@ -30,7 +30,7 @@ foreach ($_SESSION['cart'] ?? [] as $drawerId => $drawerQty) {
         <div><dt id="bagOrderLabel">Order total (<?php echo $drawerOnline['boxes']; ?> boxes)</dt><dd id="bagOriginalTotal">&#8377;<?php echo number_format($drawerOnline['subtotal'] + $drawerSingleSavings + $drawerComboSavings); ?></dd></div>
         <div id="bagSingleRow" <?php if (!$drawerSingleSavings) echo 'hidden'; ?>><dt>Product discount</dt><dd id="bagSingleDiscount" class="bag-discount">&minus; &#8377;<?php echo number_format($drawerSingleSavings); ?></dd></div>
         <div id="bagComboRow" <?php if (!$drawerComboSavings) echo 'hidden'; ?>><dt>Combo discount</dt><dd id="bagComboDiscount" class="bag-discount">&minus; &#8377;<?php echo number_format($drawerComboSavings); ?></dd></div>
-        <div><dt>Shipping</dt><dd>Free</dd></div>
+        <div><dt>Shipping</dt><dd id="bagShipping"><?php echo $drawerOnline['shipping'] ? '&#8377;' . number_format($drawerOnline['shipping']) : 'Free'; ?></dd></div>
         <div><dt>Prepaid discount <small>Only UPI / Card / Netbanking</small></dt><dd id="bagPrepaidDiscount" class="bag-discount">&minus; &#8377;<?php echo number_format($drawerOnline['prepaid_discount']); ?></dd></div>
         <div><dt>COD fee <small class="bag-cod-note">Prepaid discount won't apply</small></dt><dd id="bagCodFee">+ &#8377;<?php echo number_format($drawerCod['cod_fee']); ?></dd></div>
       </dl>

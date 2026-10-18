@@ -62,7 +62,7 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
   </div>
   <div class="offcanvas-body sb-drawer-body">
     <?php $sbNavVariant = 'mobile'; include __DIR__ . '/nav-links.php'; ?>
-    <p class="sb-drawer-note"><i class="bi bi-truck" aria-hidden="true"></i> Free shipping above &#8377;499 &middot; COD available</p>
+    <p class="sb-drawer-note"><i class="bi bi-truck" aria-hidden="true"></i> Free shipping at &#8377;499 &middot; COD available</p>
   </div>
 </div>
 

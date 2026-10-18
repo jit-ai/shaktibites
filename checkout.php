@@ -55,6 +55,11 @@ include 'includes/header.php';
       <div class="checkout-form-col">
         <div class="billing-details-card">
           <form action="place-order" method="post" class="checkout-form" id="checkout-form">
+                        <?php if (!empty($_SESSION['checkout_error'])): ?>
+              <div class="alert alert-danger mt-3" role="alert">
+                <?php echo htmlspecialchars($_SESSION['checkout_error']); unset($_SESSION['checkout_error']); ?>
+              </div>
+            <?php endif; ?>
             <div id="checkout-phone-step" hidden>
               <h1>Enter mobile number</h1><p>Provide your mobile number to continue</p>
               <label class="phone-entry" for="checkout-mobile"><span>&#127470;&#127475; +91</span><input type="tel" id="checkout-mobile" autocomplete="tel-national" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile number" aria-describedby="checkout-phone-error"></label>
@@ -172,11 +177,6 @@ include 'includes/header.php';
 
           </fieldset>
 
-            <?php if (!empty($_SESSION['checkout_error'])): ?>
-              <div class="alert alert-danger mt-3" role="alert">
-                <?php echo htmlspecialchars($_SESSION['checkout_error']); unset($_SESSION['checkout_error']); ?>
-              </div>
-            <?php endif; ?>
 
             <button type="submit" class="btn btn-place-order" id="place-order-btn">
               <i class="bi bi-lock-fill"></i> <span>Place Order</span>
@@ -215,7 +215,7 @@ include 'includes/header.php';
           <table class="checkout-price-table" aria-label="Order price breakdown">
             <tbody>
               <tr><th scope="row">Subtotal</th><td>&#8377;<?php echo number_format($subtotal, 0); ?></td></tr>
-              <tr><th scope="row">Shipping</th><td>Free</td></tr>
+              <tr><th scope="row">Shipping</th><td><?php echo $codPricing['shipping'] ? '&#8377;' . number_format($codPricing['shipping']) : 'Free'; ?></td></tr>
               <tr id="checkout-payment-adjustment"><th scope="row">COD fee</th><td>&#8377;<?php echo $codPricing['cod_fee']; ?></td></tr>
             </tbody>
             <tfoot><tr><th scope="row">Total</th><td data-checkout-total>&#8377;<?php echo number_format($codPricing['total'], 0); ?></td></tr></tfoot>
@@ -229,7 +229,7 @@ include 'includes/header.php';
         <div class="commerce-payments"><span>UPI</span><span>VISA</span><span>Mastercard</span><span>COD</span></div>
         <a class="commerce-help" href="contact">Need a hand? We're here to help <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
         </details>
-        <div class="quick-checkout-saving">Prepay and save &#8377;<?php echo $onlinePricing['prepaid_discount']; ?> extra &middot; COD fee &#8377;<?php echo $codPricing['cod_fee']; ?></div>
+        <div class="checkout-prepaid-offer"><div><strong>&#10003; Extra &#8377;<?php echo number_format($onlinePricing['prepaid_discount']); ?> OFF on prepaid orders</strong><span>UPI / Card / Netbanking only</span></div><strong>&#8377;<?php echo number_format($onlinePricing['total']); ?><small>Online total</small></strong></div>
       </div>
 
     </div>
@@ -343,9 +343,11 @@ include 'includes/header.php';
                     })
                     .catch(function () { alert('Something went wrong during verification.'); setButtonBusy(false); });
             },
+            modal: { ondismiss: function () { setButtonBusy(false); refreshButton(); } },
             theme: { color: '#cf5a0a' }
         };
         var rzp = new Razorpay(options);
+        rzp.on('payment.failed', function () { setButtonBusy(false); refreshButton(); });
         rzp.open();
     }
 

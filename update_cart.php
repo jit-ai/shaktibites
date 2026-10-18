@@ -5,16 +5,17 @@ session_start();
 header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/includes/catalog.php';
+require_once __DIR__ . '/includes/checkout-pricing.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['ok' => false, 'message' => 'Method not allowed.']);
+echo json_encode(['ok' => false, 'message' => 'Method not allowed.']);
     exit;
 }
 
 if (!isset($_SESSION['cart_token']) || !hash_equals($_SESSION['cart_token'], (string) ($_POST['token'] ?? ''))) {
     http_response_code(403);
-    echo json_encode(['ok' => false, 'message' => 'Your cart session has expired. Please refresh the page.']);
+echo json_encode(['ok' => false, 'message' => 'Your cart session has expired. Please refresh the page.']);
     exit;
 }
 
@@ -26,7 +27,7 @@ $catalog = shakti_cart_catalog();
 
 if (!$productId || !isset($catalog[$productId]) || $quantity === false || $quantity < 0) {
     http_response_code(422);
-    echo json_encode(['ok' => false, 'message' => 'Invalid cart update.']);
+echo json_encode(['ok' => false, 'message' => 'Invalid cart update.']);
     exit;
 }
 
@@ -55,12 +56,11 @@ foreach ($_SESSION['cart'] as $id => $qty) {
         $savings += max(0, ($catalog[$id]['original_price'] ?? $catalog[$id]['price']) - $catalog[$id]['price']) * (int) $qty;
     }
 }
-
 echo json_encode([
     'ok' => true,
     'cart_count' => $cartCount,
     'subtotal' => $subtotal,
     'savings' => $savings,
     'tax' => 0,
-    'total' => (int) round($subtotal),
+    'total' => shakti_checkout_pricing($_SESSION['cart'], $catalog, 'cart')['total'], 'delivery' => shakti_checkout_pricing($_SESSION['cart'], $catalog, 'cart'),
 ]);

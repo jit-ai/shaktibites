@@ -1,3 +1,16 @@
+window.shaktiDeliveryProgress = function (root, pricing) {
+  if (!root) return;
+  const money = value => '\u20b9' + Number(value).toLocaleString('en-IN');
+  root.querySelectorAll('[data-delivery-card]').forEach(card => {
+    card.hidden = !pricing.boxes;
+    card.querySelector('[data-delivery-title]').textContent = pricing.shipping_remaining > 0 ? 'Add ' + money(pricing.shipping_remaining) + ' more for FREE delivery' : "You've unlocked FREE delivery!";
+    card.querySelector('[data-delivery-description]').textContent = pricing.shipping ? 'Add your favourite bites to save on shipping' : 'No shipping charges on this order';
+    card.querySelector('[data-delivery-check]').hidden = pricing.shipping > 0;
+    const track = card.querySelector('[role="progressbar"]');
+    track.setAttribute('aria-valuenow', Math.min(499, pricing.subtotal));
+    track.querySelector('span').style.width = pricing.shipping_progress + '%';
+  });
+};
 document.addEventListener('DOMContentLoaded', () => {
   const drawer = document.getElementById('headerCartDrawer');
   if (!drawer || !drawer.showModal) return;
@@ -62,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('bagComboRow').hidden = !data.combo_savings;
     document.getElementById('bagPrepaidDiscount').textContent = '\u2212 ' + money(data.online.prepaid_discount);
     document.getElementById('bagCodFee').textContent = '+ ' + money(data.cod.cod_fee);
+    document.getElementById('bagShipping').textContent = data.online.shipping ? money(data.online.shipping) : 'Free';
+    window.shaktiDeliveryProgress(drawer, data.online);
     document.getElementById('bagOnlineTotal').textContent = money(data.online.total);
     document.getElementById('bagCodTotal').textContent = money(data.cod.total);
     ['bagPriceSummary', 'bagDelivery', 'headerCartSaving'].forEach(id => document.getElementById(id).hidden = !data.cart_count);

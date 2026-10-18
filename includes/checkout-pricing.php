@@ -14,5 +14,6 @@ function shakti_checkout_pricing(array $cart, array $products, string $payment):
     $tier = $boxes >= 9 ? 9 : ($boxes >= 6 ? 6 : ($boxes >= 3 ? 3 : 1));
     $discount = $boxes && $payment === 'online' ? min($subtotal, [1 => 15, 3 => 30, 6 => 50, 9 => 75][$tier]) : 0;
     $fee = $boxes && $payment === 'cod' ? [1 => 50, 3 => 50, 6 => 75, 9 => 100][$tier] : 0;
-    return ['subtotal' => $subtotal, 'boxes' => $boxes, 'tier' => $tier, 'prepaid_discount' => $discount, 'cod_fee' => $fee, 'total' => round($subtotal - $discount + $fee, 2)];
+    $shipping = $boxes && $subtotal < 499 ? 50 : 0;
+    return ['subtotal' => $subtotal, 'boxes' => $boxes, 'tier' => $tier, 'prepaid_discount' => $discount, 'cod_fee' => $fee, 'shipping' => $shipping, 'shipping_remaining' => max(0, 499 - $subtotal), 'shipping_progress' => min(100, round($subtotal / 499 * 100, 2)), 'total' => round($subtotal + $shipping - $discount + $fee, 2)];
 }

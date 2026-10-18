@@ -55,6 +55,7 @@ $amountPaise = (int) round($cart['total'] * 100);
 $_SESSION['razorpay_pending'] = [
     'billing'      => $billing,
     'amount'       => $cart['total'],
+    'cart_snapshot' => $cart,
     'currency'     => RAZORPAY_CURRENCY,
     'account_type' => $accountType,
     'password'     => $accountType === 'create' ? $password : '',
@@ -94,6 +95,8 @@ if ($httpCode !== 200 || empty($result['id'])) {
     echo json_encode(['success' => false, 'message' => $message]);
     exit;
 }
+
+$_SESSION['razorpay_pending']['order_id'] = $result['id'];
 
 echo json_encode([
     'success'  => true,

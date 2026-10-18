@@ -22,5 +22,5 @@ if (empty($_SESSION['combo_token'])) $_SESSION['combo_token'] = bin2hex(random_b
     <?php include 'includes/combo-builder-form.php'; ?>
   </div>
 </main>
-<script src="assets/js/combo-builder.js?v=20261014-cart-button"></script>
+<script src="assets/js/combo-builder.js?v=20261018-prepaid-under-total"></script>
 <?php include 'includes/footer.php'; ?>

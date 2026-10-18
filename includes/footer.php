@@ -34,7 +34,7 @@
         <h2 class="footer-heading">Customer Care</h2>
         <ul class="footer-contact">
           <li><i class="bi bi-envelope"></i><a href="mailto:info@shaktibites.com">info@shaktibites.com</a></li>
-          <li><i class="bi bi-truck"></i><span>Free PAN India delivery on orders above &#8377;499</span></li>
+          <li><i class="bi bi-truck"></i><span>Free PAN India delivery on orders of &#8377;499 or more</span></li>
           <li><i class="bi bi-shield-check"></i><span>Secure payments &amp; COD available</span></li>
         </ul>
       </div>

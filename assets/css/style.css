@@ -4197,3 +4197,34 @@ body.checkout-popup-open { overflow:hidden; }
   .header-cart-copy h4 { font-size:13px; }
 }
 .bag-full-cart { float:right; margin:8px 2px; color:var(--orange-dark); font-size:9px; text-decoration:underline; text-underline-offset:3px; }
+
+/* Delivery status follows the current zero-shipping-fee rule. */
+.bag-delivery { padding:12px; background:linear-gradient(120deg,#fffaf2,#fff); text-align:left; }
+.bag-delivery-title { display:flex; align-items:center; gap:10px; }
+.bag-delivery-title > span:first-child { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; background:#fae6cd; border-radius:50%; font-size:18px; }
+.bag-delivery-title > div { flex:1; }
+.bag-delivery-title strong { display:block; font-size:11px; color:var(--brown); }
+.bag-delivery-title small { text-align:left; font-size:8px; margin-top:3px; color:#967a63; }
+.bag-delivery-check { color:#28783c; font-size:17px; }
+.bag-delivery .bag-delivery-track { margin:12px 0 7px; height:5px; }
+.bag-delivery-foot { display:flex; justify-content:space-between; align-items:center; font-size:9px; color:#967a63; }
+.bag-delivery-foot strong { font-size:9px; color:#28783c; }
+@media(prefers-reduced-motion:no-preference) { .bag-delivery-track span { transition:width .2s ease; } }
+
+/* Prepaid saving stays visible before the payment selection. */
+.builder-prepaid { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:5px 16px; padding:12px 0 0; color:#397347; font-size:14px; }
+.builder-prepaid[hidden] { display:none; }
+.builder-prepaid small { grid-column:1 / -1; color:#7b826f; font-size:11px; }
+.builder-prepaid strong { white-space:nowrap; }
+.checkout-prepaid-offer { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:14px 16px; background:#e9f3e4; color:#376b3e; }
+.checkout-prepaid-offer > div { display:flex; flex-direction:column; gap:5px; }
+.checkout-prepaid-offer strong { font-size:12px; }
+.checkout-prepaid-offer span, .checkout-prepaid-offer small { display:block; font-size:9px; font-weight:400; }
+.checkout-prepaid-offer > strong { text-align:right; font-size:17px; white-space:nowrap; }
+@media(max-width:575px) { .builder-prepaid { font-size:12px; }.checkout-prepaid-offer { padding:12px; gap:10px; }.checkout-prepaid-offer strong { font-size:11px; }.checkout-prepaid-offer > strong { font-size:15px; } }
+
+/* Keep the prepaid quote directly below Combo Price in the totals column. */
+.builder-totals .builder-total { margin-bottom:6px; }
+.builder-totals .builder-prepaid { width:100%; padding:0; align-items:center; gap:8px; font-size:12px; }
+.builder-totals .builder-prepaid span { min-width:0; }
+.builder-totals .builder-prepaid strong { font-size:13px; text-align:right; }

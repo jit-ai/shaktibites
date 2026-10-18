@@ -1,12 +1,13 @@
 <?php
 $page_title = 'Order Complete';
-include 'includes/header.php';
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 $order = $_SESSION['last_order'] ?? null;
 if (!$order) {
     header('Location: shop');
     exit;
 }
+include 'includes/header.php';
 $paymentMethod = $order['payment_method'] === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)';
 ?>
 
@@ -31,7 +32,7 @@ $paymentMethod = $order['payment_method'] === 'cod' ? 'Cash on Delivery' : 'Onli
         <?php endforeach; ?>
         <hr>
         <div class="order-total-row">
-          <strong>Total Paid</strong>
+          <strong><?php echo $order['payment_method'] === 'cod' ? 'Amount due on delivery' : 'Total paid'; ?></strong>
           <strong>₹<?php echo number_format($order['total_amount'], 0); ?></strong>
         </div>
       </div>

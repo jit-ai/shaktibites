@@ -335,9 +335,9 @@ function ensureCatalogProductRows(PDO $pdo): void
     }
 }
 
-function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $paymentStatus, ?string $razorpayPaymentId = null): array
+function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $paymentStatus, ?string $razorpayPaymentId = null, ?array $cartSnapshot = null): array
 {
-    $cart = collectCartItems($paymentMethod);
+    $cart = $cartSnapshot ?? collectCartItems($paymentMethod);
     ensureCatalogProductRows($pdo);
 
     $orderNumber = generateOrderNumber($pdo);
@@ -404,7 +404,16 @@ function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $pa
             'billing'        => $billing,
         ];
 
-        unset($_SESSION['cart']);
+        if ($cartSnapshot === null) {
+            unset($_SESSION['cart']);
+        } else {
+            foreach ($cart['items'] as $purchased) {
+                $id = $purchased['product_id'];
+                $remainingQty = max(0, (int) ($_SESSION['cart'][$id] ?? 0) - $purchased['quantity']);
+                if ($remainingQty) $_SESSION['cart'][$id] = $remainingQty;
+                else unset($_SESSION['cart'][$id]);
+            }
+        }
 
         return [
             'order_id'      => $orderId,

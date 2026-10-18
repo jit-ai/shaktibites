@@ -23,7 +23,6 @@ if ($paymentId === '' || $orderId === '' || $signature === '') {
 }
 
 $pending = $_SESSION['razorpay_pending'] ?? null;
-unset($_SESSION['razorpay_pending']);
 
 if (!is_array($pending) || ($pending['amount'] ?? null) === null) {
     http_response_code(400);
@@ -32,8 +31,8 @@ if (!is_array($pending) || ($pending['amount'] ?? null) === null) {
 }
 
 // Verify the payment signature: HMAC-SHA256(order_id + payment_id) against the secret
-$expectedSignature = hash_hmac('sha256', $orderId . $paymentId, RAZORPAY_KEY_SECRET);
-if (!hash_equals($expectedSignature, $signature)) {
+$expectedSignature = hash_hmac('sha256', ($pending['order_id'] ?? '') . $paymentId, RAZORPAY_KEY_SECRET);
+if (($pending['order_id'] ?? '') !== $orderId || !hash_equals($expectedSignature, $signature)) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Payment signature verification failed.']);
     exit;
@@ -57,7 +56,11 @@ try {
         $_SESSION['is_admin']   = 0;
     }
 
-    $order = createOrder($pdo, $pending['billing'], 'online', 'completed', $paymentId);
+    if (!isset($pending['cart_snapshot']) || (float) $pending['cart_snapshot']['total'] !== (float) $pending['amount']) {
+        throw new RuntimeException('Checkout amount does not match the payment. Please contact support.');
+    }
+    $order = createOrder($pdo, $pending['billing'], 'online', 'completed', $paymentId, $pending['cart_snapshot']);
+    unset($_SESSION['razorpay_pending']);
     echo json_encode([
         'status'       => 'success',
         'order_number' => $order['order_number'],

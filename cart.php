@@ -14,6 +14,8 @@ if (empty($_SESSION['cart_token'])) {
 
 // Single boxes and combo packs, priced from the shared catalogue
 $products = shakti_cart_catalog();
+require_once __DIR__ . '/includes/checkout-pricing.php';
+$cartPricing = shakti_checkout_pricing($_SESSION['cart'], $products, 'cart');
 $validCart = [];
 foreach ($_SESSION['cart'] as $productId => $quantity) {
     if (isset($products[$productId]) && (int) $quantity > 0) $validCart[$productId] = (int) $quantity;
@@ -40,7 +42,7 @@ $bagCount = array_sum($validCart);
     <?php if (empty($validCart)): ?>
         <div class="commerce-empty"><div class="commerce-empty-icon"><i class="bi bi-bag-heart" aria-hidden="true"></i></div><h2>Your next good habit starts here.</h2><p>Your cart is empty. Fill it with a little real energy.</p><a href="shop" class="commerce-primary">Explore Shakti Bites <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
     <?php else: ?>
-        <div class="commerce-delivery"><i class="bi bi-truck" aria-hidden="true"></i><div><strong>Good snacks, delivered to your door</strong><span>Free shipping on this order</span></div><i class="bi bi-check-circle-fill" aria-hidden="true"></i></div>
+        <?php $deliveryPricing = $cartPricing; include __DIR__ . '/includes/delivery-progress.php'; ?>
         <div class="cart-list-label"><span>YOUR GOODNESS BAG</span><span>QUANTITY</span></div>
         <?php $itemIndex = 1; ?>
         <?php foreach ($_SESSION['cart'] as $productId => $quantity): ?>
@@ -95,7 +97,7 @@ $bagCount = array_sum($validCart);
             $savings += max(0, ($products[$productId]['original_price'] ?? $products[$productId]['price']) - $products[$productId]['price']) * $quantity;
         }
         $tax = 0;
-        $total = $subtotal;
+        $total = $cartPricing['total'];
     ?>
     <div class="cart-savings-summary" id="cart-savings" <?php if ($savings <= 0) echo 'hidden'; ?>><span>You save on this order</span><strong id="cart-savings-amount">&#8377;<?php echo number_format($savings); ?></strong></div>
     <div class="cart-summary-row"><span>Subtotal (after discount)</span>
@@ -103,7 +105,7 @@ $bagCount = array_sum($validCart);
     </div>
     <div class="cart-summary-row">
         <span>Shipping</span>
-        <span>Free</span>
+        <span><?php echo $cartPricing['shipping'] ? '&#8377;' . number_format($cartPricing['shipping']) : 'Free'; ?></span>
     </div>
     <hr>
     <div class="cart-total-row">
@@ -151,6 +153,8 @@ function updateCartSummary(result) {
   document.getElementById('cart-savings-amount').textContent = formatMoney(result.savings);
   const rows = document.querySelectorAll('.cart-summary-row');
   rows[0].lastElementChild.textContent = formatMoney(result.subtotal);
+  rows[1].lastElementChild.textContent = result.delivery.shipping ? formatMoney(result.delivery.shipping) : 'Free';
+  if (window.shaktiDeliveryProgress) window.shaktiDeliveryProgress(document.querySelector('.commerce-cart'), result.delivery);
   document.querySelector('.cart-total-row strong:last-child').textContent = formatMoney(result.total);
   document.querySelectorAll('[id^="cart-badge"], .sb-nav-cart-count').forEach(badge => {
     badge.textContent = result.cart_count;

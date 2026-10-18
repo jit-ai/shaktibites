@@ -1,0 +1,5 @@
+<div class="bag-delivery" data-delivery-card <?php if (!$deliveryPricing['boxes']) echo 'hidden'; ?>>
+  <div class="bag-delivery-title"><span aria-hidden="true">&#128666;</span><div><strong data-delivery-title><?php if ($deliveryPricing['shipping_remaining'] > 0): ?>Add &#8377;<?php echo number_format($deliveryPricing['shipping_remaining']); ?> more for FREE delivery<?php else: ?>You've unlocked FREE delivery!<?php endif; ?></strong><small data-delivery-description><?php echo $deliveryPricing['shipping'] ? 'Add your favourite bites to save on shipping' : 'No shipping charges on this order'; ?></small></div><span class="bag-delivery-check" data-delivery-check aria-hidden="true" <?php if ($deliveryPricing['shipping']) echo 'hidden'; ?>>&#10003;</span></div>
+  <div class="bag-delivery-track" role="progressbar" aria-label="Progress towards free delivery" aria-valuemin="0" aria-valuemax="499" aria-valuenow="<?php echo min(499, $deliveryPricing['subtotal']); ?>"><span style="width:<?php echo $deliveryPricing['shipping_progress']; ?>%"></span></div>
+  <div class="bag-delivery-foot"><span>&#8377;0</span><strong>Free delivery at &#8377;499</strong></div>
+</div>

@@ -21,6 +21,7 @@ $billing = [
     'pincode'    => trim($_POST['pincode'] ?? ''),
     'phone'      => trim($_POST['phone'] ?? ''),
     'email'      => trim($_POST['email'] ?? ''),
+    'whatsapp_opt_in' => ($_POST['whatsapp_opt_in'] ?? '') === '1',
 ];
 
 $error = validateBilling($billing);

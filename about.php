@@ -18,7 +18,7 @@ include 'includes/header.php';
       <div class="about-story-content">
         <h2 class="section-title">The Shakti Bites Journey</h2>
         <p class="about-story-text">Founded in 2020, Shakti Bites was born from a simple realization: snacking shouldn't come at the cost of your health. Our founders, fitness enthusiasts and nutrition experts, struggled to find snacks that were both delicious and genuinely nutritious.</p>
-        <p class="about-story-text">After countless experiments in their home kitchen, they perfected the recipe for protein-packed laddoos that provide sustained energy without the sugar crash. Today, we're on a mission to make healthy eating accessible and enjoyable for everyone.</p>
+        <p class="about-story-text">After countless experiments in their home kitchen, they perfected the recipe for protein-packed laddus that provide sustained energy without the sugar crash. Today, we're on a mission to make healthy eating accessible and enjoyable for everyone.</p>
         <div class="about-stats">
           <div class="stat-item">
             <div class="stat-number">500+</div>
@@ -30,7 +30,7 @@ include 'includes/header.php';
           </div>
           <div class="stat-item">
             <div class="stat-number">10g</div>
-            <div class="stat-label">Protein per Laddoo</div>
+            <div class="stat-label">Protein per Laddu</div>
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@ include 'includes/header.php';
         <div class="pillar-card">
           <i class="bi bi-lightning-fill pillar-icon"></i>
           <h5>Sustained Energy</h5>
-          <p>10g protein per laddoo for lasting power without crashes.</p>
+          <p>10g protein per laddu for lasting power without crashes.</p>
         </div>
         <div class="pillar-card">
           <i class="bi bi-globe-pill pillar-icon"></i>

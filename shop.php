@@ -1,5 +1,7 @@
 <?php
 $page_title = 'Shop';
+$meta_title = 'Buy High Protein Laddu Online – 3 Flavours | Shakti Bites';
+$meta_description = 'Buy Shakti Bites high protein laddu online. 10g protein per laddu, sweetened with dates and jaggery. No refined sugar. From ₹249. Free delivery on orders ₹499+.';
 require_once __DIR__ . '/includes/catalog.php';
 $products = shakti_catalog();
 include 'includes/header.php';
@@ -8,9 +10,8 @@ include 'includes/header.php';
 <main class="shop-page">
   <section class="shop-intro" aria-labelledby="shop-title">
     <div class="container">
-      <p class="shop-eyebrow">Real ingredients · Real taste</p>
-      <h1 id="shop-title">Choose Your Perfect Protein Snack</h1>
-      <p>Clean ingredients. Real taste. No sugar crash.</p>
+      <h1 id="shop-title">Shop Protein Laddu Online &ndash; 3 Flavours</h1>
+      <p>10g protein per laddu. Sweetened with dates and jaggery. Free delivery on orders of &#8377;499 or more.</p>
     </div>
   </section>
 
@@ -18,8 +19,8 @@ include 'includes/header.php';
     <div class="container shop-pick-grid">
       <?php
       $picks = [
-        1 => ['tag' => 'Best for Daily Use', 'button' => 'Shop Peanut', 'tone' => 'peanut'],
-        2 => ['tag' => 'Most Loved', 'button' => 'Shop Almond', 'tone' => 'almond'],
+        1 => ['tag' => 'Everyday Pick', 'button' => 'Shop Peanut', 'tone' => 'peanut'],
+        2 => ['tag' => 'Chocolate Pick', 'button' => 'Shop Almond', 'tone' => 'almond'],
         3 => ['tag' => 'Premium Pick', 'button' => 'Shop Premium', 'tone' => 'premium'],
       ];
       foreach ($picks as $id => $pick):
@@ -61,7 +62,7 @@ include 'includes/header.php';
     <div class="shop-band-title"><h2 id="all-products-title">All Products</h2></div>
     <div class="container shop-all-grid">
       <?php
-      $allLabels = [1 => '💪 Daily Use', 2 => '🔥 Best Seller', 3 => '🎊 Premium'];
+      $allLabels = [1 => 'Everyday Pick', 2 => 'Chocolate Pick', 3 => 'Premium Pick'];
       $allButtons = [1 => 'Start Daily Pack', 2 => 'Try Chocolate Bite', 3 => 'Experience Premium'];
       foreach ($products as $id => $product):
       ?>
@@ -75,7 +76,7 @@ include 'includes/header.php';
           <div class="shop-product-price"><strong>&#8377;<?php echo number_format((int) $product['price']); ?></strong><small>per box</small></div>
           <a class="shop-pill shop-product-cta" href="product/<?php echo rawurlencode($product['slug']); ?>"><?php echo $allButtons[$id]; ?></a>
           <ul>
-            <?php foreach (array_slice($product['benefits'], 0, 3) as $benefit): ?><li><?php echo htmlspecialchars($benefit); ?></li><?php endforeach; ?>
+            <?php foreach (['10g protein per Laddu', 'No refined sugar', '6 laddus per box'] as $benefit): ?><li><?php echo htmlspecialchars($benefit); ?></li><?php endforeach; ?>
           </ul>
         </article>
       <?php endforeach; ?>
@@ -83,34 +84,33 @@ include 'includes/header.php';
   </section>
 
   <section class="shop-stockup" aria-labelledby="stockup-title">
-    <div class="shop-band-title"><h2 id="stockup-title">Save More When You Stock Up</h2><p>More protein bites, more to share</p></div>
+    <div class="shop-band-title"><h2 id="stockup-title">Save More When You Stock Up</h2><p>Pick any flavours. The more boxes you add, the more you save.</p></div>
     <div class="container shop-combo-grid">
       <article class="shop-combo-card">
         <h3>Starter Combo</h3>
-        <a href="combo" class="shop-combo-image"><img src="assets/images/Combo-product-3.png" alt="Starter combo with three boxes"></a>
+        <a href="combo/starter" class="shop-combo-image"><img src="assets/images/Combo-product-3.png" alt="Starter combo with three boxes"></a>
         <h4>Starter Combo</h4><p>Try a mix of our protein bites.</p>
         <ul><li>Three delicious boxes</li><li>Great for discovering your favourite</li><li>Easy to share</li></ul>
-        <a href="combo" class="shop-pill shop-combo-button">Explore Combos</a>
+        <a href="combo/starter" class="shop-pill shop-combo-button">Explore Combos</a>
       </article>
       <article class="shop-combo-card shop-combo-featured">
         <span class="shop-combo-badge">Popular choice</span>
         <h3>Best Value Combo</h3>
-        <a href="combo" class="shop-combo-image"><img src="assets/images/Combo-product-6.png" alt="Best value combo with six boxes"></a>
+        <a href="combo/popular" class="shop-combo-image"><img src="assets/images/Combo-product-6.png" alt="Best value combo with six boxes"></a>
         <h4>Best Value</h4><p>Stock up on nourishing snacks.</p>
         <ul><li>Six delicious boxes</li><li>Made for sharing or stocking up</li><li>Explore all three flavours</li></ul>
-        <a href="combo" class="shop-pill shop-combo-button">Explore Combos</a>
+        <a href="combo/popular" class="shop-pill shop-combo-button">Explore Combos</a>
       </article>
     </div>
-    <a class="shop-more-combos" href="combo">Explore All Combos <span aria-hidden="true">→</span></a>
   </section>
 
+  <?php include __DIR__ . '/includes/shop-details.php'; ?>
   <section class="shop-final-cta" aria-labelledby="shop-cta-title">
     <div class="container">
-      <p class="shop-eyebrow">A better snack starts here</p>
-      <h2 id="shop-cta-title">Ready to Switch to<br>Clean Protein Snacks?</h2>
-      <div class="shop-sparkle" aria-hidden="true">✦　✧　✦</div>
-      <p>Find your new favourite bite today.</p>
-      <a class="shop-pill" href="#all-products">Shop Protein Bites</a>
+      <h2 id="shop-cta-title">Ready to Switch to a Better Protein Snack?</h2>
+      <p>Find your favourite flavour today.</p>
+      <a class="shop-pill" href="#all-products">Shop Protein Laddu</a>
+      <p class="shop-cta-trust">10g protein per laddu &middot; No refined sugar &middot; Free delivery at &#8377;499</p>
     </div>
   </section>
 </main>

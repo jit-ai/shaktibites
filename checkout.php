@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/catalog.php';
+require_once __DIR__ . '/includes/whatsapp.php';
 
 // The cart lives in the session, so it must be readable before the guard runs.
 if (session_status() === PHP_SESSION_NONE) {
@@ -178,6 +179,9 @@ include 'includes/header.php';
           </fieldset>
 
 
+            <?php if (shakti_whatsapp_ready()): ?>
+              <label class="checkout-whatsapp-optin"><input type="checkbox" name="whatsapp_opt_in" value="1"><span>Send my order confirmation and order details on WhatsApp to my delivery number.</span></label>
+            <?php endif; ?>
             <button type="submit" class="btn btn-place-order" id="place-order-btn">
               <i class="bi bi-lock-fill"></i> <span>Place Order</span>
             </button>
@@ -357,7 +361,7 @@ include 'includes/header.php';
         if (getPaymentMethod() === 'online') {
             e.preventDefault();
             startOnlinePayment();
-        }
+        } else { setButtonBusy(true); }
     });
 
     form.addEventListener('change', function (e) {

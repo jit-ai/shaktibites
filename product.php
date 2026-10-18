@@ -21,12 +21,12 @@ $productDefaults = [
   'name' => 'Shakti Bites',
   'price' => 249,
   'image' => 'Peanut-product.png',
-  'label' => 'Everyday Energy',
+  'label' => 'Everyday Pick',
   'accent' => 'peanut',
   'short' => 'Clean, steady energy in every bite.',
   'slug' => 'peanut-jaggery-power-bites',
   'ingredients' => ['Real ingredients', 'Natural sweetness', 'Plant protein', 'No chemicals', 'Made in India'],
-  'benefits' => ['10g protein per laddoo', 'No refined sugar', 'Naturally energising', 'Made in India'],
+  'benefits' => ['10g protein per laddu', 'No refined sugar', 'Naturally energising', 'Made in India'],
   'occasion' => ['Pre & post workout', '4 PM energy boost', 'Travel-friendly snack'],
 ];
 // Keeps the layout intact even if an older catalogue entry is missing a field
@@ -57,14 +57,19 @@ $displayBenefits = is_array($product['benefits'] ?? null) ? $product['benefits']
 $displayIngredients = is_array($product['ingredients'] ?? null) ? $product['ingredients'] : $productDefaults['ingredients'];
 $displayPrice = is_numeric($product['price'] ?? null) ? (float) $product['price'] : $productDefaults['price'];
 $page_title = 'Shop';
+require_once __DIR__ . '/includes/product-page-copy.php';
+require_once __DIR__ . '/includes/combo-builder.php';
+$pageCopy = shakti_product_page_copy($id);
+$meta_title = $pageCopy['title'];
+$meta_description = $pageCopy['description'];
+$originalDisplayPrice = max($displayPrice, (float) ($product['original_price'] ?? 349));
+$valueCombo = shakti_build_combo(9, [$id => 9]);
+$comboPerLaddu = $valueCombo['price'] / 54;
+$maxComboSaving = max(array_column(shakti_builder_plans(), 'saving'));
 $comboImage = $id === 1 ? 'Combo-product-9.png' : ($id === 2 ? 'Combo-product-6.png' : 'Combo-product-3.png');
-$heroHeadline = [
-  1 => '10g Protein Bites That Give You Real Energy. No Sugar Crash.',
-  2 => '10g Protein Chocolate Bites That Actually Taste Amazing.',
-  3 => '10g Protein Bites Made with Rich Dry Fruits & Clean Energy. Royal Taste.',
-][$id];
+$heroHeadline = $pageCopy['headline'];
 $momentsHeading = 'Perfect For When You Need Real Energy';
-$comparison = $id === 1 ? ['Sugar spike & crash', 'Empty calories', 'Artificial sweetness', 'Makes you feel heavy'] : ($id === 2 ? ['Sugar-loaded sweets', 'Artificial chocolate', 'Refined sugar', 'Energy crash'] : ['Processed mithai', 'Added preservatives', 'Empty calories', 'Makes you feel sluggish']);
+$comparison = $pageCopy['comparison'];
 $momentTitles = ['Pre & Post Workout', 'Office Energy Boost', 'Travel / On the Go'];
 $momentCopy = ['A convenient bite for your active routine.', 'Your workday snack for busy afternoons.', 'A handy snack for busy days and journeys.'];
 $momentIcons = [
@@ -88,23 +93,23 @@ include 'includes/header.php';
       <div class="flavour-copy">
         <span class="flavour-kicker"><?php echo htmlspecialchars($displayLabel, ENT_QUOTES, 'UTF-8'); ?></span>
         <h1><?php echo $heroHeadline; ?></h1>
-        <p><?php echo htmlspecialchars($displayShort, ENT_QUOTES, 'UTF-8'); ?> Made with ingredients you can recognise.</p>
-        <div class="flavour-price"><del>&#8377;349</del> <strong>&#8377;<?php echo number_format($displayPrice); ?></strong> <em>Save &#8377;<?php echo number_format(max(0, 349 - $displayPrice)); ?> today</em></div>
+        <p><?php echo htmlspecialchars($pageCopy['subline'], ENT_QUOTES, 'UTF-8'); ?></p>
+        <div class="flavour-price"><?php if ($originalDisplayPrice > $displayPrice): ?><del>&#8377;<?php echo number_format($originalDisplayPrice); ?></del><?php endif; ?> <strong>&#8377;<?php echo number_format($displayPrice); ?></strong><small>per box</small><?php if ($originalDisplayPrice > $displayPrice): ?><em>Save &#8377;<?php echo number_format($originalDisplayPrice - $displayPrice); ?> today</em><?php endif; ?></div>
         <div class="flavour-rating"><span>&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 | 500+ Reviews</div>
-        <form method="post" action="add_to_cart" class="flavour-actions"><input type="hidden" name="id" value="<?php echo $id; ?>"><input type="hidden" name="quantity" value="1"><button class="flavour-btn flavour-btn--outline" type="submit">Try First Box</button><a class="flavour-btn" href="combo">View Combo</a></form>
-        <div class="flavour-bullets"><?php foreach (array_slice($displayBenefits, 0, 4) as $benefit): ?><span><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div>
+        <form method="post" action="add_to_cart" class="flavour-actions"><input type="hidden" name="id" value="<?php echo $id; ?>"><input type="hidden" name="quantity" value="1"><button class="flavour-btn flavour-btn--outline" type="submit">Try First Box</button><a class="flavour-btn" href="combo">Save with Combo</a></form>
+        <div class="flavour-bullets"><?php foreach ($pageCopy['ticks'] as $benefit): ?><span><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></div>
       </div>
     </div>
   </section>
 
-  <div class="flavour-trust"><div class="container"><span><i class="bi bi-truck"></i> Free Shipping</span><span><i class="bi bi-cash-stack"></i> COD Available</span><span><i class="bi bi-lock-fill"></i> Secure Checkout</span></div></div>
+  <div class="flavour-trust"><div class="container"><span><i class="bi bi-truck"></i> Free delivery at &#8377;499</span><span><i class="bi bi-cash-stack"></i> COD Available</span><span><i class="bi bi-lock-fill"></i> Secure Checkout</span></div></div>
 
   <section class="flavour-ingredients ingredient-reference" aria-labelledby="ingredients-heading">
     <h2 id="ingredients-heading" class="visually-hidden">Major Ingredients</h2>
     <img class="ingredient-reference-image" src="assets/images/<?php echo rawurlencode($ingredientImage); ?>" alt="Major Ingredients: <?php echo htmlspecialchars(implode(', ', array_keys($majorIngredients)), ENT_QUOTES, 'UTF-8'); ?>. Real ingredients = real energy. No chemicals. No shortcuts. No artificial preservatives. No refined sugar. No artificial sweeteners." width="2752" height="1536" loading="lazy" decoding="async">
   </section>
 
-  <section class="flavour-compare"><div class="container"><h2>Why Shakti Bites &gt; Regular Mithai</h2><div class="flavour-compare-grid"><div><h3>Other Snacks</h3><ul><?php foreach ($comparison as $item): ?><li><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div><div class="flavour-compare-good"><h3><i class="bi bi-patch-check-fill"></i> Shakti Bites</h3><ul><?php foreach ($displayBenefits as $benefit): ?><li><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div></div></div></section>
+  <section class="flavour-compare"><div class="container"><h2>Why Choose Shakti Bites Over Regular Mithai?</h2><div class="flavour-compare-grid"><div><h3>Regular Mithai &amp; Packaged Snacks</h3><ul><?php foreach ($comparison as $item): ?><li><i class="bi bi-x-circle-fill"></i><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div><div class="flavour-compare-good"><h3><i class="bi bi-patch-check-fill"></i> Shakti Bites</h3><ul><?php foreach ($pageCopy['advantages'] as $benefit): ?><li><i class="bi bi-check-circle-fill"></i><?php echo htmlspecialchars((string) $benefit, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul></div></div></div></section>
 
 
   <div class="fresh-strip"><i class="bi bi-lightning-charge-fill"></i> Selling Fast - Limited Fresh Batch Available Today</div>
@@ -124,7 +129,9 @@ include 'includes/header.php';
     </div>
   </section>
 
-  <section class="flavour-combo"><div class="container"><h2>Want Better Value?</h2><p>Best Value. More Protein. More Savings.</p><div class="combo-banner"><div><strong>SAVE MORE WITH COMBO</strong><p>Best Value. More Protein. More Savings.</p><b>Save &#8377;300</b><small>Only &#8377;20 Per Laddoo</small><a href="combo">Get This Combo</a></div><img src="assets/images/<?php echo htmlspecialchars($comboImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?> combo"></div></div></section>
+  <section class="flavour-combo"><div class="container"><h2>Save More With a Combo</h2><p>The more boxes you add, the more you save.</p><div class="combo-banner"><div><strong>SAVE MORE WITH COMBO</strong><p>Best Value. More Protein. More Savings.</p><b>Save up to &#8377;<?php echo number_format($maxComboSaving); ?></b><small>About &#8377;<?php echo number_format($comboPerLaddu); ?> per laddu with a 9-box combo of this flavour.</small><a href="combo/value">Build Your Combo</a></div><img src="assets/images/<?php echo htmlspecialchars($comboImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?> combo"></div></div></section>
+
+  <?php include __DIR__ . '/includes/product-details-content.php'; ?>
 
   <?php
   $videoReviewGroup = $displayAccent;

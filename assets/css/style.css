@@ -4228,3 +4228,72 @@ body.checkout-popup-open { overflow:hidden; }
 .builder-totals .builder-prepaid { width:100%; padding:0; align-items:center; gap:8px; font-size:12px; }
 .builder-totals .builder-prepaid span { min-width:0; }
 .builder-totals .builder-prepaid strong { font-size:13px; text-align:right; }
+
+/* Home-page content and FAQs from the supplied copy document. */
+.home-prepaid-note { margin-top:8px; color:var(--orange-dark); font-size:13px; font-weight:600; }
+.trust-pills { flex-wrap:wrap; justify-content:center; row-gap:10px; }
+.trust-pill { padding-left:20px; padding-right:20px; }
+.home-introduction { padding:56px 0; background:#fff8ee; color:var(--brown); }
+.home-introduction > .container, .home-faq > .container { max-width:1040px; }
+.home-content-kicker { display:block; margin-bottom:12px; color:var(--orange-dark); font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; }
+.home-introduction h2, .home-faq h2 { margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:clamp(25px,3vw,36px); font-weight:800; line-height:1.3; color:var(--brown); }
+.home-introduction-copy { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 32px; }
+.home-introduction-copy p { margin:0; color:#79604b; font-size:14px; line-height:1.85; }
+.home-faq { padding:50px 0 60px; background:var(--cream); }
+.home-faq-list { display:grid; gap:12px; }
+.home-faq-item { border:1px solid #ead4b9; border-radius:12px; background:#fffaf3; overflow:hidden; }
+.home-faq-item summary { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 20px; list-style:none; cursor:pointer; color:var(--brown); font-size:14px; font-weight:600; line-height:1.5; }
+.home-faq-item summary::-webkit-details-marker { display:none; }
+.home-faq-item summary > span { flex:0 0 22px; text-align:center; color:var(--orange); font-size:22px; font-weight:400; }
+.home-faq-item[open] summary > span { transform:rotate(45deg); }
+.home-faq-item[open] summary { border-bottom:1px solid #f0dfca; }
+.home-faq-item p { margin:0; padding:16px 20px 20px; color:#79604b; font-size:13px; line-height:1.8; }
+.home-faq-item summary:focus-visible { outline:2px solid var(--orange); outline-offset:-3px; }
+@media(max-width:767px) {
+  .home-introduction, .home-faq { padding:36px 0; }
+  .home-introduction-copy { grid-template-columns:1fr; gap:16px; }
+  .home-introduction-copy p { font-size:13px; }
+  .home-faq-item summary { font-size:13px; padding:16px; }
+  .home-faq-item p { padding:14px 16px 18px; }
+  .home-prepaid-note { font-size:12px; }
+  .trust-pill { font-size:11px; padding:3px 12px; }
+}
+
+/* Shop-page editorial content, FAQs and final trust line. */
+.shop-introduction { padding:50px 0; background:#fff8ee; }
+.shop-introduction > .container, .shop-faq > .container { max-width:1040px; }
+.shop-introduction h2, .shop-faq h2 { margin:0 0 24px; color:var(--brown); font-family:'Playfair Display',Georgia,serif; font-size:clamp(25px,3vw,36px); font-weight:800; line-height:1.3; }
+.shop-introduction-copy { display:grid; gap:18px; }
+.shop-introduction-copy p { margin:0; color:#79604b; font-size:14px; line-height:1.85; }
+.shop-faq { padding:45px 0 55px; background:var(--cream); }
+.shop-final-cta .shop-cta-trust { margin:22px 0 0; color:#826349; font-size:12px; line-height:1.8; }
+.shop-final-cta h2 { max-width:720px; margin-left:auto; margin-right:auto; }
+@media(max-width:767px) { .shop-introduction,.shop-faq { padding:36px 0; }.shop-introduction-copy p { font-size:13px; }.shop-final-cta .shop-cta-trust { font-size:11px; } }
+
+/* Product-specific story, taste notes, allergens and FAQs. */
+.product-story { padding:48px 0; background:#fff8ed; }
+.product-story > .container, .product-faq > .container { max-width:1040px; }
+.product-story h2, .product-faq h2 { margin:0 0 22px; font-size:clamp(25px,3vw,36px); line-height:1.3; color:var(--brown); }
+.product-story p { margin:0; color:#79604b; font-size:14px; line-height:1.85; }
+.product-story-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin-top:26px; }
+.product-story-grid > div { padding:22px; border:1px solid #ecd6ba; border-radius:14px; background:#fffdf8; }
+.product-story h3 { margin:0 0 10px; font-size:20px; color:var(--brown); }
+.product-story-grid span { display:block; margin-top:14px; color:var(--orange-dark); font-size:12px; font-weight:600; }
+.product-faq { padding:44px 0 55px; background:var(--cream); }
+.flavour-page--dryfruit .product-story { background:#f7f8ec; }
+.flavour-page--dryfruit .product-faq { background:#eef0dc; }
+.flavour-price > small { font-size:12px; }
+@media(max-width:767px) { .product-story,.product-faq { padding:34px 0; }.product-story-grid { grid-template-columns:1fr; gap:16px; }.product-story p { font-size:13px; } }
+
+/* Combo document: per-card prepaid offer, introduction and FAQs. */
+.bundle-card .bundle-prepaid { margin:4px 0 18px; color:#397347; font-size:13px; font-weight:600; line-height:1.5; text-align:center; }
+.combo-introduction { padding:48px 0; background:#fff8ee; }
+.combo-introduction > .container, .combo-faq > .container { max-width:1040px; }
+.combo-introduction h2, .combo-faq h2 { margin:0 0 24px; color:var(--brown); font-family:'Playfair Display',Georgia,serif; font-size:clamp(25px,3vw,36px); font-weight:800; line-height:1.3; }
+.combo-introduction p { margin:0; color:#79604b; font-size:14px; line-height:1.85; }
+.combo-faq { padding:44px 0 55px; background:var(--cream); }
+@media(max-width:767px) { .combo-introduction,.combo-faq { padding:34px 0; }.combo-introduction p { font-size:13px; }.bundle-card .bundle-prepaid { font-size:12px; } }
+
+.checkout-modal .checkout-form .checkout-whatsapp-optin { display:flex; align-items:flex-start; gap:10px; margin:20px 0 0; padding:13px; border:1px solid #e7d3ba; border-radius:8px; background:#fff7ec; font-size:12px; line-height:1.6; }
+.checkout-modal .checkout-form .checkout-whatsapp-optin input[type="checkbox"] { width:18px; height:18px; min-height:0; flex:0 0 18px; margin-top:2px; padding:0; accent-color:var(--orange); }
+.order-whatsapp-status { max-width:580px; margin:16px auto; padding:12px 18px; background:#fff7ec; border:1px solid #e7d3ba; border-radius:10px; color:var(--brown); font-size:13px; }

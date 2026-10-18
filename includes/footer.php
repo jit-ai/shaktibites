@@ -5,7 +5,7 @@
         <a class="footer-logo" href="./" aria-label="Shakti Bites home">
           <img src="assets/images/logo.PNG" alt="Shakti Bites">
         </a>
-        <p class="footer-tagline">Wholesome protein laddoos made with real ingredients, real nutrition, and real taste.</p>
+        <p class="footer-tagline">Wholesome protein laddus made with real ingredients, real nutrition, and real taste.</p>
         <div class="footer-social">
           <a class="footer-social-link" href="https://www.instagram.com/shaktibitesofficial?stkn=NWZuOTViM2l1NTh2&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Follow Shakti Bites on Instagram">
             <i class="bi bi-instagram" aria-hidden="true"></i>

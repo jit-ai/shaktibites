@@ -34,4 +34,12 @@ define('RAZORPAY_KEY_ID', $env('RAZORPAY_KEY_ID', 'rzp_test_your_key_id'));
 define('RAZORPAY_KEY_SECRET', $env('RAZORPAY_KEY_SECRET', 'your_key_secret'));
 define('RAZORPAY_CURRENCY', 'INR');
 define('TAX_RATE', 0.0);
+
+// WhatsApp Cloud API: keep disabled until credentials and utility template are ready.
+define('WHATSAPP_ENABLED', filter_var($env('WHATSAPP_ENABLED', 'false'), FILTER_VALIDATE_BOOLEAN));
+define('WHATSAPP_ACCESS_TOKEN', $env('WHATSAPP_ACCESS_TOKEN', ''));
+define('WHATSAPP_PHONE_NUMBER_ID', $env('WHATSAPP_PHONE_NUMBER_ID', ''));
+define('WHATSAPP_ORDER_TEMPLATE', $env('WHATSAPP_ORDER_TEMPLATE', ''));
+define('WHATSAPP_TEMPLATE_LANGUAGE', $env('WHATSAPP_TEMPLATE_LANGUAGE', 'en'));
+define('WHATSAPP_API_VERSION', $env('WHATSAPP_API_VERSION', 'v24.0'));
 ?>

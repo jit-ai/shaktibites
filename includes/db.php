@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/catalog.php';
+require_once __DIR__ . '/whatsapp.php';
 
 /**
  * MySQL driver error codes that mean "the connection failed", not "the query was
@@ -273,12 +274,9 @@ function collectCartItems(?string $paymentMethod = null): array
         throw new RuntimeException('Your cart is empty.');
     }
     $tax = 0.0;
-    $total = round($subtotal, 2);
-    if ($paymentMethod !== null) {
-        require_once __DIR__ . '/checkout-pricing.php';
-        $total = shakti_checkout_pricing($cart, $products, $paymentMethod)['total'];
-    }
-    return ['items' => $items, 'subtotal' => $subtotal, 'tax' => $tax, 'total' => $total];
+    require_once __DIR__ . '/checkout-pricing.php';
+    $pricing = shakti_checkout_pricing($cart, $products, $paymentMethod ?? 'cart');
+    return ['items' => $items, 'subtotal' => $subtotal, 'tax' => $tax, 'total' => $pricing['total'], 'pricing' => $pricing];
 }
 
 /**
@@ -402,6 +400,7 @@ function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $pa
             'payment_status' => $paymentStatus,
             'items'          => $cart['items'],
             'billing'        => $billing,
+            'pricing'        => $cart['pricing'],
         ];
 
         if ($cartSnapshot === null) {
@@ -415,6 +414,8 @@ function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $pa
             }
         }
 
+        $_SESSION['last_order']['whatsapp'] = shakti_notify_whatsapp($_SESSION['last_order']);
+
         return [
             'order_id'      => $orderId,
             'order_number'  => $orderNumber,
@@ -422,7 +423,7 @@ function createOrder(PDO $pdo, array $billing, string $paymentMethod, string $pa
             'items'         => $cart['items'],
         ];
     } catch (Throwable $e) {
-        $pdo->rollBack();
+        if ($pdo->inTransaction()) $pdo->rollBack();
         throw $e;
     }
 }

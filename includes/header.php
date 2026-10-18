@@ -17,13 +17,14 @@ $siteBasePath = ($scriptDirectory === '' || $scriptDirectory === '.') ? '/' : $s
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="<?php echo htmlspecialchars($siteBasePath, ENT_QUOTES, 'UTF-8'); ?>">
-    <title><?php echo SITE_NAME; ?> - <?php echo $page_title ?? 'Home'; ?></title>
+    <title><?php echo htmlspecialchars($meta_title ?? (SITE_NAME . ' - ' . ($page_title ?? 'Home')), ENT_QUOTES, 'UTF-8'); ?></title>
+    <?php if (!empty($meta_description)): ?><meta name="description" content="<?php echo htmlspecialchars($meta_description, ENT_QUOTES, 'UTF-8'); ?>"><?php endif; ?>
     <!-- Bootstrap 5.3.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=20261018-combo-prepaid-line">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261018-whatsapp-checkout">
 </head>
 <body<?php if (($page_title ?? '') === 'Checkout') echo ' class="quick-checkout-page"'; ?>>
 <?php include 'navbar.php'; ?>

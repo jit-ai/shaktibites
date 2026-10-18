@@ -1,5 +1,7 @@
 <?php
 $page_title = 'Home';
+$meta_title = 'Protein Laddu – 10g Protein per Laddu | Shakti Bites';
+$meta_description = 'Shop Shakti Bites protein laddu and protein bites. 10g protein per laddu, sweetened with dates and jaggery. No refined sugar, no preservatives. Free delivery on orders ₹499+.';
 include 'includes/header.php';
 ?>
 
@@ -8,13 +10,13 @@ include 'includes/header.php';
   <div class="container">
     <div class="hero-inner">
       <div class="hero-text">
-        <h1 class="hero-heading">10g Protein Laddoo –<br>Taste bhi, Health bhi</h1>
-        <p class="hero-sub">No refined sugar. No junk. No Maida. Real Energy</p>
+        <h1 class="hero-heading">10g Protein Laddu –<br>Taste bhi, Health bhi</h1>
+        <p class="hero-sub">Sweetened with Dates &amp; Jaggery</p>
         <div class="hero-btns">
           <a href="shop" class="btn btn-hero-white">Shop Now</a>
           <a href="combo" class="btn btn-hero-outline">Get Best Value Combo</a>
         </div>
-        <div class="launch-badge">⚡ Limited Launch Offer – Prices increasing soon</div>
+        <div class="launch-badge">Starting &#8377;249 &middot; Free Delivery on Orders &#8377;499+</div><div class="home-prepaid-note">&#128176; Save up to &#8377;75 with Prepaid Orders</div>
       </div>
     </div>
   </div>
@@ -24,11 +26,11 @@ include 'includes/header.php';
 <div class="trust-bar">
   <div class="container">
     <div class="trust-pills">
-      <span class="trust-pill">10g Protein per Laddoo</span>
-      <span class="trust-pill">No Refined sugar</span>
-      <span class="trust-pill">High Protein</span>
-      <span class="trust-pill">100% Natural</span>
+      <span class="trust-pill">10g Protein per Laddu</span>
+      <span class="trust-pill">No Refined Sugar</span>
       <span class="trust-pill">No Preservatives</span>
+      <span class="trust-pill">Lab tested &amp; FSSAI Licensed</span>
+      <span class="trust-pill">Powered by Pea Protein</span>
     </div>
   </div>
 </div>
@@ -39,26 +41,28 @@ include 'includes/header.php';
     <h2 class="section-title text-center">Why Switch to Shakti Bites?</h2>
     <div class="compare-grid">
       <div class="compare-card">
-        <h3>Other Snacks</h3>
-        <div class="compare-item"><span class="icon-x">✗</span><span>Sugar Spikes</span></div>
-        <div class="compare-item"><span class="icon-x">✗</span><span>Energy Crash</span></div>
-        <div class="compare-item"><span class="icon-x">✗</span><span>No Protein</span></div>
+        <h3>Packaged Snacks</h3>
+        <div class="compare-item"><span class="icon-x" aria-hidden="true">&#10007;</span><span>Often contain refined sugar</span></div>
+        <div class="compare-item"><span class="icon-x" aria-hidden="true">&#10007;</span><span>Some contain maida</span></div>
+        <div class="compare-item"><span class="icon-x" aria-hidden="true">&#10007;</span><span>Protein varies by product</span></div>
+        <div class="compare-item"><span class="icon-x" aria-hidden="true">&#10007;</span><span>Some contain preservatives</span></div>
       </div>
       <div class="compare-card featured-card">
         <h3>Shakti Bites</h3>
-        <div class="compare-item"><span class="icon-check">✓</span><span>10g Protein per Laddoo</span></div>
-        <div class="compare-item"><span class="icon-check">✓</span><span>Clean Ingredients</span></div>
-        <div class="compare-item"><span class="icon-check">✓</span><span>No Crash Energy</span></div>
+        <div class="compare-item"><span class="icon-check" aria-hidden="true">&#10003;</span><span>10g Protein per Laddu</span></div>
+        <div class="compare-item"><span class="icon-check" aria-hidden="true">&#10003;</span><span>Sweetened with Dates &amp; Jaggery</span></div>
+        <div class="compare-item"><span class="icon-check" aria-hidden="true">&#10003;</span><span>No Maida</span></div>
+        <div class="compare-item"><span class="icon-check" aria-hidden="true">&#10003;</span><span>No Preservatives</span></div>
       </div>
       <div class="compare-card">
-        <h3>The Results</h3>
-        <div class="compare-item"><span class="icon-green">✓</span><span>No Energy Crash</span></div>
-        <div class="compare-item"><span class="icon-green">✓</span><span>Stay Full Longer</span></div>
-        <div class="compare-item"><span class="icon-green">✓</span><span>No Guilt Snacking</span></div>
+        <h3>A Better Snack Choice</h3>
+        <div class="compare-item"><span class="icon-green" aria-hidden="true">&#10003;</span><span>Protein-focused snacking</span></div>
+        <div class="compare-item"><span class="icon-green" aria-hidden="true">&#10003;</span><span>Made with Nuts &amp; Dates</span></div>
+        <div class="compare-item"><span class="icon-green" aria-hidden="true">&#10003;</span><span>Ingredients you can understand</span></div>
+        <div class="compare-item"><span class="icon-green" aria-hidden="true">&#10003;</span><span>A convenient snack between meals</span></div>
       </div>
     </div>
-  </div>
-</section>
+  </div></section>
 
 <!-- ===== PRODUCT RANGE ===== -->
 <section class="product-range-section">
@@ -69,14 +73,14 @@ include 'includes/header.php';
 
       <div class="product-card">
         <a class="product-card-link" href="product/peanut-jaggery-power-bites" aria-label="View Peanut Jaggery Power Bites details"></a>
-        <div class="prod-label label-everyday">Everyday Energy</div>
+        <div class="prod-label label-everyday">Everyday Pick</div>
         <div class="prod-img-wrap peanut-light">
           <img src="assets/images/Peanut-product.png" alt="Peanut Jaggery Power Bites">
         </div>
         <div class="prod-body">
           <h4>Peanut Jaggery Power Bites</h4>
           <div class="prod-feature"><span class="dot-orange"></span>Instant Energy | No Sugar Crash</div>
-          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
+          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddu</div>
           <div class="prod-feature"><span class="dot-orange"></span>Peanuts • Jaggery • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Refined Sugar</div>
           <a href="product/peanut-jaggery-power-bites" class="btn btn-try">View Details</a>
@@ -85,14 +89,14 @@ include 'includes/header.php';
 
       <div class="product-card bestseller-card">
         <a class="product-card-link" href="product/almond-cacao-power-bites" aria-label="View Almond Cacao Power Bites details"></a>
-        <div class="prod-label label-bestseller">⭐ Best Seller ⭐</div>
+        <div class="prod-label label-bestseller">Chocolate Pick</div>
         <div class="prod-img-wrap cacao-dark">
           <img src="assets/images/Almond-product.png" alt="Almond Cacao Power Bites">
         </div>
         <div class="prod-body">
           <h4>Almond Cacao Power Bites</h4>
           <div class="prod-feature"><span class="dot-orange"></span>High Protein | Chocolate Taste</div>
-          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
+          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddu</div>
           <div class="prod-feature"><span class="dot-orange"></span>Almonds • Cacao • Dates</div>
           <div class="prod-feature"><span class="dot-orange"></span>100% Natural Ingredients</div>
           <a href="product/almond-cacao-power-bites" class="btn btn-try btn-try-filled">View Details</a>
@@ -108,7 +112,7 @@ include 'includes/header.php';
         <div class="prod-body">
           <h4>Dry Fruit Cardamom Bites</h4>
           <div class="prod-feature"><span class="dot-orange"></span>Rich Dry Fruits | Royal Taste</div>
-          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddoo</div>
+          <div class="prod-feature"><span class="dot-orange"></span>10g Protein per Laddu</div>
           <div class="prod-feature"><span class="dot-orange"></span>Cashews • Almonds • Cardamom</div>
           <div class="prod-feature"><span class="dot-orange"></span>No Preservatives</div>
           <a href="product/dry-fruit-cardamom-bites" class="btn btn-try">View Details</a>
@@ -208,6 +212,7 @@ include 'includes/header.php';
   </div>
 </section>
 
+<?php include __DIR__ . '/includes/home-details.php'; ?>
 <!-- ===== CTA SECTION ===== -->
 <section class="cta-section">
   <div class="container text-center">
